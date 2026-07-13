@@ -91,65 +91,149 @@ export async function getHomePage(): Promise<HomePage> {
     description: 'Premium engineering company delivering innovative technology solutions',
     keywords: ['engineering', 'technology', 'innovation', 'solutions'],
     hero: {
-      title: 'Engineering Excellence Redefined',
-      subtitle: 'Premium solutions for ambitious teams',
+      title: 'Join With Our Crazy Invention',
+      subtitle: 'Turning Dreams Into Reality',
       description:
-        'We deliver cutting-edge technology and strategic engineering expertise to drive your business forward.',
+        'Experience a technology-led creative company at the forefront of tailoring, integration, data and innovation. Our team of experts makes clients happy with our in-depth expertise.',
       cta: {
-        text: 'Explore Our Services',
-        href: '/services',
+        text: 'Get Started',
+        href: '/contact',
       },
     },
-    features: [
-      {
-        id: '1',
-        title: 'Strategic Planning',
-        description: 'We align technology with your business goals',
-        icon: 'target',
-      },
-      {
-        id: '2',
-        title: 'Expert Execution',
-        description: 'Proven methodologies and best practices',
-        icon: 'zap',
-      },
-      {
-        id: '3',
-        title: 'Continuous Support',
-        description: 'Dedicated teams committed to your success',
-        icon: 'users',
-      },
-    ],
     stats: [
-      { label: 'Years Experience', value: '15+' },
-      { label: 'Successful Projects', value: '500+' },
-      { label: 'Team Members', value: '120+' },
-      { label: 'Client Satisfaction', value: '98%' },
+      { label: 'Designs Executed', value: '150+' },
+      { label: 'Happy Clients', value: '50+' },
+      { label: 'Years Of Experience', value: '12' },
+      { label: 'Years Into The Business', value: '2' },
     ],
-    services: [
-      {
-        id: 'service-1',
-        title: 'Cloud Architecture',
-        description: 'Design and implement scalable cloud solutions',
-        features: ['AWS', 'GCP', 'Azure'],
-      },
-      {
-        id: 'service-2',
-        title: 'Full-Stack Development',
-        description: 'End-to-end application development services',
-        features: ['Frontend', 'Backend', 'DevOps'],
-      },
-      {
-        id: 'service-3',
-        title: 'AI & Machine Learning',
-        description: 'Advanced AI solutions for modern challenges',
-        features: ['ML Models', 'Data Science', 'Analytics'],
-      },
-    ],
+    whatWeDo: {
+      title: 'Turning Dreams Into Reality',
+      description:
+        'Welcome to Phenix Labs, a cutting-edge creative company at the forefront of tailoring, integration, data and innovation. Our team of experts makes clients happy with our in-depth expertise. We believe the future of technology lies in the seamless integration of data across platforms. We create tailor-made solutions for every client that show the future of technology. We deliver our solutions through transparency and teamwork. We constantly improve our deliverables through our latest practices and continuous feedback.',
+      services: [
+        {
+          id: 'research',
+          title: 'Research',
+          description: 'Uncovering user needs through thorough research methodologies and insight gathering',
+          icon: 'target',
+        },
+        {
+          id: 'development',
+          title: 'Development',
+          description: 'Building and iterating the product through rapid cycles and user feedback to stay aligned',
+          icon: 'zap',
+        },
+        {
+          id: 'education',
+          title: 'Education',
+          description: 'Educating and training the internal clients through supporting internal expansion education',
+          icon: 'users',
+        },
+      ],
+    },
+    ourServices: {
+      title: 'Our Services',
+      description: 'We are continuously improving our recent feedback and working each day to improve our data and technology',
+      services: [
+        {
+          id: 'ui-design',
+          title: 'UI Design',
+          description: 'Modern, user-centric UI design for engaging digital experiences',
+          icon: 'palette',
+        },
+        {
+          id: 'frontend',
+          title: 'Frontend Development',
+          description: 'Responsive and interactive frontend development with latest frameworks',
+          icon: 'code',
+        },
+        {
+          id: 'ai-development',
+          title: 'AI Development',
+          description: 'Artificial intelligence solutions powering intelligent systems',
+          icon: 'cpu',
+        },
+        {
+          id: 'prototyping',
+          title: 'Prototyping & Testing',
+          description: 'Rapid prototyping and comprehensive testing for quality assurance',
+          icon: 'activity',
+        },
+      ],
+    },
+    ourInventions: {
+      title: 'Our Inventions',
+      description: 'Showcase of our innovative projects and groundbreaking solutions',
+      inventions: [
+        {
+          id: 'inv-1',
+          title: 'Lorem ipsum is simply dummy text of the printing and typesetting industry.',
+          description:
+            'Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+          image: 'TODO: /images/invention-1.jpg', // Moon image
+          bgColor: 'bg-slate-900',
+        },
+        {
+          id: 'inv-2',
+          title: 'Lorem ipsum is simply dummy text of the printing and typesetting industry.',
+          description:
+            'Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text since the 1500s.',
+          image: 'TODO: /images/invention-2.jpg', // Workspace image
+          bgColor: 'bg-blue-900',
+        },
+        {
+          id: 'inv-3',
+          title: 'Lorem ipsum is simply dummy text of the printing and typesetting industry.',
+          description:
+            'Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text since the 1500s.',
+          image: 'TODO: /images/invention-3.jpg', // Iron Man image
+          bgColor: 'bg-yellow-500',
+        },
+        {
+          id: 'inv-4',
+          title: 'Lorem ipsum is simply dummy text of the printing and typesetting industry.',
+          description:
+            'Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry\'s standard dummy text since the 1500s.',
+          image: 'TODO: /images/invention-4.jpg', // Green tech image
+          bgColor: 'bg-green-900',
+        },
+      ],
+    },
+    testimonials: {
+      title: 'What Our Clients Say About Us',
+      description:
+        'Our mission is to drive progress and enhance the lives of our customers by delivering superior',
+      testimonials: [
+        {
+          id: 'test-1',
+          quote:
+            'The team delivered exceptional results and exceeded our expectations with their innovative approach and attention to detail.',
+          author: 'Karolski Chaanama',
+          role: 'Senior Manager',
+          rating: 4.8,
+        },
+        {
+          id: 'test-2',
+          quote:
+            'Professional excellence and strategic thinking made all the difference. Highly recommended for any organization.',
+          author: 'Karolski Chaanama',
+          role: 'Senior Manager',
+          rating: 4.8,
+        },
+        {
+          id: 'test-3',
+          quote:
+            'Outstanding service with measurable business impact. Their expertise truly sets them apart from competitors.',
+          author: 'Karolski Chaanama',
+          role: 'Senior Manager',
+          rating: 4.8,
+        },
+      ],
+    },
     cta: {
-      title: 'Ready to Transform Your Business?',
-      description: 'Let\'s work together to achieve your goals',
-      buttonText: 'Start Your Project',
+      title: 'Get In Touch',
+      description: 'Thank you for your interest in Phenix Labs. Reach out to us and we would be happy to connect.',
+      buttonText: 'Send Message',
       buttonLink: '/contact',
     },
   }

@@ -113,10 +113,50 @@ export interface PageContent {
 
 export interface HomePage extends PageContent {
   hero: HeroContent
-  features: Feature[]
   stats: Stat[]
-  services: ServiceItem[]
-  cta?: {
+  whatWeDo: {
+    title: string
+    description: string
+    services: Array<{
+      id: string
+      title: string
+      description: string
+      icon: string
+    }>
+  }
+  ourServices: {
+    title: string
+    description: string
+    services: Array<{
+      id: string
+      title: string
+      description: string
+      icon: string
+    }>
+  }
+  ourInventions: {
+    title: string
+    description: string
+    inventions: Array<{
+      id: string
+      title: string
+      description: string
+      image: string
+      bgColor: string
+    }>
+  }
+  testimonials: {
+    title: string
+    description: string
+    testimonials: Array<{
+      id: string
+      quote: string
+      author: string
+      role: string
+      rating: number
+    }>
+  }
+  cta: {
     title: string
     description: string
     buttonText: string

@@ -9,7 +9,7 @@ interface StatsSectionProps {
 
 export function StatsSection({ stats, title }: StatsSectionProps) {
   return (
-    <Section className="bg-surface">
+    <Section className="bg-slate-900 text-white py-16">
       <Container>
         {title && (
           <div className="mb-12 text-center">
@@ -18,12 +18,12 @@ export function StatsSection({ stats, title }: StatsSectionProps) {
         )}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+            <div key={idx} className="text-center py-6 border-l border-slate-700 pl-4 first:border-l-0">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                 {stat.value}
-                {stat.suffix && <span className="text-2xl">{stat.suffix}</span>}
+                {stat.suffix && <span className="text-lg">{stat.suffix}</span>}
               </div>
-              <p className="text-muted-foreground">{stat.label}</p>
+              <p className="text-gray-400 text-sm">{stat.label}</p>
             </div>
           ))}
         </div>

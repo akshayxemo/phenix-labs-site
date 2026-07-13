@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { HeroSection } from '@/components/sections/HeroSection'
-import { FeaturesGrid } from '@/components/sections/FeaturesGrid'
 import { StatsSection } from '@/components/sections/StatsSection'
-import { ServicesGrid } from '@/components/sections/ServicesGrid'
-import { Container } from '@/components/layout/Container'
-import { Section } from '@/components/layout/Section'
+import { WhatWeDoSection } from '@/components/sections/WhatWeDoSection'
+import { OurServicesSection } from '@/components/sections/OurServicesSection'
+import { OurInventionsSection } from '@/components/sections/OurInventionsSection'
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
+import { ContactCtaSection } from '@/components/sections/ContactCtaSection'
+import { Button } from '@/components/ui/button'
 import { getNavbarData, getFooterData, getHomePage } from '@/lib/data/mock'
 
 export const metadata: Metadata = {
@@ -28,32 +30,55 @@ export default async function Home() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      {/* Hero Section with CTA Button */}
       <HeroSection
         title={home.hero.title}
         subtitle={home.hero.subtitle}
         description={home.hero.description}
-        cta={home.hero.cta}
-      />
-      <FeaturesGrid features={home.features} />
+      >
+        <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8">
+          {home.hero.cta.text}
+        </Button>
+      </HeroSection>
+
+      {/* Stats Section */}
       <StatsSection stats={home.stats} />
-      <ServicesGrid services={home.services} title="Services" />
-      
-      {home.cta && (
-        <Section className="bg-primary text-primary-foreground">
-          <Container>
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-h2 mb-4 text-white">{home.cta.title}</h2>
-              <p className="text-lg mb-8 text-white/90">{home.cta.description}</p>
-              <a
-                href={home.cta.buttonLink}
-                className="inline-flex items-center justify-center px-8 py-3 text-base font-medium bg-white text-primary rounded-lg hover:bg-white/90 transition-colors"
-              >
-                {home.cta.buttonText}
-              </a>
-            </div>
-          </Container>
-        </Section>
-      )}
+
+      {/* What We Do Section */}
+      <WhatWeDoSection
+        title={home.whatWeDo.title}
+        description={home.whatWeDo.description}
+        services={home.whatWeDo.services}
+      />
+
+      {/* Our Services Section */}
+      <OurServicesSection
+        title={home.ourServices.title}
+        description={home.ourServices.description}
+        services={home.ourServices.services}
+      />
+
+      {/* Our Inventions Section */}
+      <OurInventionsSection
+        title={home.ourInventions.title}
+        description={home.ourInventions.description}
+        inventions={home.ourInventions.inventions}
+      />
+
+      {/* Testimonials Section */}
+      <TestimonialsSection
+        title={home.testimonials.title}
+        description={home.testimonials.description}
+        testimonials={home.testimonials.testimonials}
+      />
+
+      {/* Contact CTA Section */}
+      <ContactCtaSection
+        title={home.cta.title}
+        description={home.cta.description}
+        buttonText={home.cta.buttonText}
+        buttonLink={home.cta.buttonLink}
+      />
     </MainLayout>
   )
 }
