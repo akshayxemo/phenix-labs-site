@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import { DM_Sans } from 'next/font/google'
 import type { Metadata, Viewport } from 'next'
+import { generateMetadata, getOrganizationSchema, siteMetadata } from '@/lib/seo'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -10,9 +11,11 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Phenix Labs',
-  description: 'Premium engineering company website',
-  generator: 'v0.app',
+  ...generateMetadata({
+    title: siteMetadata.name,
+    description: siteMetadata.description,
+  }),
+  generator: 'Next.js',
   icons: {
     icon: [
       {
@@ -29,6 +32,9 @@ export const metadata: Metadata = {
       },
     ],
     apple: '/apple-icon.png',
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 }
 
@@ -47,6 +53,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={dmSans.variable}>
+      <head>
+        {/* JSON-LD Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getOrganizationSchema()),
+          }}
+        />
+      </head>
       <body className="bg-background font-sans text-foreground antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

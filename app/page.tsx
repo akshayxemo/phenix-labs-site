@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsSection } from '@/components/sections/StatsSection'
@@ -10,16 +11,20 @@ import { ContactCtaSection } from '@/components/sections/ContactCtaSection'
 import { Button } from '@/components/ui/button'
 import { getNavbarData, getFooterData, getHomePage } from '@/lib/data/mock'
 
-export const metadata: Metadata = {
-  title: 'Phenix Labs - Premium Engineering Solutions',
-  description: 'Premium engineering company delivering innovative technology solutions',
-  keywords: ['engineering', 'technology', 'innovation', 'solutions'],
-  openGraph: {
-    title: 'Phenix Labs',
-    description: 'Premium engineering company delivering innovative technology solutions',
-    type: 'website',
-  },
-}
+export const metadata: Metadata = generateMetadata({
+  title: 'Premium Engineering Solutions',
+  description: 'Join Phenix Labs, a cutting-edge creative company transforming dreams into reality. Experience technology-led innovation with 150+ designs, 50+ happy clients, and 12 years of excellence.',
+  keywords: [
+    'engineering',
+    'technology',
+    'innovation',
+    'web development',
+    'UI design',
+    'AI development',
+    'creative solutions',
+  ],
+  path: '/',
+})
 
 export default async function Home() {
   const [navbar, footer, home] = await Promise.all([
