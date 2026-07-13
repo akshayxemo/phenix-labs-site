@@ -166,14 +166,42 @@ export interface HomePage extends PageContent {
 
 export interface ServicesPage extends PageContent {
   hero: HeroContent
-  services: ServiceItem[]
-  process?: {
+  serviceCategories: Array<{
+    id: string
+    number: string
     title: string
-    steps: {
-      number: number
+    subtitle: string
+    description: string
+    benefits: string[]
+    tags: string[]
+    icon: string
+  }>
+  developmentProcess: {
+    title: string
+    description: string
+    steps: Array<{
+      id: string
       title: string
       description: string
-    }[]
+    }>
+  }
+  engineeringServices: Array<{
+    id: string
+    title: string
+    description: string
+    icon: string
+  }>
+  cta: {
+    title: string
+    description: string
+    primaryButton: {
+      text: string
+      href: string
+    }
+    secondaryButton: {
+      text: string
+      href: string
+    }
   }
 }
 

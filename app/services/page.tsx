@@ -1,16 +1,27 @@
 import type { Metadata } from 'next'
+import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { HeroSection } from '@/components/sections/HeroSection'
-import { ServicesGrid } from '@/components/sections/ServicesGrid'
-import { Container } from '@/components/layout/Container'
-import { Section } from '@/components/layout/Section'
+import { ServiceCategoriesSection } from '@/components/sections/ServiceCategoriesSection'
+import { DevelopmentProcessSection } from '@/components/sections/DevelopmentProcessSection'
+import { EngineeringServicesSection } from '@/components/sections/EngineeringServicesSection'
+import { ServicesCTASection } from '@/components/sections/ServicesCTASection'
+import { ContactCtaSection } from '@/components/sections/ContactCtaSection'
+import { Button } from '@/components/ui/button'
 import { getNavbarData, getFooterData, getServicesPage } from '@/lib/data/mock'
 
-export const metadata: Metadata = {
-  title: 'Our Services - Phenix Labs',
-  description: 'Comprehensive engineering and technology services',
-  keywords: ['services', 'engineering', 'technology', 'development'],
-}
+export const metadata: Metadata = generateMetadata({
+  title: 'Engineering Solutions',
+  description: 'Phenix Labs partners with industries, research organizations, and academic institutions to transform ideas into reliable engineering solutions.',
+  keywords: [
+    'engineering solutions',
+    'custom electronics',
+    'embedded systems',
+    'research partnerships',
+    'industrial solutions',
+  ],
+  path: '/services',
+})
 
 export default async function Services() {
   const [navbar, footer, services] = await Promise.all([
@@ -21,34 +32,48 @@ export default async function Services() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      {/* Hero Section */}
       <HeroSection
         title={services.hero.title}
         subtitle={services.hero.subtitle}
         description={services.hero.description}
-        cta={services.hero.cta}
-      />
-      <ServicesGrid services={services.services} />
+      >
+        <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8">
+          {services.hero.cta.text}
+        </Button>
+      </HeroSection>
 
-      {services.process && (
-        <Section className="bg-surface">
-          <Container>
-            <div className="text-center mb-12">
-              <h2 className="text-h2">{services.process.title}</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {services.process.steps.map((step) => (
-                <div key={step.number} className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground font-bold mb-4">
-                    {step.number}
-                  </div>
-                  <h3 className="text-h4 mb-2">{step.title}</h3>
-                  <p className="text-muted-foreground text-sm">{step.description}</p>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      )}
+      {/* Service Categories Section */}
+      <ServiceCategoriesSection categories={services.serviceCategories} />
+
+      {/* Development Process Section */}
+      <DevelopmentProcessSection
+        title={services.developmentProcess.title}
+        description={services.developmentProcess.description}
+        steps={services.developmentProcess.steps}
+      />
+
+      {/* Engineering Services Section */}
+      <EngineeringServicesSection
+        title="Engineering Services"
+        services={services.engineeringServices}
+      />
+
+      {/* Services CTA Section */}
+      <ServicesCTASection
+        title={services.cta.title}
+        description={services.cta.description}
+        primaryButton={services.cta.primaryButton}
+        secondaryButton={services.cta.secondaryButton}
+      />
+
+      {/* Contact CTA Section (reuse from home) */}
+      <ContactCtaSection
+        title="Get In Touch"
+        description="Thank you for your interest in Phenix Labs. Reach out to us and we would be happy to connect."
+        buttonText="Send Message"
+        buttonLink="/contact"
+      />
     </MainLayout>
   )
 }

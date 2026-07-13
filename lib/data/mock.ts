@@ -243,73 +243,147 @@ export async function getServicesPage(): Promise<ServicesPage> {
   await delay()
   
   return {
-    title: 'Our Services - Phenix Labs',
-    description: 'Comprehensive engineering and technology services',
-    keywords: ['services', 'engineering', 'technology', 'development'],
+    title: 'Engineering Solutions - Phenix Labs',
+    description: 'Phenix Labs partners with industries, research organizations, and academic institutions to transform ideas into reliable engineering solutions.',
+    keywords: ['engineering solutions', 'services', 'development', 'research', 'industrial'],
     hero: {
-      title: 'Our Services',
-      subtitle: 'Comprehensive Solutions Tailored to Your Needs',
-      description: 'From strategy to execution, we provide end-to-end engineering excellence.',
+      title: 'Engineering Solutions by Phenix Labs',
+      subtitle: '',
+      description: 'Phenix Labs partners with industries, research organizations, and academic institutions to transform ideas into reliable engineering solutions. From custom electronics and embedded systems to rapid prototyping and deployment, we provide end-to-end support from concept to completion.',
       cta: {
         text: 'Get Started',
         href: '/contact',
       },
     },
-    services: [
+    serviceCategories: [
       {
-        id: 'service-1',
-        title: 'Web Development',
-        description: 'Modern, scalable web applications built with latest technologies',
-        features: [
-          'React & Next.js',
-          'TypeScript',
-          'API Integration',
-          'Performance Optimization',
+        id: 'academic',
+        number: '01',
+        title: 'Academic & Research',
+        subtitle: 'Supporting cutting-edge research and exploration',
+        description: 'Enable research institutions and universities to advance their academic pursuits',
+        benefits: [
+          'Custom electronics development',
+          'Sensor integration and data acquisition',
+          'Research paper and publication support',
+          'Laboratory test-bed deployment',
         ],
+        tags: ['Research Collaboration', 'Innovation Systems', 'R & D Large Companies'],
+        icon: 'beaker',
       },
       {
-        id: 'service-2',
-        title: 'Mobile Development',
-        description: 'Native and cross-platform mobile applications',
-        features: ['iOS', 'Android', 'React Native', 'Cross-platform'],
-      },
-      {
-        id: 'service-3',
-        title: 'Cloud Infrastructure',
-        description: 'Secure, scalable cloud infrastructure design and management',
-        features: ['DevOps', 'Kubernetes', 'CI/CD', 'Security'],
-      },
-      {
-        id: 'service-4',
-        title: 'Data & Analytics',
-        description: 'Transform your data into actionable insights',
-        features: ['Data Warehousing', 'BI Tools', 'Analytics', 'ML Models'],
+        id: 'industrial',
+        number: '02',
+        title: 'Industrial',
+        subtitle: 'Solutions for industrial-scale implementation',
+        description: 'Build manufacturing-ready solutions optimized for production scale',
+        benefits: [
+          'Production engineering solutions',
+          'Supply chain optimization',
+          'System integration for production',
+          'Design for manufacturing (DFM)',
+        ],
+        tags: ['Infrastructure & Control', 'Industrial IoT', 'Robotics'],
+        icon: 'cog',
       },
     ],
-    process: {
-      title: 'Our Process',
+    developmentProcess: {
+      title: 'Our Development Process',
+      description: '',
       steps: [
         {
-          number: 1,
-          title: 'Discovery',
-          description: 'Understanding your goals and challenges',
+          id: '01',
+          title: 'Concept',
+          description: 'Initial ideas with technical requirements and goals',
         },
         {
-          number: 2,
-          title: 'Planning',
-          description: 'Developing comprehensive technical strategy',
+          id: '02',
+          title: 'Strategy',
+          description: 'Feasibility analysis and project planning',
         },
         {
-          number: 3,
-          title: 'Execution',
-          description: 'Agile development with regular updates',
+          id: '03',
+          title: 'Creation',
+          description: 'Detailed prototyping CAD and schematics',
         },
         {
-          number: 4,
-          title: 'Deployment',
-          description: 'Smooth launch and continuous optimization',
+          id: '04',
+          title: 'Build',
+          description: 'Prototype build and preliminary component testing',
+        },
+        {
+          id: '05',
+          title: 'Refine',
+          description: 'Rigorous stress testing leading and performance tuning',
+        },
+        {
+          id: '06',
+          title: 'Launch',
+          description: 'Deployment & support with end-to-end assistance',
         },
       ],
+    },
+    engineeringServices: [
+      {
+        id: 'pcb-design',
+        title: 'PCB Design',
+        description: 'High-performance multilayer board design for complex electronics',
+        icon: 'grid',
+      },
+      {
+        id: 'firmware',
+        title: 'Firmware Development',
+        description: 'Robust low-level code for embedded systems and microcontrollers',
+        icon: 'code',
+      },
+      {
+        id: 'ai-edge',
+        title: 'Edge AI Development',
+        description: 'Deploying optimized neural networks for edge devices',
+        icon: 'cpu',
+      },
+      {
+        id: 'prototyping',
+        title: 'Prototyping & Testing',
+        description: 'Rapid iteration and rigorous validation for proof-of-concept',
+        icon: 'activity',
+      },
+      {
+        id: 'cad-3d',
+        title: 'CAD & 3D Printing',
+        description: 'Mechanical design and rapid physical modeling with prototypes',
+        icon: 'box',
+      },
+      {
+        id: 'product-design',
+        title: 'Product Design',
+        description: 'Full lifecycle hardware design and engineering for commercial deployment',
+        icon: 'target',
+      },
+      {
+        id: 'system-integration',
+        title: 'System Integration',
+        description: 'Ensuring seamless subsystem cooperation through tight validation',
+        icon: 'link',
+      },
+      {
+        id: 'instrumentation',
+        title: 'Instrumentation Design',
+        description: 'Custom laboratory and scientific tools engineered for data integrity',
+        icon: 'sliders',
+      },
+    ],
+    cta: {
+      title: 'Have an idea or engineering challenges?',
+      description: 'Let\'s build it together',
+      primaryButton: {
+        text: 'Discover Your Project',
+        href: '/contact',
+      },
+      secondaryButton: {
+        text: 'Contact Us',
+        href: '/contact',
+      },
     },
   }
 }
