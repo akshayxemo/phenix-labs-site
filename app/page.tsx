@@ -1,16 +1,29 @@
+/**
+ * Home page - Ready for development
+ *
+ * Use the design system components to build your pages:
+ * import { HeroSection, Container, Section, Grid, FeatureCard, Footer } from '@/components'
+ *
+ * Example:
+ * export default function Home() {
+ *   return (
+ *     <>
+ *       <HeroSection title="Welcome to Phenix Labs" />
+ *       <Section>
+ *         <Container>
+ *           <Grid cols={3}>
+ *             Add components here
+ *           </Grid>
+ *         </Container>
+ *       </Section>
+ *       <Footer columns={...} />
+ *     </>
+ *   )
+ * }
+ *
+ * See DESIGN_SYSTEM.md for comprehensive documentation
+ */
+
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            phenix-labs
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
-          </p>
-        </div>
-      </main>
-    </div>
-  );
+  return null
 }
