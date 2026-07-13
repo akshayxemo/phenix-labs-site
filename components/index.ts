@@ -36,3 +36,6 @@ export { Footer } from './navigation/Footer'
 
 // Section Components
 export { HeroSection } from './sections/HeroSection'
+export { FeaturesGrid } from './sections/FeaturesGrid'
+export { StatsSection } from './sections/StatsSection'
+export { ServicesGrid } from './sections/ServicesGrid'
