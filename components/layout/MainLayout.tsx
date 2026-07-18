@@ -7,12 +7,14 @@ interface MainLayoutProps {
   children: ReactNode
   navbarData: NavbarData
   footerData: FooterData
+  footerEmbedded?: boolean
 }
 
 export function MainLayout({
   children,
   navbarData,
   footerData,
+  footerEmbedded = false,
 }: MainLayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,7 +22,7 @@ export function MainLayout({
       <main className="flex-1 w-full">
         {children}
       </main>
-      <SiteFooter data={footerData} />
+      <SiteFooter data={footerData} embedded={footerEmbedded} />
     </div>
   )
 }

@@ -2,7 +2,6 @@
 
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
-import { Grid } from '@/components/layout/Grid'
 
 interface EngineeringService {
   id: string

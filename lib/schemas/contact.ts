@@ -37,8 +37,7 @@ export const contactFormSchema = z.object({
     .optional(),
 
   subscribe: z
-    .boolean()
-    .default(false),
+    .boolean(),
 })
 
 export type ContactFormData = z.infer<typeof contactFormSchema>

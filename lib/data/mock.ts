@@ -25,13 +25,15 @@ export async function getNavbarData(): Promise<NavbarData> {
     },
     links: [
       { label: 'Home', href: '/', isActive: true },
-      { label: 'Services', href: '/services' },
       { label: 'About', href: '/about' },
-      { label: 'Cases', href: '/cases' },
+      { label: 'Services', href: '/services' },
+      { label: 'Industrial Training', href: '/services#training' },
+      { label: 'Products', href: '/cases' },
+      { label: 'Careers', href: '/contact' },
     ],
     cta: {
-      text: 'Get Started',
-      href: '/contact',
+      text: 'Education',
+      href: '/services#education',
     },
   }
 }

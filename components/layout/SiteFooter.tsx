@@ -5,9 +5,12 @@ import type { FooterData } from '@/types'
 
 interface SiteFooterProps {
   data: FooterData
+  embedded?: boolean
 }
 
-export function SiteFooter({ data }: SiteFooterProps) {
+export function SiteFooter({ data, embedded = false }: SiteFooterProps) {
+  if (embedded) return null
+
   return (
     <footer className="border-t border-border/40 bg-footer text-white">
       {/* Newsletter Section */}

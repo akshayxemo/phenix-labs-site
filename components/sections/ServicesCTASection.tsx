@@ -2,7 +2,8 @@
 
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface ServicesCTASectionProps {
   title: string
@@ -28,7 +29,7 @@ export function ServicesCTASection({
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           {/* Subtitle */}
-          <p className="text-sm font-semibold text-blue-500 mb-3">Let's build it together</p>
+          <p className="text-sm font-semibold text-blue-500 mb-3">Let&apos;s build it together</p>
 
           {/* Main Title */}
           <h2 className="text-4xl font-bold text-slate-900 mb-4">{title}</h2>
@@ -38,19 +39,24 @@ export function ServicesCTASection({
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              asChild
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+            <a
+              href={primaryButton.href}
+              className={cn(
+                buttonVariants(),
+                'bg-blue-600 px-8 py-3 text-white hover:bg-blue-700'
+              )}
             >
-              <a href={primaryButton.href}>{primaryButton.text}</a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-blue-500 text-blue-500 hover:bg-blue-50 px-8 py-3"
+              {primaryButton.text}
+            </a>
+            <a
+              href={secondaryButton.href}
+              className={cn(
+                buttonVariants({ variant: 'outline' }),
+                'border-blue-500 px-8 py-3 text-blue-500 hover:bg-blue-50'
+              )}
             >
-              <a href={secondaryButton.href}>{secondaryButton.text}</a>
-            </Button>
+              {secondaryButton.text}
+            </a>
           </div>
         </div>
       </Container>

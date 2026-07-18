@@ -1,6 +1,7 @@
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface ContactCtaSectionProps {
   title: string
@@ -63,12 +64,15 @@ export function ContactCtaSection({
             </div>
           </div>
 
-          <Button
-            asChild
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium"
+          <a
+            href={buttonLink}
+            className={cn(
+              buttonVariants(),
+              'bg-blue-600 px-8 py-3 font-medium text-white hover:bg-blue-700'
+            )}
           >
-            <a href={buttonLink}>{buttonText}</a>
-          </Button>
+            {buttonText}
+          </a>
 
           {/* Footer Info */}
           <div className="mt-12 pt-8 border-t border-slate-800">

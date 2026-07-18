@@ -1,5 +1,6 @@
 'use server'
 
+import { ZodError } from 'zod'
 import { contactFormSchema, type ContactFormData } from '@/lib/schemas/contact'
 
 export interface ContactActionResponse {
@@ -53,11 +54,10 @@ export async function submitContactForm(
     }
   } catch (error) {
     // Handle Zod validation errors
-    if (error instanceof Error && 'issues' in error) {
-      const zodError = error as any
+    if (error instanceof ZodError) {
       const fieldErrors: Record<string, string[]> = {}
 
-      for (const issue of zodError.issues) {
+      for (const issue of error.issues) {
         const path = issue.path.join('.')
         if (!fieldErrors[path]) {
           fieldErrors[path] = []

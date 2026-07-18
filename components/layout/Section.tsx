@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-interface SectionProps {
+interface SectionProps extends Omit<ComponentPropsWithoutRef<'section'>, 'className' | 'children'> {
   children: ReactNode
   className?: string
   id?: string
@@ -36,11 +36,13 @@ export function Section({
   id,
   variant = 'default',
   padding = 'lg',
+  ...props
 }: SectionProps) {
   return (
     <section
       id={id}
       className={cn(variantClasses[variant], paddingClasses[padding], 'w-full', className)}
+      {...props}
     >
       {children}
     </section>

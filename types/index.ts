@@ -13,6 +13,7 @@ export interface NavbarData {
   logo: {
     text: string
     href: string
+    imageSrc?: string
   }
   links: NavLink[]
   cta?: {

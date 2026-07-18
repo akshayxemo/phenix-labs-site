@@ -5,7 +5,7 @@
  * Switch between mock and Sanity seamlessly
  */
 
-import { cmsConfig, isSanityEnabled } from './config'
+import { isSanityEnabled } from './config'
 import * as mockData from '@/lib/data/mock'
 
 /**

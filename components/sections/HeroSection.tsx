@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
+import Link from 'next/link'
 import { Container } from '../layout/Container'
-import { Stack } from '../layout/Stack'
 import { cn } from '@/lib/utils'
 
 interface HeroSectionProps {
@@ -8,6 +8,10 @@ interface HeroSectionProps {
   subtitle?: string
   description?: string
   children?: ReactNode
+  cta?: {
+    text: string
+    href: string
+  }
   className?: string
   background?: 'default' | 'gradient' | 'accent'
 }
@@ -32,6 +36,7 @@ export function HeroSection({
   subtitle,
   description,
   children,
+  cta,
   className,
   background = 'default',
 }: HeroSectionProps) {
@@ -65,7 +70,18 @@ export function HeroSection({
               {description && (
                 <p className="text-lg text-gray-600 leading-relaxed max-w-lg">{description}</p>
               )}
-              {children && <div className="flex pt-4" role="group" aria-label="Call to action buttons">{children}</div>}
+              {(children || cta) && (
+                <div className="flex pt-4" role="group" aria-label="Call to action buttons">
+                  {children ?? (
+                    <Link
+                      href={cta!.href}
+                      className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-8 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                    >
+                      {cta!.text}
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Right Image Placeholder */}

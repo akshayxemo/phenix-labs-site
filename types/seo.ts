@@ -22,7 +22,7 @@ export interface TwitterCard {
 export interface JsonLdSchema {
   '@context': string
   '@type': string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface OrganizationSchema extends JsonLdSchema {
