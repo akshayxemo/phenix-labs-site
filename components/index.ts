@@ -25,6 +25,7 @@ export { Checkbox } from './forms/Checkbox'
 // Animation Components
 export { FadeUp } from './animations/FadeUp'
 export { ScaleIn } from './animations/ScaleIn'
+export { CountUp } from './animations/CountUp'
 
 // Feedback Components
 export { LoadingSkeleton } from './feedback/LoadingSkeleton'

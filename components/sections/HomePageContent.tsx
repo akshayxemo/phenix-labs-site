@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { CountUp } from '@/components/animations/CountUp'
 import {
   BookOpen,
   Boxes,
@@ -86,13 +87,15 @@ export function HomePageContent() {
       <section className="px-4 pb-6 md:px-[27px]">
         <div className="mx-auto grid max-w-[1396px] grid-cols-2 rounded-[20px] bg-[#162236] px-3 py-7 md:grid-cols-4 md:px-0 md:py-[27px]">
           {[
-            ['150 +', 'Design Executed', '#ffa143'],
-            ['50 +', 'Happy Clients', '#a984ff'],
-            ['12', 'Years Of Experience', '#4fc6f2'],
-            ['2', 'Years Into The Business', '#8b90ff'],
-          ].map(([value, label, color], index) => (
+            { value: 150, suffix: ' +', label: 'Design Executed', color: '#ffa143' },
+            { value: 50, suffix: ' +', label: 'Happy Clients', color: '#a984ff' },
+            { value: 12, suffix: '', label: 'Years Of Experience', color: '#4fc6f2' },
+            { value: 2, suffix: '', label: 'Years Into The Business', color: '#8b90ff' },
+          ].map(({ value, suffix, label, color }, index) => (
             <div key={label} className={`flex min-h-[104px] flex-col items-center justify-center text-center ${index % 2 ? 'border-l border-[#3d4c65]' : ''} md:border-l md:first:border-l-0`}>
-              <strong className="text-[36px] leading-none md:text-[48px]" style={{ color }}>{value}</strong>
+              <strong className="text-[36px] leading-none tabular-nums md:text-[48px]" style={{ color }}>
+                <CountUp value={value} suffix={suffix} delay={index * 0.12} />
+              </strong>
               <span className="mt-3 text-sm text-white md:text-[24px]">{label}</span>
             </div>
           ))}
