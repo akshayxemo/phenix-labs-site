@@ -60,7 +60,7 @@ const contactDetails = [
   { icon: MapPin, title: 'Address', detail: <>TC 6/215/NLRA 135, Neerazhi Line, Ulloor,<br />Thiruvananthapuram 695011</> },
 ]
 
-export function FigmaServicesPage() {
+export function ServicesPageContent() {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
       <section className="relative min-h-[577px] bg-white px-5">

@@ -67,7 +67,7 @@ function SectionIntro({ title, children, dark = false }: { title: string; childr
   )
 }
 
-export function FigmaHomePage() {
+export function HomePageContent() {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
       <section className="relative h-[540px] md:h-[559px]">

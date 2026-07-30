@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
-import { FigmaServicesPage } from '@/components/sections/FigmaServicesPage'
+import { ServicesPageContent } from '@/components/sections/ServicesPageContent'
 import { getNavbarData, getFooterData } from '@/lib/data/mock'
 
 export const metadata: Metadata = generateMetadata({
@@ -25,7 +25,7 @@ export default async function Services() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
-      <FigmaServicesPage />
+      <ServicesPageContent />
     </MainLayout>
   )
 }
