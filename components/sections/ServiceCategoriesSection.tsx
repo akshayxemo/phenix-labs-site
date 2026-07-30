@@ -26,7 +26,7 @@ export function ServiceCategoriesSection({ categories }: ServiceCategoriesSectio
           {categories.map((category) => (
             <article
               key={category.id}
-              className="border border-slate-700 rounded-lg p-8 hover:border-blue-500 transition-colors"
+              className="border border-slate-700 rounded-[20px] p-8 hover:border-blue-500 transition-colors"
               aria-labelledby={`category-${category.id}`}
             >
               {/* Number and Icon */}

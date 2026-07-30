@@ -29,7 +29,7 @@ export function EngineeringServicesSection({ title, services }: EngineeringServi
           {services.map((service) => (
             <article
               key={service.id}
-              className="border border-gray-200 rounded-lg p-6 hover:shadow-md hover:border-blue-500 transition-all bg-white"
+              className="border border-gray-200 rounded-[20px] p-6 hover:shadow-md hover:border-blue-500 transition-all bg-white"
               aria-labelledby={`service-${service.id}`}
             >
               {/* Icon */}

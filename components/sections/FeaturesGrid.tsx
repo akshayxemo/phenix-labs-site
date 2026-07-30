@@ -26,7 +26,7 @@ export function FeaturesGrid({
           {features.map((feature) => (
             <div
               key={feature.id}
-              className="p-6 rounded-lg border border-border/40 hover:border-primary/20 transition-colors bg-card"
+              className="p-6 rounded-[20px] border border-border/40 hover:border-primary/20 transition-colors bg-card"
             >
               {feature.icon && (
                 <div className="mb-4 text-primary text-3xl">{feature.icon}</div>

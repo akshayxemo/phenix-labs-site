@@ -4,86 +4,14 @@
  */
 
 import type {
-  NavbarData,
-  FooterData,
   HomePage,
   ServicesPage,
   AboutPage,
   CasesPage,
 } from '@/types'
 
-// Simulate async data fetching
+// Simulate async data fetching for temporary page content
 const delay = () => new Promise(resolve => setTimeout(resolve, 100))
-
-export async function getNavbarData(): Promise<NavbarData> {
-  await delay()
-  
-  return {
-    logo: {
-      text: 'Phenix Labs',
-      href: '/',
-    },
-    links: [
-      { label: 'Home', href: '/', isActive: true },
-      { label: 'About', href: '/about' },
-      { label: 'Services', href: '/services' },
-      { label: 'Industrial Training', href: '/services#training' },
-      { label: 'Products', href: '/cases' },
-      { label: 'Careers', href: '/contact' },
-    ],
-    cta: {
-      text: 'Education',
-      href: '/services#education',
-    },
-  }
-}
-
-export async function getFooterData(): Promise<FooterData> {
-  await delay()
-  
-  return {
-    columns: [
-      {
-        title: 'Product',
-        links: [
-          { text: 'Features', href: '#features' },
-          { text: 'Security', href: '#security' },
-          { text: 'Pricing', href: '#pricing' },
-          { text: 'Roadmap', href: '#roadmap' },
-        ],
-      },
-      {
-        title: 'Company',
-        links: [
-          { text: 'About', href: '/about' },
-          { text: 'Blog', href: '/blog' },
-          { text: 'Careers', href: '/careers' },
-          { text: 'Press', href: '/press' },
-        ],
-      },
-      {
-        title: 'Resources',
-        links: [
-          { text: 'Documentation', href: '#docs' },
-          { text: 'API Reference', href: '#api' },
-          { text: 'Contact', href: '/contact' },
-          { text: 'Support', href: '#support' },
-        ],
-      },
-    ],
-    social: [
-      { icon: 'linkedin', href: 'https://linkedin.com', label: 'LinkedIn' },
-      { icon: 'twitter', href: 'https://twitter.com', label: 'Twitter' },
-      { icon: 'github', href: 'https://github.com', label: 'GitHub' },
-    ],
-    copyright: '© 2026 Phenix Labs. All rights reserved.',
-    newsletter: {
-      title: 'Stay Updated',
-      description: 'Subscribe to our newsletter for latest updates',
-      placeholder: 'Enter your email',
-    },
-  }
-}
 
 export async function getHomePage(): Promise<HomePage> {
   await delay()
@@ -402,8 +330,8 @@ export async function getAboutPage(): Promise<AboutPage> {
       subtitle: 'Leading Innovation in Engineering',
       description: 'Established in 2009, we\'ve been pioneering engineering excellence.',
       cta: {
-        text: 'Join Our Team',
-        href: '/careers',
+        text: 'Explore Our Services',
+        href: '/services',
       },
     },
     mission: {

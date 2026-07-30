@@ -8,9 +8,7 @@ import {
   Code2,
   Cpu,
   GraduationCap,
-  MapPin,
   Palette,
-  Phone,
 } from 'lucide-react'
 
 const categories = [
@@ -54,12 +52,6 @@ const engineeringServices = [
   { title: 'Instrumentation Design', icon: AlarmClock, color: '#67aaf9', copy: 'Custom laboratory and industrial tools engineered for reliable insights.' },
 ]
 
-const contactDetails = [
-  { icon: Phone, title: 'Contact', detail: <>Mobile: +91 8961548205<br />Mail: gyankrishna@phenixlabs.in</> },
-  { icon: AlarmClock, title: 'Working Hours', detail: <>Monday - Friday 08:00 - 17:00<br />Saturday & Sunday 08:00 - 12:00</> },
-  { icon: MapPin, title: 'Address', detail: <>TC 6/215/NLRA 135, Neerazhi Line, Ulloor,<br />Thiruvananthapuram 695011</> },
-]
-
 export function ServicesPageContent() {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
@@ -80,7 +72,7 @@ export function ServicesPageContent() {
       <section className="bg-[#0a101d] px-5 py-[106px] text-white">
         <div className="mx-auto grid max-w-[1010px] gap-[31px] md:grid-cols-2">
           {categories.map(({ number, title, icon: Icon, description, accent, benefits, tags }) => (
-            <article key={title} className="min-h-[546px] border border-[#1a2537] bg-[#121b2b] p-10">
+            <article key={title} className="min-h-[546px] rounded-[20px] border border-[#1a2537] bg-[#121b2b] p-10">
               <div className="flex items-start justify-between"><span className="text-[40px] font-black text-[#57a5ff]/30">{number}</span><Icon size={34} className="text-[#3c99ff]" /></div>
               <h2 className="mt-1 text-[28px] font-bold">{title}</h2>
               <p className="mt-3 min-h-[54px] text-[13px] leading-relaxed text-[#baccdb]">{description}</p>
@@ -118,7 +110,7 @@ export function ServicesPageContent() {
         <h2 className="mt-1 text-center text-[34px] font-bold tracking-[-.03em] md:text-[48px]">Engineering Services</h2>
         <div className="mx-auto mt-12 grid max-w-[1236px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {engineeringServices.map(({ title, icon: Icon, color, copy }) => (
-            <article key={title} className="min-h-[190px] rounded-[10px] border border-[#baccdb] bg-white p-6">
+            <article key={title} className="min-h-[190px] rounded-[20px] border border-[#baccdb] bg-white p-6">
               <span className="flex size-10 items-center justify-center rounded-lg" style={{ color, backgroundColor: `${color}20` }}><Icon size={23} /></span>
               <h3 className="mt-5 text-[18px] font-bold">{title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-[#4e4e4e]">{copy}</p>
@@ -134,25 +126,6 @@ export function ServicesPageContent() {
             <Link href="/contact" className="inline-flex h-[48px] items-center justify-center border border-[#3c99ff] px-8 text-[#3c99ff]">Contact Us</Link>
           </div>
         </div>
-      </section>
-
-      <section className="bg-[#060d18] px-5 pt-20 text-white">
-        <div className="mx-auto max-w-[1236px]">
-          <div className="mx-auto max-w-[903px] text-center"><h2 className="text-[34px] font-bold md:text-[48px]">Get In Touch</h2><p className="mt-4 text-sm text-[#aeaeae] md:text-[20px]">Thank you for your interest in Phenix Labs! Please use this form to contact us, we would get back to you as soon as we can.</p></div>
-          <div className="mt-12 grid gap-10 md:grid-cols-[.85fr_1.15fr]">
-            <div className="space-y-8">
-              {contactDetails.map(({ icon: Icon, title, detail }) => <div key={title} className="flex gap-5"><span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-[#162236] text-[#3c99ff]"><Icon size={25} /></span><div><h3 className="text-[20px] font-semibold">{title}</h3><p className="mt-2 text-[16px] leading-relaxed text-[#aeaeae]">{detail}</p></div></div>)}
-              <div className="flex items-center gap-3 pt-2"><span>Follow Us</span><a href="#" aria-label="Facebook" className="flex size-[42px] items-center justify-center rounded-lg bg-[#1a2537] font-bold">f</a><a href="#" aria-label="Instagram" className="flex size-[42px] items-center justify-center rounded-lg bg-[#1a2537] text-xs font-bold">IG</a></div>
-            </div>
-            <form className="grid gap-5 rounded-[20px] border border-[#1d2a3d] bg-[#1a2537]/20 p-6 md:grid-cols-2 md:p-10">
-              <label>Full Name<input className="mt-3 h-[52px] w-full rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 px-4 outline-none focus:border-[#0064d7]" placeholder="Enter Full Name" /></label>
-              <label>Email<input type="email" className="mt-3 h-[52px] w-full rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 px-4 outline-none focus:border-[#0064d7]" placeholder="Enter Email ID" /></label>
-              <label className="md:col-span-2">Message<textarea rows={5} className="mt-3 w-full resize-none rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 p-4 outline-none focus:border-[#0064d7]" placeholder="Enter your Message here..." /></label>
-              <button className="h-[58px] rounded-[10px] bg-[#0064d7] md:col-span-2">Send Message</button>
-            </form>
-          </div>
-        </div>
-        <footer className="mt-20 border-t border-[#172234] bg-[#000206] py-8"><div className="mx-auto flex max-w-[1236px] flex-col items-center justify-between gap-6 text-[14px] text-[#aeaeae] md:flex-row"><nav className="flex flex-wrap justify-center gap-x-8 gap-y-3"><Link href="/">Home</Link><Link href="/about">About Us</Link><Link href="/cases">Case Studies</Link><Link href="/services">Services</Link><Link href="#">Training</Link><Link href="#">Careers</Link><Link href="#">Products</Link></nav><p className="text-white">© 2024 phenixlabs.in. All rights reserved.</p></div></footer>
       </section>
     </div>
   )

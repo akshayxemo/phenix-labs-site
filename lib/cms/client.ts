@@ -7,14 +7,16 @@
 
 import { isSanityEnabled } from './config'
 import * as mockData from '@/lib/data/mock'
+import {
+  getFooterData as getSiteFooterData,
+  getNavbarData as getSiteNavbarData,
+} from '@/lib/config/site'
 
 /**
  * Data provider interface
  * All CMS clients must implement this interface
  */
 export interface IDataProvider {
-  getNavbarData: typeof mockData.getNavbarData
-  getFooterData: typeof mockData.getFooterData
   getHomePage: typeof mockData.getHomePage
   getServicesPage: typeof mockData.getServicesPage
   getAboutPage: typeof mockData.getAboutPage
@@ -46,8 +48,8 @@ export const dataProvider = createDataProvider()
 /**
  * Export convenience functions
  */
-export const getNavbarData = () => dataProvider.getNavbarData()
-export const getFooterData = () => dataProvider.getFooterData()
+export const getNavbarData = getSiteNavbarData
+export const getFooterData = getSiteFooterData
 export const getHomePage = () => dataProvider.getHomePage()
 export const getServicesPage = () => dataProvider.getServicesPage()
 export const getAboutPage = () => dataProvider.getAboutPage()

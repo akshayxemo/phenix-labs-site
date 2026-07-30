@@ -5,7 +5,8 @@ import { StatsSection } from '@/components/sections/StatsSection'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Grid } from '@/components/layout/Grid'
-import { getNavbarData, getFooterData, getAboutPage } from '@/lib/data/mock'
+import { getNavbarData, getFooterData } from '@/lib/config/site'
+import { getAboutPage } from '@/lib/data/mock'
 
 export const metadata: Metadata = {
   title: 'About Phenix Labs',
@@ -26,7 +27,6 @@ export default async function About() {
         title={about.hero.title}
         subtitle={about.hero.subtitle}
         description={about.hero.description}
-        cta={about.hero.cta}
       />
 
       {/* Mission Section */}

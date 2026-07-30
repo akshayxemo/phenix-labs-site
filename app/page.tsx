@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { HomePageContent } from '@/components/sections/HomePageContent'
-import { getNavbarData, getFooterData } from '@/lib/data/mock'
+import { getNavbarData, getFooterData } from '@/lib/config/site'
 
 export const metadata: Metadata = generateMetadata({
   title: 'Premium Engineering Solutions',
@@ -26,7 +26,7 @@ export default async function Home() {
   ])
 
   return (
-    <MainLayout navbarData={navbar} footerData={footer} footerEmbedded={true}>
+    <MainLayout navbarData={navbar} footerData={footer}>
       <HomePageContent />
     </MainLayout>
   )

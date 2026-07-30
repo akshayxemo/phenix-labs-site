@@ -39,7 +39,7 @@ export function DevelopmentProcessSection({
               aria-labelledby={`step-${step.id}`}
             >
               {/* Step Card */}
-              <div className="border-2 border-blue-500 rounded-lg p-6 bg-white hover:shadow-lg transition-shadow h-full">
+              <div className="border-2 border-blue-500 rounded-[20px] p-6 bg-white hover:shadow-lg transition-shadow h-full">
                 {/* Step Number */}
                 <div className="flex items-baseline gap-2 mb-3">
                   <span className="text-3xl font-bold text-blue-500">{step.id}</span>

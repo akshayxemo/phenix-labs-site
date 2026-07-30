@@ -7,6 +7,7 @@ export interface NavLink {
   label: string
   href: string
   isActive?: boolean
+  showInFooter?: boolean
 }
 
 export interface NavbarData {
@@ -22,31 +23,8 @@ export interface NavbarData {
   }
 }
 
-export interface FooterLink {
-  text: string
-  href: string
-}
-
-export interface FooterColumn {
-  title: string
-  links: FooterLink[]
-}
-
-export interface SocialLink {
-  icon: string
-  href: string
-  label: string
-}
-
 export interface FooterData {
-  columns: FooterColumn[]
-  social: SocialLink[]
   copyright: string
-  newsletter?: {
-    title: string
-    description: string
-    placeholder: string
-  }
 }
 
 export interface HeroContent {

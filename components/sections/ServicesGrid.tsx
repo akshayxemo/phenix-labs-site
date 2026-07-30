@@ -26,7 +26,7 @@ export function ServicesGrid({
           {services.map((service) => (
             <div
               key={service.id}
-              className="p-8 rounded-lg border border-border/40 hover:border-primary/20 transition-all hover:shadow-card bg-card group"
+              className="p-8 rounded-[20px] border border-border/40 hover:border-primary/20 transition-all hover:shadow-card bg-card group"
             >
               {service.icon && (
                 <div className="mb-6 text-primary text-4xl group-hover:scale-110 transition-transform">

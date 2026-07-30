@@ -9,6 +9,7 @@ export const NavLinkSchema = z.object({
   label: z.string(),
   href: z.string().url(),
   isActive: z.boolean().optional(),
+  showInFooter: z.boolean().optional(),
 })
 
 export const NavbarDataSchema = z.object({
@@ -23,31 +24,8 @@ export const NavbarDataSchema = z.object({
   }).optional(),
 })
 
-export const FooterLinkSchema = z.object({
-  text: z.string(),
-  href: z.string().url(),
-})
-
-export const FooterColumnSchema = z.object({
-  title: z.string(),
-  links: z.array(FooterLinkSchema),
-})
-
-export const SocialLinkSchema = z.object({
-  icon: z.string(),
-  href: z.string().url(),
-  label: z.string(),
-})
-
 export const FooterDataSchema = z.object({
-  columns: z.array(FooterColumnSchema),
-  social: z.array(SocialLinkSchema),
   copyright: z.string(),
-  newsletter: z.object({
-    title: z.string(),
-    description: z.string(),
-    placeholder: z.string(),
-  }).optional(),
 })
 
 export const HeroContentSchema = z.object({

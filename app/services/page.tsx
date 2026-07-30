@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { ServicesPageContent } from '@/components/sections/ServicesPageContent'
-import { getNavbarData, getFooterData } from '@/lib/data/mock'
+import { getNavbarData, getFooterData } from '@/lib/config/site'
 
 export const metadata: Metadata = generateMetadata({
   title: 'Engineering Solutions',

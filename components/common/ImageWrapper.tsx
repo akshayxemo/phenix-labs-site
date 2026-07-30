@@ -23,7 +23,7 @@ export function ImageWrapper({
   ...props
 }: ImageWrapperProps) {
   return (
-    <div className={cn('relative w-full overflow-hidden rounded-lg bg-muted', className)}>
+    <div className={cn('relative w-full overflow-hidden rounded-[20px] bg-muted', className)}>
       <Image
         src={src}
         alt={alt}

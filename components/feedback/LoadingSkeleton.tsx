@@ -15,8 +15,8 @@ interface LoadingSkeletonProps {
 export function LoadingSkeleton({ className, variant = 'text', count = 1 }: LoadingSkeletonProps) {
   const skeletonClasses = {
     text: 'h-4 rounded',
-    card: 'h-32 rounded-lg',
-    image: 'aspect-square rounded-lg',
+    card: 'h-32 rounded-[20px]',
+    image: 'aspect-square rounded-[20px]',
   }
 
   return (

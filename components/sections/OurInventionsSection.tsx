@@ -37,7 +37,7 @@ export function OurInventionsSection({
             >
               {/* Image */}
               <div
-                className={`${invention.bgColor} rounded-lg aspect-video flex items-center justify-center text-gray-300 font-semibold ${
+                className={`${invention.bgColor} rounded-[20px] aspect-video flex items-center justify-center text-gray-300 font-semibold ${
                   idx % 2 === 1 ? 'md:order-2' : ''
                 }`}
               >

@@ -43,7 +43,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'bg-card rounded-lg',
+        'bg-card rounded-[20px]',
         paddingClasses[padding],
         shadowClasses[shadow],
         border && 'border border-border',

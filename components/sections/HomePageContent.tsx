@@ -1,16 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  AlarmClock,
   BookOpen,
   Boxes,
   CircuitBoard,
   Code2,
   Cpu,
   GraduationCap,
-  MapPin,
   Palette,
-  Phone,
   Star,
 } from 'lucide-react'
 
@@ -50,12 +47,6 @@ const testimonials = [
   ['"They bring vision and creativity. The PCB designing work, prototyping and the final build were delivered with precision and great attention to detail."', 'Aryan Krishna', 'Product Designer', '4.8'],
   ['"We were impressed by their technical expertise, professionalism and willingness to go the extra mile. A dependable team for complex product development."', 'Vishnu Sankar', 'Research Scholar', '4.8'],
   ['"Professional service and beyond. They delivered the 3D printing work perfectly and helped us set up a motion activated sensor system for an art installation."', 'Koushik Chatterjee', 'Interior Designer', '4.9'],
-]
-
-const contactDetails = [
-  { icon: Phone, title: 'Contact', detail: <>Mobile: +91 8961548205<br />Mail: gyankrishna@phenixlabs.in</> },
-  { icon: AlarmClock, title: 'Working Hours', detail: <>Monday - Friday 08:00 - 17:00<br />Saturday & Sunday 08:00 - 12:00</> },
-  { icon: MapPin, title: 'Address', detail: <>TC 6/215/NLRA 135, Neerazhi Line, Ulloor,<br />Thiruvananthapuram 695011</> },
 ]
 
 function SectionIntro({ title, children, dark = false }: { title: string; children: React.ReactNode; dark?: boolean }) {
@@ -120,7 +111,7 @@ export function HomePageContent() {
           </div>
           <div className="relative z-10 mt-10 grid gap-4 md:grid-cols-3">
             {whatWeDo.map(({ title, icon: Icon, copy }) => (
-              <article key={title} className="min-h-[330px] rounded-[10px] border border-[#26344a] bg-[#111d2d]/90 p-7">
+              <article key={title} className="min-h-[330px] rounded-[20px] border border-[#26344a] bg-[#111d2d]/90 p-7">
                 <span className="flex size-[68px] items-center justify-center rounded-[10px] bg-[#0064d7] text-white"><Icon size={38} /></span>
                 <h3 className="mt-5 text-[28px] font-bold md:text-[36px]">{title}</h3>
                 <p className="mt-2 text-[16px] leading-[1.55] text-[#aeaeae] md:text-[18px]">{copy}</p>
@@ -134,7 +125,7 @@ export function HomePageContent() {
         <SectionIntro title="Our Services">We&apos;re continually improving due to client feedback and working each day to improve our data and technology.</SectionIntro>
         <div className="mx-auto mt-12 grid max-w-[1236px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {services.map(({ title, icon: Icon, color }) => (
-            <article key={title} className="min-h-[200px] rounded-[10px] border border-[#baccdb] bg-white p-6">
+            <article key={title} className="min-h-[200px] rounded-[20px] border border-[#baccdb] bg-white p-6">
               <span className="flex size-11 items-center justify-center rounded-lg" style={{ backgroundColor: `${color}22`, color }}><Icon size={26} /></span>
               <h3 className="mt-5 text-[18px] font-bold">{title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-[#4e4e4e]">We bring ideas to life with carefully engineered, reliable solutions designed for real-world use.</p>
@@ -146,7 +137,7 @@ export function HomePageContent() {
 
       <section className="px-5 pb-[100px]">
         <SectionIntro title="Our Inventions">We&apos;re continually improving due to client feedback and working each day to improve our data and technology.</SectionIntro>
-        <div className="mx-auto mt-12 grid max-w-[1236px] overflow-hidden md:grid-cols-2">
+        <div className="mx-auto mt-12 grid max-w-[1236px] overflow-hidden rounded-[20px] md:grid-cols-2">
           {inventions.map(({ image, tone, imageFirst }, index) => (
             <article key={image} className={`grid min-h-[520px] grid-rows-2 ${tone}`}>
               <div className={`relative ${imageFirst ? 'order-1' : 'order-2'}`}><Image src={image} alt={`Phenix Labs invention ${index + 1}`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" /></div>
@@ -164,7 +155,7 @@ export function HomePageContent() {
         <SectionIntro title="What Our Clients Say About Us">Our mission is to drive progress and enhance the lives of our customers by delivering superior products and services that exceed expectations.</SectionIntro>
         <div className="mx-auto mt-12 grid max-w-[1236px] gap-4 md:grid-cols-3">
           {testimonials.map(([quote, name, role, rating]) => (
-            <article key={name} className="flex min-h-[240px] flex-col rounded-[10px] border border-[#baccdb] bg-white p-6">
+            <article key={name} className="flex min-h-[240px] flex-col rounded-[20px] border border-[#baccdb] bg-white p-6">
               <p className="text-[15px] leading-relaxed text-[#4e4e4e]">{quote}</p>
               <div className="mt-auto flex items-end justify-between pt-4">
                 <div><h3 className="text-[18px] font-semibold">{name}</h3><p className="text-[15px] text-[#4e4e4e]">{role}</p></div>
@@ -174,32 +165,6 @@ export function HomePageContent() {
           ))}
         </div>
         <div className="mt-12 flex justify-center gap-2"><i className="size-2 rounded-full bg-[#0064d7]" /><i className="size-2 rounded-full bg-[#baccdb]" /><i className="size-2 rounded-full bg-[#baccdb]" /></div>
-      </section>
-
-      <section className="bg-[#060d18] px-5 pt-20 text-white md:pt-[72px]">
-        <div className="mx-auto max-w-[1236px]">
-          <SectionIntro title="Get In Touch" dark>Thank you for your interest in Phenix Labs! Please use this form to contact us, we would get back to you as soon as we can.</SectionIntro>
-          <div className="mt-12 grid gap-10 md:grid-cols-[.85fr_1.15fr] md:items-start">
-            <div className="space-y-8">
-              {contactDetails.map(({ icon: ContactIcon, title, detail }) => (
-                <div key={title} className="flex gap-5"><span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-[#162236] text-[#3c99ff]"><ContactIcon size={25} /></span><div><h3 className="text-[20px] font-semibold">{title}</h3><p className="mt-2 text-[16px] leading-relaxed text-[#aeaeae]">{detail}</p></div></div>
-              ))}
-              <div className="flex items-center gap-3 pt-2 text-[16px]"><span>Follow Us</span><a href="#" aria-label="Facebook" className="flex size-[42px] items-center justify-center rounded-lg bg-[#1a2537] font-bold">f</a><a href="#" aria-label="Instagram" className="flex size-[42px] items-center justify-center rounded-lg bg-[#1a2537] text-xs font-bold">IG</a></div>
-            </div>
-            <form className="grid gap-5 rounded-[20px] border border-[#1d2a3d] bg-[#1a2537]/20 p-6 md:grid-cols-2 md:p-10">
-              <label className="text-[16px]">Full Name<input className="mt-3 h-[52px] w-full rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 px-4 text-white outline-none focus:border-[#0064d7]" placeholder="Enter Full Name" /></label>
-              <label className="text-[16px]">Email<input type="email" className="mt-3 h-[52px] w-full rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 px-4 text-white outline-none focus:border-[#0064d7]" placeholder="Enter Email ID" /></label>
-              <label className="text-[16px] md:col-span-2">Message<textarea rows={5} className="mt-3 w-full resize-none rounded-[10px] border border-[#222f42] bg-[#1a2537]/30 p-4 text-white outline-none focus:border-[#0064d7]" placeholder="Enter your Message here..." /></label>
-              <button className="h-[58px] rounded-[10px] bg-[#0064d7] text-[18px] md:col-span-2">Send Message</button>
-            </form>
-          </div>
-        </div>
-        <footer className="mt-20 border-t border-[#172234] bg-[#000206] py-8">
-          <div className="mx-auto flex max-w-[1236px] flex-col items-center justify-between gap-6 text-[14px] text-[#aeaeae] md:flex-row">
-            <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3"><Link href="/">Home</Link><Link href="/about">About Us</Link><Link href="/cases">Case Studies</Link><Link href="/services">Services</Link><Link href="#">Training</Link><Link href="#">Careers</Link><Link href="#">Products</Link></nav>
-            <p className="text-white">© 2024 phenixlabs.in. All rights reserved.</p>
-          </div>
-        </footer>
       </section>
     </div>
   )

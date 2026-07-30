@@ -29,7 +29,7 @@ export function TestimonialsSection({
 
         <Grid cols={3}>
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white rounded-lg p-8 shadow-sm">
+            <div key={testimonial.id} className="bg-white rounded-[20px] p-8 shadow-sm">
               {/* Rating */}
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: 5 }).map((_, i) => (

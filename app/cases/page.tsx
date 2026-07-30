@@ -4,7 +4,8 @@ import { HeroSection } from '@/components/sections/HeroSection'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Grid } from '@/components/layout/Grid'
-import { getNavbarData, getFooterData, getCasesPage } from '@/lib/data/mock'
+import { getNavbarData, getFooterData } from '@/lib/config/site'
+import { getCasesPage } from '@/lib/data/mock'
 
 export const metadata: Metadata = {
   title: 'Case Studies - Phenix Labs',
@@ -42,7 +43,7 @@ export default async function Cases() {
                   <a
                     key={caseItem.id}
                     href={caseItem.link || '#'}
-                    className="group relative overflow-hidden rounded-lg border border-border/40 hover:border-primary/20 transition-all block"
+                    className="group relative overflow-hidden rounded-[20px] border border-border/40 hover:border-primary/20 transition-all block"
                   >
                     <div className="aspect-video bg-surface overflow-hidden">
                       {caseItem.image && (
@@ -79,7 +80,7 @@ export default async function Cases() {
                   <a
                     key={caseItem.id}
                     href={caseItem.link || '#'}
-                    className="group p-6 rounded-lg border border-border/40 hover:border-primary/20 transition-all bg-card hover:shadow-card block"
+                    className="group p-6 rounded-[20px] border border-border/40 hover:border-primary/20 transition-all bg-card hover:shadow-card block"
                   >
                     <span className="inline-block px-2 py-1 mb-3 text-xs font-medium rounded bg-primary/10 text-primary">
                       {caseItem.category}

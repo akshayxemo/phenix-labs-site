@@ -3,7 +3,7 @@ import { MainLayout } from '@/components/layout/MainLayout'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
-import { getNavbarData, getFooterData } from '@/lib/data/mock'
+import { getNavbarData, getFooterData } from '@/lib/config/site'
 import { ContactFormClient } from './contact-form'
 
 export const metadata: Metadata = {
