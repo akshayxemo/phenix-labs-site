@@ -103,7 +103,7 @@ export function HomePageContent() {
       </section>
 
       <section className="px-4 py-5 md:px-[22px]">
-        <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-[#07101c] px-6 py-14 text-white md:px-[78px] md:py-[72px]">
+        <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-linear-to-tr from-[#07101c] from-70% to-[#173E6E] px-6 py-14 text-white md:px-[78px] md:py-[72px]">
           <Image src="/images/home/what-we-do.jpg" alt="" fill className="object-cover opacity-[.08]" sizes="100vw" />
           <div className="relative z-10 text-center">
             <p className="text-[18px] font-medium uppercase tracking-[.45em] text-[#3c99ff] md:text-[20px]">What We Do</p>
@@ -114,7 +114,7 @@ export function HomePageContent() {
           </div>
           <div className="relative z-10 mt-10 grid gap-4 md:grid-cols-3">
             {whatWeDo.map(({ title, icon: Icon, copy }) => (
-              <article key={title} className="min-h-[330px] rounded-[20px] border border-[#26344a] bg-[#111d2d]/90 p-7">
+              <article key={title} className="min-h-[330px] rounded-[20px] border border-[#26344a] last:bg-linear-to-br last:from-[#111d2d]/40 last:from-70% last:to-red-600/30 not-last:bg-[#111d2d]/40 p-7">
                 <span className="flex size-[68px] items-center justify-center rounded-[10px] bg-[#0064d7] text-white"><Icon size={38} /></span>
                 <h3 className="mt-5 text-[28px] font-bold md:text-[36px]">{title}</h3>
                 <p className="mt-2 text-[16px] leading-[1.55] text-[#aeaeae] md:text-[18px]">{copy}</p>
