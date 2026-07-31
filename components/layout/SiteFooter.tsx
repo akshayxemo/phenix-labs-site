@@ -1,29 +1,66 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import type { FooterData, NavLink } from '@/types'
+import type { FooterData, NavbarData, NavLink } from '@/types'
+import { ContactFooterSection } from './ContactFooterSection'
 
 interface SiteFooterProps {
   data: FooterData
   links: NavLink[]
+  logo: NavbarData['logo']
 }
 
-export function SiteFooter({ data, links }: SiteFooterProps) {
+export function SiteFooter({ data, links, logo }: SiteFooterProps) {
   const footerLinks = links.filter((link) => link.showInFooter !== false)
 
   return (
-    <footer className="border-t border-[#172234] bg-[#000206] px-5 py-8 text-white">
-      <div className="mx-auto flex max-w-[1236px] flex-col items-center justify-between gap-6 text-[14px] md:flex-row">
-        <nav aria-label="Footer navigation">
-          <ul className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-[#aeaeae]">
-            {footerLinks.map((link) => (
-              <li key={`${link.label}-${link.href}`}>
-                <Link href={link.href} className="transition-colors hover:text-white">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <p>{data.copyright}</p>
+    <footer className="bg-[#060d18] text-white">
+      <ContactFooterSection />
+
+      <div className="border-t border-[#1a2a3e] px-5 py-8">
+        <div className="mx-auto flex max-w-[1236px] flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <Link
+            href={logo.href}
+            className="flex w-fit items-center gap-3"
+            aria-label={`${logo.text} home`}
+          >
+            {logo.imageSrc ? (
+              <span className="flex size-12 items-center justify-center rounded-[14px] bg-white">
+                <Image
+                  src={logo.imageSrc}
+                  alt=""
+                  width={54}
+                  height={54}
+                  className="size-10 object-contain"
+                />
+              </span>
+            ) : null}
+            <span>
+              <span className="block text-[15px] font-bold tracking-[-0.01em]">
+                {logo.text}
+              </span>
+              <span className="mt-0.5 block text-[11px] uppercase tracking-[0.14em] text-[#718095]">
+                Ideas into reality
+              </span>
+            </span>
+          </Link>
+
+          <nav aria-label="Footer navigation">
+            <ul className="flex flex-wrap gap-x-2 gap-y-2 md:justify-center">
+              {footerLinks.map((link) => (
+                <li key={`${link.label}-${link.href}`}>
+                  <Link
+                    href={link.href}
+                    className="inline-flex rounded-full px-3.5 py-2 text-sm text-[#9eabb9] transition-colors hover:bg-white/[0.06] hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <p className="text-sm text-[#718095] md:text-right">{data.copyright}</p>
+        </div>
       </div>
     </footer>
   )

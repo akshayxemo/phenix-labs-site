@@ -16,6 +16,7 @@ export const navbarData: NavbarData = {
     { label: 'About', href: '/about', showInFooter: true },
     { label: 'Services', href: '/services', showInFooter: true },
     { label: 'Products', href: '/cases', showInFooter: true },
+    { label: 'Testimonials', href: '/testimonials', showInFooter: true },
   ],
   cta: {
     text: 'Education',

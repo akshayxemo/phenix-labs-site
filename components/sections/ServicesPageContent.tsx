@@ -1,14 +1,26 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   AlarmClock,
+  ArrowDownRight,
+  ArrowUpRight,
   BookOpen,
   Boxes,
+  Check,
   CircuitBoard,
   Code2,
   Cpu,
   GraduationCap,
+  Hammer,
+  Lightbulb,
+  Map,
   Palette,
+  PenTool,
+  Rocket,
+  ScanSearch,
 } from 'lucide-react'
 
 const categories = [
@@ -33,12 +45,21 @@ const categories = [
 ]
 
 const processSteps = [
-  ['01', 'Concept', 'Consultation', 'Initial idea, define requirement, scope and feasibility.'],
-  ['02', 'Strategy', 'Concept Development', 'Feasibility analysis and architecture planning.'],
-  ['03', 'Creation', 'Design', 'Product schematics, CAD and software architecture.'],
-  ['06', 'Launch', 'Deployment & Support', 'Final documentation, training and on-site delivery support.'],
-  ['05', 'Refine', 'Testing & Iteration', 'Rigorous testing and performance tuning.'],
-  ['04', 'Build', 'Prototype', 'Physical build and preliminary functional validation.'],
+  { number: '01', shortTitle: 'Concept', title: 'Consultation', copy: 'Initial idea, define requirement, scope and feasibility.', icon: Lightbulb, accent: '#58a7ff' },
+  { number: '02', shortTitle: 'Strategy', title: 'Concept Development', copy: 'Feasibility analysis and architecture planning.', icon: Map, accent: '#45c9e8' },
+  { number: '03', shortTitle: 'Creation', title: 'Design', copy: 'Product schematics, CAD and software architecture.', icon: PenTool, accent: '#a984ff' },
+  { number: '04', shortTitle: 'Build', title: 'Prototype', copy: 'Physical build and preliminary functional validation.', icon: Hammer, accent: '#ff9a43' },
+  { number: '05', shortTitle: 'Refine', title: 'Testing & Iteration', copy: 'Rigorous testing and performance tuning.', icon: ScanSearch, accent: '#52cbb5' },
+  { number: '06', shortTitle: 'Launch', title: 'Deployment & Support', copy: 'Final documentation, training and on-site delivery support.', icon: Rocket, accent: '#8b90ff' },
+]
+
+const roadmapOrbitPositions = [
+  'lg:left-[5%] lg:top-[3%]',
+  'lg:right-[5%] lg:top-[3%]',
+  'lg:right-0 lg:top-[38%]',
+  'lg:bottom-[3%] lg:right-[6%]',
+  'lg:bottom-[3%] lg:left-[6%]',
+  'lg:left-0 lg:top-[38%]',
 ]
 
 const engineeringServices = [
@@ -52,79 +73,292 @@ const engineeringServices = [
   { title: 'Instrumentation Design', icon: AlarmClock, color: '#67aaf9', copy: 'Custom laboratory and industrial tools engineered for reliable insights.' },
 ]
 
+const roadmapPath = 'M 425 80 A 345 345 0 1 1 424.99 80 Z'
+
 export function ServicesPageContent() {
+  const shouldReduceMotion = useReducedMotion()
+  const reveal = {
+    hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: shouldReduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] as const },
+    },
+  }
+
   return (
-    <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
-      <section className="relative min-h-[577px] bg-white px-5">
-        <div className="relative mx-auto min-h-[577px] max-w-[1010px]">
-          <div className="relative z-10 max-w-[740px] pt-[110px] md:pt-[105px]">
-            <h1 className="text-[42px] font-bold leading-[1.08] tracking-[-.03em] md:text-[64px]">
-              Engineering Solutions by<br /><span className="text-[#3c99ff]">Phenix Labs</span>
+    <div className="overflow-hidden bg-[#ecf1f5] text-[#08111f]">
+      <section className="relative min-h-[620px] overflow-hidden bg-[#eaf0f4] px-5">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.2] [background-image:linear-gradient(rgba(22,34,54,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.1)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_90%)]"
+        />
+        <div aria-hidden="true" className="absolute -right-40 top-4 size-[620px] rounded-full bg-[#64c8ef]/18 blur-[115px]" />
+        <div className="relative mx-auto grid min-h-[620px] max-w-[1236px] items-center gap-10 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-14">
+          <motion.div initial="hidden" animate="visible" variants={reveal} className="relative z-10 max-w-[760px]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#0064d7]">Engineering partnerships</p>
+            <h1 className="mt-5 text-[44px] font-bold leading-[1.02] tracking-[-0.045em] sm:text-[56px] md:text-[68px]">
+              Engineering solutions built for the{' '}
+              <span className="bg-linear-to-r from-[#0064d7] to-[#38a4cc] bg-clip-text text-transparent">real world.</span>
             </h1>
-            <p className="mt-7 max-w-[721px] text-sm leading-[1.55] text-[#4e4e4e] md:text-[20px]">
+            <p className="mt-7 max-w-[700px] text-[16px] leading-8 text-[#4b5b6c] md:text-[19px]">
               Phenix Labs partners with industries, research organizations, and academic institutions to transform ideas into reliable engineering solutions. From custom electronics and embedded systems to rapid prototyping and product development, we provide end-to-end support from concept to deployment.
             </p>
-          </div>
-          <Image src="/images/services-hero.png" alt="Engineering system blueprint" width={500} height={496} priority className="absolute -right-[85px] bottom-3 hidden h-[496px] w-[500px] object-contain lg:block" />
-        </div>
-      </section>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link href="/contact" className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_35px_rgba(0,100,215,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8]">
+                Discuss your project
+                <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link href="#development-process" className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[#a9bbc9] bg-white/45 px-7 font-semibold text-[#162236] backdrop-blur-sm transition-colors hover:border-[#0064d7] hover:text-[#0064d7]">
+                See our process
+                <ArrowDownRight aria-hidden="true" size={18} />
+              </Link>
+            </div>
+          </motion.div>
 
-      <section className="bg-[#0a101d] px-5 py-[106px] text-white">
-        <div className="mx-auto grid max-w-[1010px] gap-[31px] md:grid-cols-2">
-          {categories.map(({ number, title, icon: Icon, description, accent, benefits, tags }) => (
-            <article key={title} className="min-h-[546px] rounded-[20px] border border-[#1a2537] bg-[#121b2b] p-10">
-              <div className="flex items-start justify-between"><span className="text-[40px] font-black text-[#57a5ff]/30">{number}</span><Icon size={34} className="text-[#3c99ff]" /></div>
-              <h2 className="mt-1 text-[28px] font-bold">{title}</h2>
-              <p className="mt-3 min-h-[54px] text-[13px] leading-relaxed text-[#baccdb]">{description}</p>
-              <h3 className="mt-4 text-[16px] font-medium" style={{ color: accent }}>Why Phenix Labs ?</h3>
-              <div className="my-4 h-px bg-[#283750]" />
-              <ul className="space-y-[11px]">
-                {benefits.map(benefit => <li key={benefit} className="flex gap-3 text-[13px] text-[#baccdb]"><span className="text-[#3c99ff]">✓</span>{benefit}</li>)}
-              </ul>
-              <div className="mt-8 flex flex-wrap gap-2">
-                {tags.map(tag => <span key={tag} className="border border-[#283750] bg-[#162236] px-4 py-2 text-[12px]">{tag}</span>)}
+          <motion.div
+            initial={shouldReduceMotion ? false : { scale: 0.94, rotate: 2 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.9, delay: shouldReduceMotion ? 0 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[500px] lg:mr-[-30px]"
+          >
+            <div className="absolute -inset-4 rotate-3 rounded-[32px] border border-[#b8cad7]/70 bg-white/30" />
+            <div className="relative overflow-hidden rounded-[28px] border border-white/80 bg-white/72 p-5 shadow-[0_28px_80px_rgba(22,34,54,0.13)] backdrop-blur-md md:p-8">
+              <div className="mb-5 flex items-center justify-between border-b border-[#d6e0e7] pb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#718192]">
+                <span>System architecture</span>
+                <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-[#52cbb5]" />Ready to build</span>
               </div>
-            </article>
-          ))}
+              <Image src="/images/services-hero.png" alt="Engineering system blueprint" width={500} height={496} priority className="h-auto w-full object-contain mix-blend-multiply" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="px-5 py-[100px]">
-        <h2 className="text-center text-[34px] font-bold tracking-[-.03em] md:text-[48px]">Our Development Process</h2>
-        <div className="relative mx-auto mt-16 grid max-w-[1061px] gap-y-[58px] md:grid-cols-3 md:gap-x-0">
-          <div className="absolute left-0 right-0 top-[15px] hidden h-1 bg-[#82c4ff] md:block" />
-          <div className="absolute left-0 right-0 top-[198px] hidden h-1 bg-[#82c4ff] md:block" />
-          {processSteps.map(([number, shortTitle, title, copy]) => (
-            <article key={number} className="relative z-10 min-h-[125px] pr-8">
-              <span className="block size-[30px] border-[7px] border-[#ecf1f5] bg-[#3c99ff]" />
-              <p className="mt-3 text-[15px] font-bold text-[#0064d7]">{number} / {shortTitle}</p>
-              <h3 className="text-[16px] font-bold">{title}</h3>
-              <p className="mt-1 max-w-[260px] text-[13px] leading-snug text-[#4e4e4e]">{copy}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <section className="relative bg-[#0a101d] px-5 py-20 text-white md:py-[108px]">
+        <div aria-hidden="true" className="absolute left-[-180px] top-16 size-[420px] rounded-full bg-[#0064d7]/12 blur-[110px]" />
+        <div className="relative mx-auto max-w-[1236px]">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#58a7ff]">Where we help</p>
+              <h2 className="mt-4 text-[36px] font-bold leading-[1.05] tracking-[-0.035em] md:text-[52px]">Built for research and industry</h2>
+            </div>
+            <p className="max-w-[650px] text-[16px] leading-8 text-[#9facbb] md:text-[18px]">The same end-to-end engineering discipline, adapted to the different realities of laboratories, institutions, and production environments.</p>
+          </motion.div>
 
-      <section className="px-5 pb-[100px] pt-5">
-        <p className="text-center text-[14px] font-medium text-[#3c99ff]">Technical Care</p>
-        <h2 className="mt-1 text-center text-[34px] font-bold tracking-[-.03em] md:text-[48px]">Engineering Services</h2>
-        <div className="mx-auto mt-12 grid max-w-[1236px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {engineeringServices.map(({ title, icon: Icon, color, copy }) => (
-            <article key={title} className="min-h-[190px] rounded-[20px] border border-[#baccdb] bg-white p-6">
-              <span className="flex size-10 items-center justify-center rounded-lg" style={{ color, backgroundColor: `${color}20` }}><Icon size={23} /></span>
-              <h3 className="mt-5 text-[18px] font-bold">{title}</h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-[#4e4e4e]">{copy}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mx-auto mt-20 max-w-[1010px] rounded-[20px] bg-white px-6 py-12 text-center">
-          <p className="text-[14px] text-[#3c99ff]">Let&apos;s Build It Together</p>
-          <h2 className="mt-3 text-[28px] font-bold md:text-[36px]">Have an idea or engineering<br />challenges ?</h2>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/contact" className="inline-flex h-[48px] items-center justify-center bg-[#0064d7] px-8 text-white">Discuss Your Project <span className="ml-4">→</span></Link>
-            <Link href="/contact" className="inline-flex h-[48px] items-center justify-center border border-[#3c99ff] px-8 text-[#3c99ff]">Contact Us</Link>
+          <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:gap-6">
+            {categories.map(({ number, title, icon: Icon, description, accent, benefits, tags }, index) => (
+              <motion.article
+                key={title}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={reveal}
+                transition={{ delay: shouldReduceMotion ? 0 : index * 0.08 }}
+                className={`group relative overflow-hidden rounded-[20px] border border-white/[0.09] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-white/[0.16] md:p-10 ${index === 0 ? 'bg-[#111d2d]' : 'bg-linear-to-br from-[#111d2d] to-[#17263b]'}`}
+              >
+                <div className="absolute -right-20 -top-24 size-64 rounded-full opacity-[0.11] blur-3xl transition-transform duration-700 group-hover:scale-125" style={{ backgroundColor: accent }} />
+                <div className="relative z-10 flex items-start justify-between gap-5">
+                  <span className="text-[48px] font-black leading-none text-white/[0.07]">{number}</span>
+                  <span className="flex size-14 items-center justify-center rounded-full border" style={{ color: accent, borderColor: `${accent}48`, backgroundColor: `${accent}14` }}><Icon aria-hidden="true" size={27} strokeWidth={1.8} /></span>
+                </div>
+                <div className="relative z-10 mt-7">
+                  <h3 className="text-[28px] font-bold tracking-[-0.025em] md:text-[34px]">{title}</h3>
+                  <p className="mt-3 max-w-[520px] text-[15px] leading-7 text-[#aeb9c7] md:text-[16px]">{description}</p>
+                  <p className="mt-8 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: accent }}>Why Phenix Labs</p>
+                  <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {benefits.map((benefit) => <li key={benefit} className="flex gap-2.5 text-[13px] leading-5 text-[#c0cad5]"><span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full" style={{ color: accent, backgroundColor: `${accent}18` }}><Check size={11} strokeWidth={2.5} /></span>{benefit}</li>)}
+                  </ul>
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {tags.map((tag) => <span key={tag} className="rounded-full border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold text-[#c5cfda]">{tag}</span>)}
+                  </div>
+                </div>
+              </motion.article>
+            ))}
           </div>
+        </div>
+      </section>
+
+      <section id="development-process" className="relative scroll-mt-24 overflow-hidden bg-[#fdfdfd] px-5 py-20 md:py-[108px]">
+        <div aria-hidden="true" className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(22,34,54,.55)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.55)_1px,transparent_1px)] [background-size:38px_38px] [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)]" />
+        <div aria-hidden="true" className="absolute -left-40 top-1/3 size-[440px] rounded-full bg-[#0064d7]/8 blur-[120px]" />
+        <div aria-hidden="true" className="absolute -right-44 bottom-20 size-[420px] rounded-full bg-[#a984ff]/7 blur-[120px]" />
+        <div className="relative z-10 mx-auto max-w-[1236px]">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-[720px]">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#0064d7]">From idea to deployment</p>
+              <h2 className="mt-4 text-[36px] font-bold leading-[1.05] tracking-[-0.035em] md:text-[52px]">Our Development Process</h2>
+              <p className="mt-5 max-w-[650px] text-[16px] leading-8 text-[#536273] md:text-[18px]">A clear engineering path with room to learn, test, and refine before a solution reaches the real world.</p>
+            </div>
+            <div className="flex w-fit items-center gap-3 rounded-full border border-[#cbd9e3] bg-white px-4 py-2.5 text-sm font-semibold text-[#536273] shadow-[0_10px_30px_rgba(22,34,54,0.06)]">
+              <span className="relative flex size-2.5">
+                {!shouldReduceMotion && <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#52cbb5] opacity-60" />}
+                <span className="relative inline-flex size-2.5 rounded-full bg-[#52cbb5]" />
+              </span>
+              6 connected stages
+            </div>
+          </motion.div>
+
+          <div className="relative mt-12 py-6 md:px-5 md:py-10 lg:px-10">
+            {/* <div className="relative z-10 mb-8 flex items-center justify-between border-b border-[#cad7e0] pb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#6a7a8b] md:text-xs">
+              <span>Phenix development route</span>
+              <span className="hidden items-center gap-2 sm:flex"><span className="size-1.5 rounded-full bg-[#45c9e8]" />Concept to deployment</span>
+            </div> */}
+
+            <div className="relative lg:h-[850px]">
+              <svg aria-hidden="true" viewBox="0 0 850 850" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 hidden h-full w-full lg:block">
+                <defs>
+                  <filter id="roadGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+                </defs>
+                <path d={roadmapPath} fill="none" stroke="rgba(72,94,114,.32)" strokeWidth="1.5" strokeDasharray="12 18" strokeLinecap="round" strokeLinejoin="round" />
+                <motion.path
+                  d={roadmapPath}
+                  pathLength={1}
+                  fill="none"
+                  stroke="#55f4eb"
+                  strokeWidth="1.5"
+                  strokeDasharray="0.02 0.18"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter="url(#roadGlow)"
+                  opacity="0.85"
+                  initial={{ strokeDashoffset: 0 }}
+                  animate={shouldReduceMotion ? undefined : { strokeDashoffset: [0, -1] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                />
+              </svg>
+
+              <motion.div
+                aria-hidden="true"
+                initial={{ scaleY: shouldReduceMotion ? 1 : 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 1.7, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute bottom-4 left-[9px] top-4 w-px origin-top bg-[repeating-linear-gradient(to_bottom,rgba(72,94,114,.38)_0_8px,transparent_8px_16px)] lg:hidden"
+              />
+              {[18, 48, 78].map((position, index) => (
+                <motion.div
+                  key={position}
+                  aria-hidden="true"
+                  className="absolute left-[8px] h-10 w-[3px] rounded-full bg-[#55aff4] blur-[1px] lg:hidden"
+                  style={{ top: `${position}%` }}
+                  animate={shouldReduceMotion ? { opacity: 0.35 } : { opacity: [0.12, 0.62, 0.12] }}
+                  transition={{ duration: 3.6, delay: index * 0.8, repeat: shouldReduceMotion ? 0 : Infinity, ease: 'easeInOut' }}
+                />
+              ))}
+
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute left-1/2 top-1/2 z-[5] hidden w-[310px] -translate-x-1/2 -translate-y-1/2 text-center lg:block"
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 h-[220px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#008db5]/10 blur-[48px]" />
+                <div className="mx-auto flex size-16 items-center justify-center rounded-full border border-[#45c9e8]/40 bg-white/80 text-[#008db5] shadow-[0_16px_40px_rgba(22,34,54,0.1)]">
+                  <CircuitBoard aria-hidden="true" size={29} strokeWidth={1.6} />
+                </div>
+                <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.24em] text-[#58a7ff]">One connected journey</p>
+                <h3 className="mt-3 text-[34px] font-bold leading-[1.05] tracking-[-0.04em] text-[#111827]">
+                  From concept to <span className="text-[#009bc4]">reality.</span>
+                </h3>
+                <p className="mx-auto mt-4 max-w-[270px] text-[14px] leading-6 text-[#607183]">Every stage informs the next, creating one clear route from idea to deployment.</p>
+              </motion.div>
+
+              <div className="relative flex flex-col gap-5 pl-9 lg:block lg:h-[850px] lg:pl-0">
+                {processSteps.map(({ number, shortTitle, title, copy, icon: Icon, accent }, index) => {
+                  return (
+                    <motion.article
+                      key={number}
+                      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24, scale: 0.98 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true, amount: 0.35 }}
+                      transition={{ duration: shouldReduceMotion ? 0 : 0.55, delay: shouldReduceMotion ? 0 : index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                      className={`group relative z-10 min-h-[180px] overflow-hidden rounded-[20px] border border-[#c7d5df] bg-white/92 p-5 text-[#111827] shadow-[0_18px_50px_rgba(22,34,54,0.1)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[#9fc4df] hover:bg-white hover:shadow-[0_22px_60px_rgba(22,34,54,0.14)] md:p-6 lg:absolute lg:h-[190px] lg:w-[34%] ${roadmapOrbitPositions[index]}`}
+                    >
+                      <div className="absolute -right-14 -top-16 size-40 rounded-full opacity-[0.12] blur-3xl transition-transform duration-500 group-hover:scale-125" style={{ backgroundColor: accent }} />
+                      <span className="absolute -left-[36px] top-7 size-4 rounded-full border-[4px] border-[#edf3f6] shadow-[0_0_0_3px_rgba(69,201,232,0.25)] lg:hidden" style={{ backgroundColor: accent }} />
+
+                      <div className="relative z-10 flex items-start justify-between gap-5">
+                        <span className="flex size-12 items-center justify-center rounded-[15px] border" style={{ color: accent, borderColor: `${accent}45`, backgroundColor: `${accent}16` }}><Icon aria-hidden="true" size={23} strokeWidth={1.8} /></span>
+                        <span className="text-[34px] font-black leading-none text-[#162236]/[0.07]">{number}</span>
+                      </div>
+                      <div className="relative z-10 mt-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: accent }}>{number} / {shortTitle}</p>
+                        <h3 className="mt-2 text-[20px] font-bold tracking-[-0.02em] md:text-[23px]">{title}</h3>
+                        <p className="mt-2 max-w-[350px] text-[13px] leading-6 text-[#5e6d7d] md:text-[14px]">{copy}</p>
+                      </div>
+                    </motion.article>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="engineering-services" className="scroll-mt-24 bg-[#dfe8ef] px-5 py-20 md:py-[108px]">
+        <div className="mx-auto max-w-[1236px]">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-[720px]">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#0064d7]">Technical capabilities</p>
+              <h2 className="mt-4 text-[36px] font-bold leading-[1.05] tracking-[-0.035em] md:text-[52px]">Engineering Services</h2>
+              <p className="mt-5 max-w-[650px] text-[16px] leading-8 text-[#536273] md:text-[18px]">Focused expertise across electronics, embedded intelligence, product design, and system delivery.</p>
+            </div>
+            <Link href="/contact" className="group inline-flex w-fit items-center gap-2 border-b border-[#8199ab] pb-2 text-sm font-semibold text-[#162236] transition-colors hover:border-[#0064d7] hover:text-[#0064d7]">Start a conversation <ArrowUpRight aria-hidden="true" size={17} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+          </motion.div>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
+            {engineeringServices.map(({ title, icon: Icon, color, copy }, index) => {
+              const isFeatured = index < 2
+              const isDark = index === 0 || index === 3 || index === 7
+              return (
+                <motion.article
+                  key={title}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={reveal}
+                  className={`group relative overflow-hidden rounded-[20px] border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_65px_rgba(22,34,54,0.14)] md:p-7 ${isFeatured ? 'min-h-[290px] lg:col-span-6' : 'min-h-[260px] lg:col-span-4'} ${isDark ? 'border-[#263b54] bg-[#111d2d] text-white' : 'border-[#c5d3de] bg-white text-[#111827]'}`}
+                >
+                  <div className="absolute -right-16 -top-20 size-56 rounded-full opacity-[0.14] blur-3xl transition-transform duration-700 group-hover:scale-125" style={{ backgroundColor: color }} />
+                  <div
+                    aria-hidden="true"
+                    className={`absolute inset-0 opacity-[0.05] ${isDark ? 'bg-[linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)]' : 'bg-[linear-gradient(rgba(22,34,54,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.8)_1px,transparent_1px)]'} bg-size-[34px_34px]`}
+                  />
+                  <div className="relative z-10 flex h-full flex-col">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-center gap-3.5">
+                        <span className="flex size-13 items-center justify-center rounded-[16px] border" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}18` }}><Icon aria-hidden="true" size={26} strokeWidth={1.8} /></span>
+                        <div>
+                          <p className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? 'text-[#91a1b5]' : 'text-[#708093]'}`}>Engineering service</p>
+                          <p className="mt-1 text-xs font-bold tabular-nums" style={{ color }}>/ {String(index + 1).padStart(2, '0')}</p>
+                        </div>
+                      </div>
+                      <span className="mt-2 h-1 w-8 rounded-full transition-all duration-300 group-hover:w-12" style={{ backgroundColor: color }} />
+                    </div>
+                    <div className="mt-auto pt-8">
+                      <h3 className={`font-bold leading-tight tracking-[-0.025em] ${isFeatured ? 'text-[26px] md:text-[31px]' : 'text-[21px] md:text-[24px]'}`}>{title}</h3>
+                      <p className={`mt-3 max-w-[500px] text-[14px] leading-7 md:text-[15px] ${isDark ? 'text-[#aeb9c7]' : 'text-[#586779]'}`}>{copy}</p>
+                    </div>
+                  </div>
+                </motion.article>
+              )
+            })}
+          </div>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-12 text-center text-white md:px-12 md:py-16">
+            <div aria-hidden="true" className="absolute -left-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#0064d7]/22 blur-[80px]" />
+            <div aria-hidden="true" className="absolute -right-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#a984ff]/15 blur-[80px]" />
+            <div className="relative z-10 mx-auto max-w-[720px]">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#58a7ff]">Let&apos;s build it together</p>
+              <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.03em] md:text-[44px]">Have an idea or an engineering challenge?</h2>
+              <p className="mx-auto mt-4 max-w-[560px] text-[15px] leading-7 text-[#aeb9c7] md:text-[17px]">Tell us what you are trying to solve, and we will help identify the clearest path from concept to working system.</p>
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                <Link href="/contact" className="group inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#0055b8]">Discuss your project <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+                <Link href="/contact" className="inline-flex h-13 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] px-7 font-semibold text-white transition-colors hover:border-[#58a7ff] hover:text-[#58a7ff]">Contact us</Link>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

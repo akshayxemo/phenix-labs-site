@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowUpRight, LoaderCircle } from 'lucide-react'
 import { contactFormSchema, type ContactFormData } from '@/lib/schemas/contact'
 import { submitContactForm } from '@/app/actions/contact'
 import { Button } from '@/components/ui/button'
@@ -16,6 +17,8 @@ export interface ContactFormProps {
   showPhone?: boolean
   showCompany?: boolean
   showSubscribe?: boolean
+  idPrefix?: string
+  variant?: 'default' | 'footer'
 }
 
 interface FormState {
@@ -38,7 +41,10 @@ export function ContactForm({
   showPhone = false,
   showCompany = false,
   showSubscribe = true,
+  idPrefix = 'contact',
+  variant = 'default',
 }: ContactFormProps) {
+  const isFooter = variant === 'footer'
   const [formState, setFormState] = useState<FormState>({
     isSubmitting: false,
     isSuccess: false,
@@ -115,17 +121,31 @@ export function ContactForm({
     [reset, onSuccess]
   )
 
+  const labelClassName = isFooter
+    ? 'mb-2 block text-sm font-semibold text-[#c8d2de]'
+    : 'mb-1 block text-sm font-medium text-gray-700'
+  const fieldClassName = isFooter
+    ? 'w-full rounded-[14px] border border-white/[0.085] bg-[#081422]/80 px-4 py-3.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] outline-none transition placeholder:text-[#627388] hover:border-white/[0.15] focus:border-[#58a7ff]/70 focus:ring-4 focus:ring-[#0064d7]/10 disabled:cursor-not-allowed disabled:opacity-60'
+    : 'w-full rounded-lg border border-gray-300 px-4 py-2 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500'
+  const errorClassName = isFooter
+    ? 'mt-1.5 text-sm text-[#ff9d9d]'
+    : 'mt-1 text-sm text-red-500'
+
   return (
     <div className={className}>
       {/* Success Message */}
       {formState.isSuccess && (
         <div
-          className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6"
+          className={
+            isFooter
+              ? 'mb-6 rounded-[14px] border border-[#2c765c] bg-[#123b30] p-4'
+              : 'mb-6 rounded-lg border border-green-200 bg-green-50 p-4'
+          }
           role="alert"
           aria-live="polite"
         >
-          <p className="text-green-800 font-medium">Thank you!</p>
-          <p className="text-green-700 text-sm">
+          <p className={isFooter ? 'font-medium text-[#8de3be]' : 'font-medium text-green-800'}>Thank you!</p>
+          <p className={isFooter ? 'text-sm text-[#b8d9cc]' : 'text-sm text-green-700'}>
             We have received your message and will get back to you as soon as possible.
           </p>
         </div>
@@ -134,32 +154,40 @@ export function ContactForm({
       {/* Error Message */}
       {formState.isError && (
         <div
-          className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+          className={
+            isFooter
+              ? 'mb-6 rounded-[14px] border border-[#7d4148] bg-[#3b2028] p-4'
+              : 'mb-6 rounded-lg border border-red-200 bg-red-50 p-4'
+          }
           role="alert"
           aria-live="polite"
         >
-          <p className="text-red-800 font-medium">Error</p>
-          <p className="text-red-700 text-sm">{formState.errorMessage}</p>
+          <p className={isFooter ? 'font-medium text-[#ffaaaa]' : 'font-medium text-red-800'}>Error</p>
+          <p className={isFooter ? 'text-sm text-[#e3b9bd]' : 'text-sm text-red-700'}>{formState.errorMessage}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={isFooter ? 'grid gap-5 sm:grid-cols-2' : 'space-y-4'}
+        noValidate
+      >
         {/* Name Field */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor={`${idPrefix}-name`} className={labelClassName}>
             Name <span className="text-red-500" aria-label="required">*</span>
           </label>
           <input
-            id="name"
+            id={`${idPrefix}-name`}
             type="text"
             placeholder="Your name"
             {...register('name')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-            aria-describedby={errors.name ? 'name-error' : undefined}
+            className={fieldClassName}
+            aria-describedby={errors.name ? `${idPrefix}-name-error` : undefined}
             disabled={isSubmitting || formState.isSubmitting}
           />
           {errors.name && (
-            <p id="name-error" className="text-red-500 text-sm mt-1" role="alert">
+            <p id={`${idPrefix}-name-error`} className={errorClassName} role="alert">
               {errors.name.message}
             </p>
           )}
@@ -167,20 +195,20 @@ export function ContactForm({
 
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor={`${idPrefix}-email`} className={labelClassName}>
             Email <span className="text-red-500" aria-label="required">*</span>
           </label>
           <input
-            id="email"
+            id={`${idPrefix}-email`}
             type="email"
             placeholder="your.email@example.com"
             {...register('email')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-            aria-describedby={errors.email ? 'email-error' : undefined}
+            className={fieldClassName}
+            aria-describedby={errors.email ? `${idPrefix}-email-error` : undefined}
             disabled={isSubmitting || formState.isSubmitting}
           />
           {errors.email && (
-            <p id="email-error" className="text-red-500 text-sm mt-1" role="alert">
+            <p id={`${idPrefix}-email-error`} className={errorClassName} role="alert">
               {errors.email.message}
             </p>
           )}
@@ -189,20 +217,20 @@ export function ContactForm({
         {/* Phone Field (Optional) */}
         {showPhone && (
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor={`${idPrefix}-phone`} className={labelClassName}>
               Phone
             </label>
             <input
-              id="phone"
+              id={`${idPrefix}-phone`}
               type="tel"
               placeholder="(123) 456-7890"
               {...register('phone')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              aria-describedby={errors.phone ? 'phone-error' : undefined}
+              className={fieldClassName}
+              aria-describedby={errors.phone ? `${idPrefix}-phone-error` : undefined}
               disabled={isSubmitting || formState.isSubmitting}
             />
             {errors.phone && (
-              <p id="phone-error" className="text-red-500 text-sm mt-1" role="alert">
+              <p id={`${idPrefix}-phone-error`} className={errorClassName} role="alert">
                 {errors.phone.message}
               </p>
             )}
@@ -212,20 +240,20 @@ export function ContactForm({
         {/* Company Field (Optional) */}
         {showCompany && (
           <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor={`${idPrefix}-company`} className={labelClassName}>
               Company
             </label>
             <input
-              id="company"
+              id={`${idPrefix}-company`}
               type="text"
               placeholder="Your company name"
               {...register('company')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              aria-describedby={errors.company ? 'company-error' : undefined}
+              className={fieldClassName}
+              aria-describedby={errors.company ? `${idPrefix}-company-error` : undefined}
               disabled={isSubmitting || formState.isSubmitting}
             />
             {errors.company && (
-              <p id="company-error" className="text-red-500 text-sm mt-1" role="alert">
+              <p id={`${idPrefix}-company-error`} className={errorClassName} role="alert">
                 {errors.company.message}
               </p>
             )}
@@ -233,42 +261,42 @@ export function ContactForm({
         )}
 
         {/* Subject Field */}
-        <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+        <div className={isFooter ? 'sm:col-span-2' : undefined}>
+          <label htmlFor={`${idPrefix}-subject`} className={labelClassName}>
             Subject <span className="text-red-500" aria-label="required">*</span>
           </label>
           <input
-            id="subject"
+            id={`${idPrefix}-subject`}
             type="text"
             placeholder="What is this about?"
             {...register('subject')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-            aria-describedby={errors.subject ? 'subject-error' : undefined}
+            className={fieldClassName}
+            aria-describedby={errors.subject ? `${idPrefix}-subject-error` : undefined}
             disabled={isSubmitting || formState.isSubmitting}
           />
           {errors.subject && (
-            <p id="subject-error" className="text-red-500 text-sm mt-1" role="alert">
+            <p id={`${idPrefix}-subject-error`} className={errorClassName} role="alert">
               {errors.subject.message}
             </p>
           )}
         </div>
 
         {/* Message Field */}
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+        <div className={isFooter ? 'sm:col-span-2' : undefined}>
+          <label htmlFor={`${idPrefix}-message`} className={labelClassName}>
             Message <span className="text-red-500" aria-label="required">*</span>
           </label>
           <textarea
-            id="message"
+            id={`${idPrefix}-message`}
             placeholder="Tell us more about your project..."
             rows={5}
             {...register('message')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
-            aria-describedby={errors.message ? 'message-error' : undefined}
+            className={`${fieldClassName} resize-none`}
+            aria-describedby={errors.message ? `${idPrefix}-message-error` : undefined}
             disabled={isSubmitting || formState.isSubmitting}
           />
           {errors.message && (
-            <p id="message-error" className="text-red-500 text-sm mt-1" role="alert">
+            <p id={`${idPrefix}-message-error`} className={errorClassName} role="alert">
               {errors.message.message}
             </p>
           )}
@@ -276,15 +304,15 @@ export function ContactForm({
 
         {/* Subscribe Checkbox (Optional) */}
         {showSubscribe && (
-          <div className="flex items-center">
+          <div className={`flex items-center ${isFooter ? 'sm:col-span-2' : ''}`}>
             <input
-              id="subscribe"
+              id={`${idPrefix}-subscribe`}
               type="checkbox"
               {...register('subscribe')}
               className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               disabled={isSubmitting || formState.isSubmitting}
             />
-            <label htmlFor="subscribe" className="ml-2 text-sm text-gray-700">
+            <label htmlFor={`${idPrefix}-subscribe`} className={`ml-2 text-sm ${isFooter ? 'text-[#a8b5c4]' : 'text-gray-700'}`}>
               Subscribe to our newsletter
             </label>
           </div>
@@ -294,10 +322,24 @@ export function ContactForm({
         <Button
           type="submit"
           disabled={isSubmitting || formState.isSubmitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className={
+            isFooter
+              ? 'h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.24)] transition-all hover:-translate-y-0.5 hover:bg-[#1475e8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.32)] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2'
+              : 'w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50'
+          }
           aria-busy={isSubmitting || formState.isSubmitting}
         >
-          {isSubmitting || formState.isSubmitting ? 'Sending...' : submitButtonText}
+          {isSubmitting || formState.isSubmitting ? (
+            <>
+              <LoaderCircle aria-hidden="true" className="animate-spin" size={18} />
+              Sending message
+            </>
+          ) : (
+            <>
+              {submitButtonText}
+              <ArrowUpRight aria-hidden="true" size={18} />
+            </>
+          )}
         </Button>
       </form>
     </div>

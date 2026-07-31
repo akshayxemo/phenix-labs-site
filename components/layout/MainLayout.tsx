@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import type { NavbarData, FooterData } from '@/types'
 import { Navbar } from './Navbar'
-import { ContactFooterSection } from './ContactFooterSection'
 import { SiteFooter } from './SiteFooter'
 
 interface MainLayoutProps {
@@ -21,8 +20,11 @@ export function MainLayout({
       <main className="flex-1 w-full">
         {children}
       </main>
-      <ContactFooterSection />
-      <SiteFooter data={footerData} links={navbarData.links} />
+      <SiteFooter
+        data={footerData}
+        links={navbarData.links}
+        logo={navbarData.logo}
+      />
     </div>
   )
 }
