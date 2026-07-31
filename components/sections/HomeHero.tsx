@@ -89,9 +89,9 @@ export function HomeHero() {
           transition={{ duration, delay: shouldReduceMotion ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 max-w-[900px] text-[46px] font-bold leading-[0.96] tracking-[-0.05em] text-[#08111f] sm:text-[58px] md:mt-7 md:text-[72px] lg:text-[80px] xl:max-w-[820px]"
         >
-          Engineering ideas into{' '}
+          Join With Our Crazy{' '}
           <span className="bg-linear-to-r from-[#0064d7] to-[#39a8d2] bg-clip-text text-transparent">
-            real-world impact.
+            Invensions.
           </span>
         </motion.h1>
 
@@ -101,8 +101,7 @@ export function HomeHero() {
           transition={{ duration, delay: shouldReduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 max-w-[660px] text-[16px] leading-7 text-[#465566] md:mt-7 md:text-[19px] md:leading-8"
         >
-          We combine thoughtful research, hardware, and software to turn
-          ambitious concepts into dependable products people can use.
+          Sometimes a technology is so awe-inspiring that the imagination runs away with it - often far, far away from reality.
         </motion.p>
 
         <motion.div

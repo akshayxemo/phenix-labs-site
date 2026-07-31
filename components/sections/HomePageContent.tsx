@@ -2,9 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CountUp } from '@/components/animations/CountUp'
 import { HomeHero } from '@/components/sections/HomeHero'
+import { ClientLogoMarquee } from '@/components/sections/ClientLogoMarquee'
 import { HomeInventionsShowcase } from '@/components/sections/HomeInventionsShowcase'
 import { HomeTestimonials } from '@/components/sections/HomeTestimonials'
 import type { Testimonial } from '@/lib/data/testimonials'
+import type { ClientLogo } from '@/lib/data/clients'
 import {
   ArrowUpRight,
   BookOpen,
@@ -117,49 +119,72 @@ function SectionIntro({
 
 interface HomePageContentProps {
   testimonials: Testimonial[]
+  clients: ClientLogo[]
 }
 
-export function HomePageContent({ testimonials }: HomePageContentProps) {
+export function HomePageContent({ testimonials, clients }: HomePageContentProps) {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
       <HomeHero />
 
-      <section className="px-4 pb-4 pt-6 md:px-6.75">
-        <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-[#111d2d] p-3 md:p-4">
+      <ClientLogoMarquee clients={clients} />
+
+      <section className="relative z-10 px-4 pb-14 pt-8 md:px-6.75 md:pb-16 md:pt-11" aria-label="Company highlights">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-36 bg-linear-to-b from-transparent to-[#dce8f2]/70"
+        />
+        <div className="relative mx-auto max-w-[1240px]">
           <div
             aria-hidden="true"
-            className="absolute -left-20 top-1/2 size-64 -translate-y-1/2 rounded-full bg-[#0064d7]/15 blur-3xl"
+            className="absolute left-1/2 top-1/2 size-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#58a7ff]/8 blur-3xl"
           />
-          <div className="relative grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-3">
-          {[
-            { value: 150, suffix: ' +', label: 'Designs Completed', color: '#ffa143' },
-            { value: 50, suffix: ' +', label: 'Happy Clients', color: '#a984ff' },
-            { value: 12, suffix: ' +', label: 'Years of Experience', color: '#4fc6f2' },
-            { value: 2, suffix: ' +', label: 'Years in Business', color: '#8b90ff' },
-          ].map(({ value, suffix, label, color }, index) => (
-            <div
-              key={label}
-              className="group relative flex min-h-[126px] flex-col justify-between overflow-hidden rounded-[16px] border border-white/[0.08] bg-white/[0.035] px-4 py-5 transition-colors duration-300 hover:bg-white/[0.065] md:min-h-[142px] md:px-6 md:py-6"
-            >
-              <span
-                aria-hidden="true"
-                className="h-1 w-9 rounded-full transition-all duration-300 group-hover:w-14"
-                style={{ backgroundColor: color }}
-              />
-              <strong className="mt-5 text-[34px] leading-none tabular-nums md:text-[44px]" style={{ color }}>
-                <CountUp value={value} suffix={suffix} delay={index * 0.12} />
-              </strong>
-              <span className="mt-2 text-[12px] font-medium leading-5 text-[#c5cfda] sm:text-sm md:text-[15px]">
-                {label}
-              </span>
-            </div>
-          ))}
+          <div className="relative grid grid-cols-2 gap-y-10 md:grid-cols-4 md:gap-y-0">
+            {[
+              { value: 150, suffix: ' +', label: 'Designs Completed', color: '#d97822' },
+              { value: 50, suffix: ' +', label: 'Happy Clients', color: '#7957cf' },
+              { value: 12, suffix: ' +', label: 'Years of Experience', color: '#168ab3' },
+              { value: 2, suffix: ' +', label: 'Years in Business', color: '#5961cc' },
+            ].map(({ value, suffix, label, color }, index) => (
+              <div
+                key={label}
+                className={`relative flex min-h-[116px] flex-col items-center justify-center px-3 text-center md:min-h-[138px] md:px-6 ${
+                  index < 3
+                    ? 'md:after:absolute md:after:right-0 md:after:top-1/2 md:after:block md:after:h-24 md:after:w-px md:after:-translate-y-1/2 md:after:bg-linear-to-b md:after:from-transparent md:after:via-[#70879b] md:after:to-transparent'
+                    : ''
+                } ${
+                  index % 2 === 0
+                    ? 'after:absolute after:right-0 after:top-1/2 after:h-20 after:w-px after:-translate-y-1/2 after:bg-linear-to-b after:from-transparent after:via-[#70879b]/90 after:to-transparent'
+                    : ''
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className="mb-5 h-[3px] w-10 rounded-full"
+                  style={{ backgroundColor: color }}
+                />
+                <strong className="text-[40px] font-bold leading-none tracking-[-0.04em] text-[#162236] tabular-nums md:text-[52px]">
+                  <CountUp value={value} suffix={suffix} delay={index * 0.12} />
+                </strong>
+                <span className="mt-3 max-w-[150px] text-[12px] font-semibold leading-5 text-[#596b7e] sm:text-sm md:text-[15px]">
+                  {label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="px-4 py-2 md:px-5.5">
-        <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-linear-to-tr from-[#07101c] from-70% to-[#173E6E] px-6 py-14 text-white md:px-[78px] md:py-[72px]">
+      <section className="relative z-20 -mt-10 px-4 pb-4 pt-0 md:-mt-12 md:px-5.5">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-28 w-3/5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2187e8]/16 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-linear-to-tr from-[#07101c] from-70% to-[#173E6E] px-6 py-14 text-white shadow-[0_28px_75px_rgba(25,54,86,0.16)] md:px-[78px] md:py-[72px]">
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-0 h-px w-3/5 -translate-x-1/2 bg-linear-to-r from-transparent via-[#58a7ff]/85 to-transparent"
+          />
           <Image src="/images/home/what-we-do.jpg" alt="" fill className="object-cover opacity-[.08]" sizes="100vw" />
           <div className="relative z-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
             <div>
