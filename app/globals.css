@@ -263,6 +263,16 @@
     animation: scale 0.5s ease-out;
   }
 
+  .client-logo-track {
+    animation: clientLogoMarquee 32s linear infinite;
+    will-change: transform;
+  }
+
+  .client-logo-marquee:hover .client-logo-track,
+  .client-logo-marquee:focus-within .client-logo-track {
+    animation-play-state: paused;
+  }
+
   @keyframes fadeUp {
     from {
       opacity: 0;
@@ -313,6 +323,22 @@
     to {
       opacity: 1;
       transform: scale(1);
+    }
+  }
+
+  @keyframes clientLogoMarquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .client-logo-track {
+      animation: none;
+      transform: translateX(0);
     }
   }
 }
