@@ -56,6 +56,10 @@ export function HomeInventionsShowcase() {
       <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-[#07101c] px-5 py-14 text-white md:px-12 md:py-18 lg:px-[72px]">
         <div
           aria-hidden="true"
+          className="absolute inset-0 opacity-[0.22] [background-image:radial-gradient(rgba(113,180,255,.75)_1.2px,transparent_1.4px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,black_78%,transparent)]"
+        />
+        <div
+          aria-hidden="true"
           className="absolute -left-40 top-16 size-[420px] rounded-full bg-[#0064d7]/15 blur-[110px]"
         />
         <div

@@ -61,6 +61,20 @@ export function ContactFooterSection() {
       className="relative overflow-hidden px-5 py-20 text-white md:py-28"
       aria-labelledby="contact-footer-title"
     >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 1440 760"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-65 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]"
+      >
+        <g fill="none" stroke="#58a7ff" strokeWidth="1" vectorEffect="non-scaling-stroke">
+          <path d="M-120 145 C90 40 240 245 450 140 S810 38 1020 145 S1370 245 1560 130" opacity="0.28" />
+          <path d="M-120 190 C90 85 240 290 450 185 S810 83 1020 190 S1370 290 1560 175" opacity="0.2" />
+          <path d="M-120 235 C90 130 240 335 450 230 S810 128 1020 235 S1370 335 1560 220" opacity="0.14" />
+          <path d="M-120 555 C80 450 255 650 465 545 S820 445 1030 550 S1360 655 1560 540" opacity="0.18" />
+          <path d="M-120 605 C80 500 255 700 465 595 S820 495 1030 600 S1360 705 1560 590" opacity="0.12" />
+        </g>
+      </svg>
       <div
         aria-hidden="true"
         className="absolute -left-44 top-20 size-[460px] rounded-full bg-[#0064d7]/16 blur-[120px]"

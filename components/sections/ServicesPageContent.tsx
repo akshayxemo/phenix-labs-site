@@ -136,6 +136,14 @@ export function ServicesPageContent() {
 
       <section className="relative bg-[#0a101d] px-5 py-20 text-white md:py-[108px]">
         <div aria-hidden="true" className="absolute left-[-180px] top-16 size-[420px] rounded-full bg-[#0064d7]/12 blur-[110px]" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-15"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(135deg, rgba(88,167,255,.48) 0 1px, transparent 1px 48px), repeating-linear-gradient(45deg, rgba(88,167,255,.32) 0 1px, transparent 1px 48px)',
+          }}
+        />
         <div className="relative mx-auto max-w-[1236px]">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
             <div>
@@ -347,6 +355,7 @@ export function ServicesPageContent() {
           </div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-12 text-center text-white md:px-12 md:py-16">
+            <div aria-hidden="true" className="absolute inset-0 opacity-[0.22] [background-image:radial-gradient(rgba(113,180,255,.75)_1.2px,transparent_1.4px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,black_78%,transparent)]" />
             <div aria-hidden="true" className="absolute -left-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#0064d7]/22 blur-[80px]" />
             <div aria-hidden="true" className="absolute -right-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#a984ff]/15 blur-[80px]" />
             <div className="relative z-10 mx-auto max-w-[720px]">

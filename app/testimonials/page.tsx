@@ -20,6 +20,10 @@ export default async function TestimonialsPage() {
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
       <section className="relative overflow-hidden bg-[#162236] px-5 py-20 text-white md:py-28">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(158,193,222,.42)_1px,transparent_1px),linear-gradient(90deg,rgba(158,193,222,.42)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_96%)]"
+        />
         <div className="absolute -right-28 -top-36 size-[430px] rounded-full bg-[#0064d7]/25 blur-3xl" />
         <div className="absolute -bottom-48 left-[8%] size-[360px] rounded-full bg-[#a984ff]/15 blur-3xl" />
         <div className="relative mx-auto max-w-[980px] text-center">
