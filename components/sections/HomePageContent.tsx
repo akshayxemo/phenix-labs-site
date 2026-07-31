@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { CountUp } from '@/components/animations/CountUp'
+import { HomeTestimonials } from '@/components/sections/HomeTestimonials'
+import type { Testimonial } from '@/lib/data/testimonials'
 import {
   BookOpen,
   Boxes,
@@ -9,7 +11,6 @@ import {
   Cpu,
   GraduationCap,
   Palette,
-  Star,
 } from 'lucide-react'
 
 const whatWeDo = [
@@ -44,12 +45,6 @@ const inventions = [
   { image: '/images/home/invention-4.png', tone: 'bg-[#f0c74b] text-[#040404]', imageFirst: false },
 ]
 
-const testimonials = [
-  ['"They bring vision and creativity. The PCB designing work, prototyping and the final build were delivered with precision and great attention to detail."', 'Aryan Krishna', 'Product Designer', '4.8'],
-  ['"We were impressed by their technical expertise, professionalism and willingness to go the extra mile. A dependable team for complex product development."', 'Vishnu Sankar', 'Research Scholar', '4.8'],
-  ['"Professional service and beyond. They delivered the 3D printing work perfectly and helped us set up a motion activated sensor system for an art installation."', 'Koushik Chatterjee', 'Interior Designer', '4.9'],
-]
-
 function SectionIntro({ title, children, dark = false }: { title: string; children: React.ReactNode; dark?: boolean }) {
   return (
     <div className="mx-auto max-w-[903px] text-center">
@@ -59,7 +54,11 @@ function SectionIntro({ title, children, dark = false }: { title: string; childr
   )
 }
 
-export function HomePageContent() {
+interface HomePageContentProps {
+  testimonials: Testimonial[]
+}
+
+export function HomePageContent({ testimonials }: HomePageContentProps) {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
       <section className="relative h-[540px] md:h-[559px]">
@@ -84,13 +83,13 @@ export function HomePageContent() {
         </div>
       </section>
 
-      <section className="px-4 pb-6 md:px-[27px]">
+      <section className="px-4 pb-4 pt-6 md:px-6.75">
         <div className="mx-auto grid max-w-[1396px] grid-cols-2 rounded-[20px] bg-[#162236] px-3 py-7 md:grid-cols-4 md:px-0 md:py-[27px]">
           {[
             { value: 150, suffix: ' +', label: 'Design Executed', color: '#ffa143' },
             { value: 50, suffix: ' +', label: 'Happy Clients', color: '#a984ff' },
-            { value: 12, suffix: '', label: 'Years Of Experience', color: '#4fc6f2' },
-            { value: 2, suffix: '', label: 'Years Into The Business', color: '#8b90ff' },
+            { value: 12, suffix: ' +', label: 'Years Of Experience', color: '#4fc6f2' },
+            { value: 2, suffix: ' +', label: 'Years Into The Business', color: '#8b90ff' },
           ].map(({ value, suffix, label, color }, index) => (
             <div key={label} className={`flex min-h-[104px] flex-col items-center justify-center text-center ${index % 2 ? 'border-l border-[#3d4c65]' : ''} md:border-l md:first:border-l-0`}>
               <strong className="text-[36px] leading-none tabular-nums md:text-[48px]" style={{ color }}>
@@ -102,7 +101,7 @@ export function HomePageContent() {
         </div>
       </section>
 
-      <section className="px-4 py-5 md:px-[22px]">
+      <section className="px-4 py-2 md:px-5.5">
         <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-linear-to-tr from-[#07101c] from-70% to-[#173E6E] px-6 py-14 text-white md:px-[78px] md:py-[72px]">
           <Image src="/images/home/what-we-do.jpg" alt="" fill className="object-cover opacity-[.08]" sizes="100vw" />
           <div className="relative z-10 text-center">
@@ -154,21 +153,7 @@ export function HomePageContent() {
         </div>
       </section>
 
-      <section className="bg-[#e0e8ef] px-5 py-20 md:py-[90px]">
-        <SectionIntro title="What Our Clients Say About Us">Our mission is to drive progress and enhance the lives of our customers by delivering superior products and services that exceed expectations.</SectionIntro>
-        <div className="mx-auto mt-12 grid max-w-[1236px] gap-4 md:grid-cols-3">
-          {testimonials.map(([quote, name, role, rating]) => (
-            <article key={name} className="flex min-h-[240px] flex-col rounded-[20px] border border-[#baccdb] bg-white p-6">
-              <p className="text-[15px] leading-relaxed text-[#4e4e4e]">{quote}</p>
-              <div className="mt-auto flex items-end justify-between pt-4">
-                <div><h3 className="text-[18px] font-semibold">{name}</h3><p className="text-[15px] text-[#4e4e4e]">{role}</p></div>
-                <span className="flex items-center gap-2 text-[18px] font-medium">{rating}<Star size={19} fill="#f0c74b" color="#f0c74b" /></span>
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className="mt-12 flex justify-center gap-2"><i className="size-2 rounded-full bg-[#0064d7]" /><i className="size-2 rounded-full bg-[#baccdb]" /><i className="size-2 rounded-full bg-[#baccdb]" /></div>
-      </section>
+      <HomeTestimonials testimonials={testimonials} />
     </div>
   )
 }

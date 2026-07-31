@@ -17,6 +17,9 @@ export { Spacer } from './common/Spacer'
 export { Logo } from './common/Logo'
 export { ImageWrapper } from './common/ImageWrapper'
 
+// Content Components
+export { MarkdownContent } from './content/MarkdownContent'
+
 // Form Components
 export { Input } from './forms/Input'
 export { Textarea } from './forms/Textarea'
@@ -44,6 +47,8 @@ export { WhatWeDoSection } from './sections/WhatWeDoSection'
 export { OurServicesSection } from './sections/OurServicesSection'
 export { OurInventionsSection } from './sections/OurInventionsSection'
 export { TestimonialsSection } from './sections/TestimonialsSection'
+export { HomeTestimonials } from './sections/HomeTestimonials'
+export { TestimonialsArchive } from './sections/TestimonialsArchive'
 export { ContactCtaSection } from './sections/ContactCtaSection'
 export { ServiceCategoriesSection } from './sections/ServiceCategoriesSection'
 export { DevelopmentProcessSection } from './sections/DevelopmentProcessSection'

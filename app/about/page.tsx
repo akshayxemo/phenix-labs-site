@@ -1,62 +1,29 @@
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import type { Metadata } from 'next'
+import { MarkdownContent } from '@/components/content/MarkdownContent'
 import { MainLayout } from '@/components/layout/MainLayout'
-import { HeroSection } from '@/components/sections/HeroSection'
-import { StatsSection } from '@/components/sections/StatsSection'
-import { Container } from '@/components/layout/Container'
-import { Section } from '@/components/layout/Section'
-import { Grid } from '@/components/layout/Grid'
 import { getNavbarData, getFooterData } from '@/lib/config/site'
-import { getAboutPage } from '@/lib/data/mock'
 
 export const metadata: Metadata = {
   title: 'About Phenix Labs',
-  description: 'Learn about our company, mission, and values',
+  description:
+    'Learn about Phenix Labs, our mission, capabilities, and approach to innovation.',
   keywords: ['about', 'company', 'team', 'mission'],
 }
 
 export default async function About() {
-  const [navbar, footer, about] = await Promise.all([
+  const [navbar, footer, markdown] = await Promise.all([
     getNavbarData(),
     getFooterData(),
-    getAboutPage(),
+    readFile(join(process.cwd(), 'content/about.md'), 'utf8'),
   ])
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
-      <HeroSection
-        title={about.hero.title}
-        subtitle={about.hero.subtitle}
-        description={about.hero.description}
-      />
-
-      {/* Mission Section */}
-      <Section>
-        <Container>
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-h2 mb-6">{about.mission.title}</h2>
-            <p className="text-body-large text-muted-foreground">{about.mission.description}</p>
-          </div>
-        </Container>
-      </Section>
-
-      {/* Values Section */}
-      <Section className="bg-surface">
-        <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-h2">{about.values.title}</h2>
-          </div>
-          <Grid cols={2}>
-            {about.values.items.map((value, idx) => (
-              <div key={idx} className="p-6">
-                <h3 className="text-h4 mb-3">{value.title}</h3>
-                <p className="text-muted-foreground">{value.description}</p>
-              </div>
-            ))}
-          </Grid>
-        </Container>
-      </Section>
-
-      <StatsSection stats={about.stats} />
+      <section className="bg-[#ecf1f5] px-5 py-16 md:px-8 md:py-24">
+        <MarkdownContent content={markdown} />
+      </section>
     </MainLayout>
   )
 }
