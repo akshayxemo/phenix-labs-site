@@ -12,14 +12,14 @@ export const SEO_CONFIG = {
   // Company information
   company: {
     name: 'Phenix Labs',
-    email: 'hello@phenix-labs.com',
-    phone: '+1-234-567-890',
+    email: 'gyankrishna@phenixlabs.in',
+    phone: '+91 89615 48205',
     address: {
-      street: '123 Tech Street',
-      city: 'San Francisco',
-      state: 'CA',
-      zip: '94105',
-      country: 'US',
+      street: 'TC 6/215/NLRA 135, Neerazhi Line, Ulloor',
+      city: 'Thiruvananthapuram',
+      state: 'Kerala',
+      zip: '695011',
+      country: 'IN',
     },
   },
   

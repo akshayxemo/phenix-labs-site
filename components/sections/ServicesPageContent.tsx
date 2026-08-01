@@ -3,21 +3,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
+import { ServiceIcon } from '@/components/sections/ServiceIcon'
 import {
-  AlarmClock,
+  getAlternatingServiceSpans,
+  getMosaicDarkIndexes,
+} from '@/components/sections/serviceGridLayout'
+import type { Service } from '@/lib/data/services'
+import {
   ArrowDownRight,
   ArrowUpRight,
   BookOpen,
   Boxes,
   Check,
   CircuitBoard,
-  Code2,
-  Cpu,
-  GraduationCap,
   Hammer,
   Lightbulb,
   Map,
-  Palette,
   PenTool,
   Rocket,
   ScanSearch,
@@ -62,21 +63,23 @@ const roadmapOrbitPositions = [
   'lg:left-0 lg:top-[38%]',
 ]
 
-const engineeringServices = [
-  { title: 'PCB Design', icon: CircuitBoard, color: '#45c9e8', copy: 'High-performance multilayer board design and layout for complex systems.' },
-  { title: 'Firmware Development', icon: Cpu, color: '#ff895d', copy: 'Reliable low-level code for sensors, controllers and embedded hardware.' },
-  { title: 'Edge AI Development', icon: Code2, color: '#a984ff', copy: 'Deploying intelligence to constrained devices and real-time edge systems.' },
-  { title: 'Prototyping & Testing', icon: Palette, color: '#4fc6f2', copy: 'Rapid iteration and rigorous functional validation for every build.' },
-  { title: 'CAD & 3D Printing', icon: Boxes, color: '#52cbb5', copy: 'Industrial CAD design with rapid and functional prototyping.' },
-  { title: 'Product Design', icon: GraduationCap, color: '#f0a66b', copy: 'Full-cycle industrial design and engineering from concept to product.' },
-  { title: 'System Integration', icon: BookOpen, color: '#a984ff', copy: 'Connecting electronics, software and mechanical systems into one solution.' },
-  { title: 'Instrumentation Design', icon: AlarmClock, color: '#67aaf9', copy: 'Custom laboratory and industrial tools engineered for reliable insights.' },
-]
-
 const roadmapPath = 'M 425 80 A 345 345 0 1 1 424.99 80 Z'
 
-export function ServicesPageContent() {
+function getServiceSpanClass(span: number) {
+  if (span === 12) return 'lg:col-span-12'
+  if (span === 7) return 'lg:col-span-7'
+  if (span === 5) return 'lg:col-span-5'
+  return 'lg:col-span-4'
+}
+
+interface ServicesPageContentProps {
+  services: Service[]
+}
+
+export function ServicesPageContent({ services }: ServicesPageContentProps) {
   const shouldReduceMotion = useReducedMotion()
+  const serviceGridSpans = getAlternatingServiceSpans(services.length)
+  const darkCardIndexes = getMosaicDarkIndexes(serviceGridSpans)
   const reveal = {
     hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 },
     visible: {
@@ -304,6 +307,7 @@ export function ServicesPageContent() {
         </div>
       </section>
 
+      {services.length > 0 && (
       <section id="engineering-services" className="scroll-mt-24 bg-[#dfe8ef] px-5 py-20 md:py-[108px]">
         <div className="mx-auto max-w-[1236px]">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -316,17 +320,20 @@ export function ServicesPageContent() {
           </motion.div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
-            {engineeringServices.map(({ title, icon: Icon, color, copy }, index) => {
-              const isFeatured = index < 2
-              const isDark = index === 0 || index === 3 || index === 7
+            {services.map(({ id, title, icon, accent: color, description: copy }, index) => {
+              const spanUnits = serviceGridSpans[index]
+              const span = getServiceSpanClass(spanUnits)
+              const isFeatured = spanUnits > 5
+              const isDark = darkCardIndexes.has(index)
+              const fillsTabletRow = services.length % 2 === 1 && index === services.length - 1
               return (
                 <motion.article
-                  key={title}
+                  key={id}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                   variants={reveal}
-                  className={`group relative overflow-hidden rounded-[20px] border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_65px_rgba(22,34,54,0.14)] md:p-7 ${isFeatured ? 'min-h-[290px] lg:col-span-6' : 'min-h-[260px] lg:col-span-4'} ${isDark ? 'border-[#263b54] bg-[#111d2d] text-white' : 'border-[#c5d3de] bg-white text-[#111827]'}`}
+                  className={`group relative overflow-hidden rounded-[20px] border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_65px_rgba(22,34,54,0.14)] md:p-7 ${fillsTabletRow ? 'sm:col-span-2' : 'sm:col-span-1'} ${span} ${isFeatured ? 'min-h-[290px]' : 'min-h-[260px]'} ${isDark ? 'border-[#263b54] bg-[#111d2d] text-white' : 'border-[#c5d3de] bg-white text-[#111827]'}`}
                 >
                   <div className="absolute -right-16 -top-20 size-56 rounded-full opacity-[0.14] blur-3xl transition-transform duration-700 group-hover:scale-125" style={{ backgroundColor: color }} />
                   <div
@@ -336,7 +343,7 @@ export function ServicesPageContent() {
                   <div className="relative z-10 flex h-full flex-col">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3.5">
-                        <span className="flex size-13 items-center justify-center rounded-[16px] border" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}18` }}><Icon aria-hidden="true" size={26} strokeWidth={1.8} /></span>
+                        <span className="flex size-13 items-center justify-center rounded-[16px] border" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}18` }}><ServiceIcon name={icon} aria-hidden="true" size={26} strokeWidth={1.8} /></span>
                         <div>
                           <p className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? 'text-[#91a1b5]' : 'text-[#708093]'}`}>Engineering service</p>
                           <p className="mt-1 text-xs font-bold tabular-nums" style={{ color }}>/ {String(index + 1).padStart(2, '0')}</p>
@@ -354,22 +361,53 @@ export function ServicesPageContent() {
             })}
           </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-12 text-center text-white md:px-12 md:py-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-10 text-white md:px-12 md:py-14">
             <div aria-hidden="true" className="absolute inset-0 opacity-[0.22] [background-image:radial-gradient(rgba(113,180,255,.75)_1.2px,transparent_1.4px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,black_78%,transparent)]" />
             <div aria-hidden="true" className="absolute -left-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#0064d7]/22 blur-[80px]" />
             <div aria-hidden="true" className="absolute -right-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#a984ff]/15 blur-[80px]" />
-            <div className="relative z-10 mx-auto max-w-[720px]">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#58a7ff]">Let&apos;s build it together</p>
-              <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.03em] md:text-[44px]">Have an idea or an engineering challenge?</h2>
-              <p className="mx-auto mt-4 max-w-[560px] text-[15px] leading-7 text-[#aeb9c7] md:text-[17px]">Tell us what you are trying to solve, and we will help identify the clearest path from concept to working system.</p>
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Link href="/contact" className="group inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#0055b8]">Discuss your project <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
-                <Link href="/contact" className="inline-flex h-13 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] px-7 font-semibold text-white transition-colors hover:border-[#58a7ff] hover:text-[#58a7ff]">Contact us</Link>
+            <div className="relative z-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#58a7ff]">Let&apos;s build it together</p>
+                <h2 className="mt-4 max-w-[650px] text-[30px] font-bold leading-tight tracking-[-0.03em] md:text-[44px]">Have an idea or an engineering challenge?</h2>
+                <p className="mt-4 max-w-[590px] text-[15px] leading-7 text-[#aeb9c7] md:text-[17px]">Tell us what you are trying to solve, and we will help identify the clearest path from concept to working system.</p>
+                <div className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+                  <Link href="/contact" className="group inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_34px_rgba(0,100,215,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#1475e8] hover:shadow-[0_18px_40px_rgba(0,100,215,0.32)]">Discuss your project <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+                  <Link href="#development-process" className="group inline-flex items-center gap-2 border-b border-[#62758b] pb-1.5 text-sm font-semibold text-[#b7c3d0] transition-colors hover:border-[#58a7ff] hover:text-[#67aeff]">
+                    Review our process
+                    <ArrowUpRight aria-hidden="true" size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[20px] border border-white/[0.1] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm sm:p-6">
+                <div aria-hidden="true" className="absolute -right-16 -top-16 size-44 rounded-full bg-[#58a7ff]/12 blur-3xl" />
+                <div className="relative">
+                  <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#67aeff]">What happens next</p>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#66798e]">Simple &amp; focused</span>
+                  </div>
+                  <div className="mt-2">
+                    {[
+                      ['01', 'Share the challenge', 'Give us the useful context, constraints, and outcome.'],
+                      ['02', 'We assess the fit', 'Our team reviews the technical direction and scope.'],
+                      ['03', 'Receive a clear next step', 'We respond with the most practical way to move forward.'],
+                    ].map(([number, title, copy], index) => (
+                      <div key={number} className={`flex gap-4 py-4 ${index < 2 ? 'border-b border-white/[0.07]' : ''}`}>
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-[13px] border border-[#58a7ff]/20 bg-[#102943] text-xs font-bold text-[#67aeff]">{number}</span>
+                        <div>
+                          <h3 className="text-sm font-bold text-[#e1e8ef]">{title}</h3>
+                          <p className="mt-1 text-[13px] leading-5 text-[#8494a7]">{copy}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
+      )}
     </div>
   )
 }

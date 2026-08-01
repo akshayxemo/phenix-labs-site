@@ -17,6 +17,10 @@ export interface NavbarData {
     imageSrc?: string
   }
   links: NavLink[]
+  contactCta?: {
+    text: string
+    href: string
+  }
   cta?: {
     text: string
     href: string
@@ -25,6 +29,26 @@ export interface NavbarData {
 
 export interface FooterData {
   copyright: string
+  contact: ContactSettings
+}
+
+export interface SocialLink {
+  id: string
+  platform: string
+  label: string
+  href: string
+  customIcon?: string
+}
+
+export interface ContactSettings {
+  phone: string
+  phoneHref: string
+  email: string
+  emailHref: string
+  hours: string
+  responseTime: string
+  address: string
+  socialLinks: SocialLink[]
 }
 
 export interface HeroContent {
