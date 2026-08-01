@@ -62,7 +62,7 @@ export const SEO_CONFIG = {
     cases: {
       title: 'Case Studies',
       description: 'Discover how we have helped businesses transform through innovative technology solutions.',
-      path: '/cases',
+      path: '/products',
     },
     contact: {
       title: 'Get In Touch',
