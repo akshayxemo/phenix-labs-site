@@ -14,7 +14,7 @@ export function SiteFooter({ data, links, logo }: SiteFooterProps) {
 
   return (
     <footer className="bg-[#060d18] text-white">
-      <ContactFooterSection />
+      <ContactFooterSection contact={data.contact} />
 
       <div className="border-t border-[#1a2a3e] px-5 py-8">
         <div className="mx-auto flex max-w-[1236px] flex-col gap-8 md:flex-row md:items-center md:justify-between">

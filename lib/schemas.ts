@@ -28,8 +28,28 @@ export const NavbarDataSchema = z.object({
   }).optional(),
 })
 
+export const SocialLinkSchema = z.object({
+  id: z.string(),
+  platform: z.string(),
+  label: z.string(),
+  href: z.string().url(),
+  customIcon: z.string().optional(),
+})
+
+export const ContactSettingsSchema = z.object({
+  phone: z.string(),
+  phoneHref: z.string(),
+  email: z.string(),
+  emailHref: z.string(),
+  hours: z.string(),
+  responseTime: z.string(),
+  address: z.string(),
+  socialLinks: z.array(SocialLinkSchema),
+})
+
 export const FooterDataSchema = z.object({
   copyright: z.string(),
+  contact: ContactSettingsSchema,
 })
 
 export const HeroContentSchema = z.object({

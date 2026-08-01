@@ -7,34 +7,16 @@ import {
   Phone,
 } from 'lucide-react'
 import { SocialBrandIcon } from '@/components/common/SocialBrandIcon'
-import { CONTACT_DETAILS, SOCIAL_LINKS } from '@/config/contact'
+import type { ContactSettings } from '@/types'
 
-const contactDetails = [
-  {
-    icon: Phone,
-    label: 'Call us',
-    value: CONTACT_DETAILS.phone,
-    href: CONTACT_DETAILS.phoneHref,
-  },
-  {
-    icon: Mail,
-    label: 'Email us',
-    value: CONTACT_DETAILS.email,
-    href: CONTACT_DETAILS.emailHref,
-  },
-  {
-    icon: AlarmClock,
-    label: 'Working hours',
-    value: CONTACT_DETAILS.hours,
-  },
-  {
-    icon: MapPin,
-    label: 'Visit us',
-    value: CONTACT_DETAILS.address,
-  },
-]
+export function ContactFooterSection({ contact }: { contact: ContactSettings }) {
+  const contactDetails = [
+    { icon: Phone, label: 'Call us', value: contact.phone, href: contact.phoneHref },
+    { icon: Mail, label: 'Email us', value: contact.email, href: contact.emailHref },
+    { icon: AlarmClock, label: 'Working hours', value: contact.hours },
+    { icon: MapPin, label: 'Visit us', value: contact.address },
+  ].filter((item) => item.value)
 
-export function ContactFooterSection() {
   return (
     <section
       className="relative overflow-hidden px-5 pb-14 pt-18 text-white md:pb-18 md:pt-24"
@@ -122,26 +104,32 @@ export function ContactFooterSection() {
           })}
         </div>
 
-        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-[#77879a]">{CONTACT_DETAILS.responseTime}</p>
-          <div className="flex items-center gap-2">
-            <span className="mr-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6f8094]">
-              Follow
-            </span>
-            {SOCIAL_LINKS.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Follow Phenix Labs on ${label}`}
-                className="flex size-10 items-center justify-center rounded-[13px] border border-white/[0.085] bg-white/[0.035] text-[#9aa9ba] transition-all hover:-translate-y-0.5 hover:border-[#58a7ff]/40 hover:bg-[#10243b] hover:text-[#67aeff]"
-              >
-                <SocialBrandIcon brand={label} />
-              </a>
-            ))}
+        {(contact.responseTime || contact.socialLinks.length > 0) && (
+          <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            {contact.responseTime ? (
+              <p className="text-sm text-[#77879a]">{contact.responseTime}</p>
+            ) : <span />}
+            {contact.socialLinks.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="mr-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6f8094]">
+                  Follow
+                </span>
+                {contact.socialLinks.map(({ id, label, href, platform, customIcon }) => (
+                  <a
+                    key={id}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Follow Phenix Labs on ${label}`}
+                    className="flex size-10 items-center justify-center rounded-[13px] border border-white/[0.085] bg-white/[0.035] text-[#9aa9ba] transition-all hover:-translate-y-0.5 hover:border-[#58a7ff]/40 hover:bg-[#10243b] hover:text-[#67aeff]"
+                  >
+                    <SocialBrandIcon platform={platform} customIcon={customIcon} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

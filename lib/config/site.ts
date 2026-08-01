@@ -1,4 +1,6 @@
 import type { FooterData, NavbarData } from '@/types'
+import { DEFAULT_CONTACT_SETTINGS } from '@/config/contact'
+import { getContactSettings } from '@/lib/data/contact'
 
 /**
  * Persistent site-wide navigation configuration.
@@ -35,6 +37,7 @@ export const navbarData: NavbarData = {
  */
 export const footerData: FooterData = {
   copyright: '© 2026 Phenix Labs. All rights reserved.',
+  contact: DEFAULT_CONTACT_SETTINGS,
 }
 
 export async function getNavbarData(): Promise<NavbarData> {
@@ -42,5 +45,8 @@ export async function getNavbarData(): Promise<NavbarData> {
 }
 
 export async function getFooterData(): Promise<FooterData> {
-  return footerData
+  return {
+    ...footerData,
+    contact: await getContactSettings(),
+  }
 }

@@ -43,6 +43,10 @@ const recommendedIconNames = [
   'lightbulb',
   'rocket',
   'flask-conical',
+  'globe',
+  'link',
+  'message-circle',
+  'send',
 ].filter((name): name is IconName => iconNames.includes(name as IconName))
 
 function formatIconName(name: string) {
@@ -56,13 +60,13 @@ function toOption(name: IconName): IconOption {
   return { value: name, title: formatIconName(name) }
 }
 
-export function ServiceIconInput(props: StringInputProps) {
+export function LucideIconInput(props: StringInputProps) {
   const { onChange, readOnly, validationError, value } = props
   const inputId = useId()
   const [query, setQuery] = useState<string | null>(null)
   const selectedName = iconNames.includes(value as IconName)
     ? (value as IconName)
-    : 'boxes'
+    : 'link'
 
   const options = useMemo(() => {
     const normalizedQuery = query?.trim().toLowerCase() ?? ''
@@ -89,7 +93,7 @@ export function ServiceIconInput(props: StringInputProps) {
       disabled={readOnly}
       filterOption={() => true}
       fontSize={2}
-      id={`service-icon-${inputId}`}
+      id={`lucide-icon-${inputId}`}
       onQueryChange={setQuery}
       onSelect={handleSelect}
       openButton

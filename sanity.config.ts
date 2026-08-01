@@ -2,9 +2,13 @@
 
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
-import { FileText } from 'lucide-react'
+import { ContactRound, FileText } from 'lucide-react'
 import { dataset, projectId, studioUrl } from './sanity/env'
 import { schemaTypes } from './sanity/schemaTypes'
+import { RecreateSingletonAction } from './sanity/actions/RecreateSingletonAction'
+
+const singletonTypes = new Set(['aboutPage', 'contactSettings'])
+const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
   name: 'phenixLabs',
@@ -29,10 +33,24 @@ export default defineConfig({
                   .schemaType('aboutPage')
                   .documentId('aboutPage'),
               ),
+            structure
+              .listItem()
+              .title('Contact & Social')
+              .icon(ContactRound)
+              .child(
+                structure
+                  .document()
+                  .schemaType('contactSettings')
+                  .documentId('contactSettings'),
+              ),
             structure.divider(),
             ...structure
               .documentTypeListItems()
-              .filter((item) => item.getId() !== 'aboutPage'),
+              .filter(
+                (item) =>
+                  item.getId() !== 'aboutPage' &&
+                  item.getId() !== 'contactSettings',
+              ),
           ]),
     }),
   ],
@@ -40,15 +58,20 @@ export default defineConfig({
     types: schemaTypes,
   },
   document: {
-    actions: (previousActions, context) =>
-      context.schemaType === 'aboutPage'
-        ? previousActions.filter((action) =>
-            ['publish', 'discardChanges', 'restore', 'unpublish'].includes(
-              action.action ?? '',
-            ),
-          )
-        : previousActions,
+    actions: (previousActions, context) => {
+      if (!singletonTypes.has(context.schemaType)) return previousActions
+
+      const actions = previousActions.filter((action) =>
+        singletonActions.has(action.action ?? ''),
+      )
+
+      return [...actions, RecreateSingletonAction]
+    },
     newDocumentOptions: (previousOptions) =>
-      previousOptions.filter((option) => option.templateId !== 'aboutPage'),
+      previousOptions.filter(
+        (option) =>
+          option.templateId !== 'aboutPage' &&
+          option.templateId !== 'contactSettings',
+      ),
   },
 })

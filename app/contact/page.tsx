@@ -9,7 +9,6 @@ import {
 } from 'lucide-react'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { SocialBrandIcon } from '@/components/common/SocialBrandIcon'
-import { CONTACT_DETAILS, SOCIAL_LINKS } from '@/config/contact'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
 import { ContactFormClient } from './contact-form'
 
@@ -19,28 +18,28 @@ export const metadata: Metadata = {
   keywords: ['contact Phenix Labs', 'engineering enquiry', 'project discussion'],
 }
 
-const directChannels = [
-  {
-    icon: Phone,
-    label: 'Call us',
-    value: CONTACT_DETAILS.phone,
-    note: CONTACT_DETAILS.hours,
-    href: CONTACT_DETAILS.phoneHref,
-  },
-  {
-    icon: Mail,
-    label: 'Email us',
-    value: CONTACT_DETAILS.email,
-    note: CONTACT_DETAILS.responseTime,
-    href: CONTACT_DETAILS.emailHref,
-  },
-]
-
 export default async function Contact() {
   const [navbar, footer] = await Promise.all([
     getNavbarData(),
     getFooterData(),
   ])
+  const contact = footer.contact
+  const directChannels = [
+    {
+      icon: Phone,
+      label: 'Call us',
+      value: contact.phone,
+      note: contact.hours,
+      href: contact.phoneHref,
+    },
+    {
+      icon: Mail,
+      label: 'Email us',
+      value: contact.email,
+      note: contact.responseTime,
+      href: contact.emailHref,
+    },
+  ].filter((channel) => channel.value && channel.href)
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
@@ -144,33 +143,37 @@ export default async function Contact() {
                   ))}
                 </div>
 
-                <div className="mt-3 flex gap-4 rounded-[16px] border border-white/[0.085] bg-white/[0.04] p-4">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-[14px] bg-[#14273d] text-[#67aeff]">
-                    <MapPin aria-hidden="true" size={20} />
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#718297]">Visit us</p>
-                    <address className="mt-1 text-sm font-medium not-italic leading-6 text-[#d9e2eb]">
-                      {CONTACT_DETAILS.address}
-                    </address>
+                {contact.address && (
+                  <div className="mt-3 flex gap-4 rounded-[16px] border border-white/[0.085] bg-white/[0.04] p-4">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-[14px] bg-[#14273d] text-[#67aeff]">
+                      <MapPin aria-hidden="true" size={20} />
+                    </span>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#718297]">Visit us</p>
+                      <address className="mt-1 text-sm font-medium not-italic leading-6 text-[#d9e2eb]">
+                        {contact.address}
+                      </address>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-white/[0.08] pt-7">
-                  <span className="mr-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#718297]">Follow</span>
-                  {SOCIAL_LINKS.map(({ label, href }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`Follow Phenix Labs on ${label}`}
-                      className="flex size-10 items-center justify-center rounded-[13px] border border-white/[0.085] bg-white/[0.04] text-[#9baabd] transition-all hover:-translate-y-0.5 hover:border-[#58a7ff]/40 hover:text-[#67aeff]"
-                    >
-                      <SocialBrandIcon brand={label} />
-                    </a>
-                  ))}
-                </div>
+                {contact.socialLinks.length > 0 && (
+                  <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-white/[0.08] pt-7">
+                    <span className="mr-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#718297]">Follow</span>
+                    {contact.socialLinks.map(({ id, label, href, platform, customIcon }) => (
+                      <a
+                        key={id}
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Follow Phenix Labs on ${label}`}
+                        className="flex size-10 items-center justify-center rounded-[13px] border border-white/[0.085] bg-white/[0.04] text-[#9baabd] transition-all hover:-translate-y-0.5 hover:border-[#58a7ff]/40 hover:text-[#67aeff]"
+                      >
+                        <SocialBrandIcon platform={platform} customIcon={customIcon} />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -182,7 +185,7 @@ export default async function Contact() {
                   </span>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#0064d7]">Project enquiry</p>
-                    <p className="mt-1 text-xs text-[#718091]">{CONTACT_DETAILS.responseTime}</p>
+                    <p className="mt-1 text-xs text-[#718091]">{contact.responseTime}</p>
                   </div>
                 </div>
                 <h2 className="mt-6 text-[30px] font-bold tracking-[-0.035em] text-[#162236] md:text-[40px]">

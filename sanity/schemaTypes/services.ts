@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 import { defineField, defineType, type ValidationContext } from 'sanity'
 import { ServiceIcon } from '@/components/sections/ServiceIcon'
-import { ServiceIconInput } from '@/sanity/components/ServiceIconInput'
+import { LucideIconInput } from '@/sanity/components/LucideIconInput'
 import { apiVersion } from '@/sanity/env'
 
 const accentOptions = [
@@ -97,7 +97,7 @@ export const serviceType = defineType({
       title: 'Icon',
       type: 'string',
       group: 'display',
-      components: { input: ServiceIconInput },
+      components: { input: LucideIconInput },
       initialValue: 'boxes',
       validation: (rule) => rule.required(),
     }),
