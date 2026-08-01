@@ -13,6 +13,7 @@ import {
 import type { Testimonial } from '@/lib/data/testimonials'
 import type { ClientLogo } from '@/lib/data/clients'
 import type { Service } from '@/lib/data/services'
+import type { Invention } from '@/lib/data/inventions'
 import {
   ArrowUpRight,
   BookOpen,
@@ -79,9 +80,10 @@ interface HomePageContentProps {
   testimonials: Testimonial[]
   clients: ClientLogo[]
   services: Service[]
+  inventions: Invention[]
 }
 
-export function HomePageContent({ testimonials, clients, services }: HomePageContentProps) {
+export function HomePageContent({ testimonials, clients, services, inventions }: HomePageContentProps) {
   const homeServiceSpans = getAlternatingServiceSpans(services.length)
   const homeDarkCardIndexes = getMosaicDarkIndexes(homeServiceSpans)
 
@@ -325,7 +327,7 @@ export function HomePageContent({ testimonials, clients, services }: HomePageCon
       </section>
       )}
 
-      <HomeInventionsShowcase />
+      <HomeInventionsShowcase inventions={inventions} />
 
       <HomeTestimonials testimonials={testimonials} />
     </div>

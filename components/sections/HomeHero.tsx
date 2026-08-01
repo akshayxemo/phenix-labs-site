@@ -111,7 +111,7 @@ export function HomeHero() {
           className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row"
         >
           <Link
-            href="/cases"
+            href="/products"
             className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_35px_rgba(0,100,215,0.23)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0055b8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.3)] sm:w-auto"
           >
             Explore our work

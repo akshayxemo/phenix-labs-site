@@ -6,6 +6,7 @@ import { getNavbarData, getFooterData } from '@/lib/config/site'
 import { getHomeTestimonials } from '@/lib/data/testimonials'
 import { getClients } from '@/lib/data/clients'
 import { getHomeServices } from '@/lib/data/services'
+import { getFeaturedInventions } from '@/lib/data/inventions'
 
 export const metadata: Metadata = generateMetadata({
   title: 'Premium Engineering Solutions',
@@ -23,17 +24,23 @@ export const metadata: Metadata = generateMetadata({
 })
 
 export default async function Home() {
-  const [navbar, footer, testimonials, clients, services] = await Promise.all([
+  const [navbar, footer, testimonials, clients, services, inventions] = await Promise.all([
     getNavbarData(),
     getFooterData(),
     getHomeTestimonials(),
     getClients(),
     getHomeServices(),
+    getFeaturedInventions(),
   ])
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
-      <HomePageContent testimonials={testimonials} clients={clients} services={services} />
+      <HomePageContent
+        testimonials={testimonials}
+        clients={clients}
+        services={services}
+        inventions={inventions}
+      />
     </MainLayout>
   )
 }

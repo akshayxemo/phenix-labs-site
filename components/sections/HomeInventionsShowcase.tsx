@@ -4,52 +4,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import type { Invention } from '@/lib/data/inventions'
 
-const inventions = [
-  {
-    number: '01',
-    title: 'Lunar Surface Lamp',
-    category: 'Additive manufacturing',
-    description:
-      'A tactile moon-inspired light study shaped through digital fabrication and material experimentation.',
-    image: '/images/home/invention-1.png',
-    layout: 'lg:col-span-7 lg:row-span-2 lg:min-h-[620px]',
-    featured: true,
-  },
-  {
-    number: '02',
-    title: 'Wearable Concept Prototype',
-    category: 'Rapid prototyping',
-    description:
-      'Form, proportion, and assembly explored quickly through an iterative physical model.',
-    image: '/images/home/invention-2.png',
-    layout: 'lg:col-span-5 lg:min-h-[300px]',
-    featured: false,
-  },
-  {
-    number: '03',
-    title: 'Autonomous Rover Platform',
-    category: 'Robotics',
-    description:
-      'A compact mobile platform designed for sensing, control, and autonomous experiments.',
-    image: '/images/home/invention-3.png',
-    layout: 'lg:col-span-5 lg:min-h-[300px]',
-    featured: false,
-  },
-  {
-    number: '04',
-    title: 'Smart Sample Scanner',
-    category: 'Embedded product',
-    description:
-      'A focused interaction concept combining a physical control surface with an embedded display.',
-    image: '/images/home/invention-4.png',
-    layout: 'lg:col-span-12 lg:min-h-[340px]',
-    featured: false,
-  },
+const inventionLayouts = [
+  'lg:col-span-7 lg:row-span-2 lg:min-h-[620px]',
+  'lg:col-span-5 lg:min-h-[300px]',
+  'lg:col-span-5 lg:min-h-[300px]',
+  'lg:col-span-6 lg:min-h-[340px]',
+  'lg:col-span-6 lg:min-h-[340px]',
 ]
 
-export function HomeInventionsShowcase() {
+export function HomeInventionsShowcase({ inventions }: { inventions: Invention[] }) {
   const shouldReduceMotion = useReducedMotion()
+
+  if (inventions.length === 0) return null
 
   return (
     <section className="px-4 pb-24 md:px-5.5 md:pb-[110px]">
@@ -81,7 +49,7 @@ export function HomeInventionsShowcase() {
             </p>
           </div>
           <Link
-            href="/cases"
+            href="/products"
             className="group inline-flex w-fit items-center gap-2 border-b border-[#536274] pb-2 text-sm font-semibold text-white transition-colors hover:border-[#58a7ff] hover:text-[#58a7ff]"
           >
             Explore our work
@@ -107,9 +75,12 @@ export function HomeInventionsShowcase() {
           }}
           className="relative z-10 mt-12 grid gap-4 lg:grid-cols-12"
         >
-          {inventions.map((invention) => (
+          {inventions.map((invention, index) => {
+            const isLead = index === 0
+
+            return (
             <motion.article
-              key={invention.title}
+              key={invention.id}
               variants={{
                 hidden: shouldReduceMotion
                   ? { opacity: 1 }
@@ -124,42 +95,46 @@ export function HomeInventionsShowcase() {
                   },
                 },
               }}
-              className={`group relative min-h-[390px] overflow-hidden rounded-[20px] border border-white/10 bg-[#111d2d] ${invention.layout}`}
+              className={`group relative min-h-[390px] overflow-hidden rounded-[20px] border border-white/10 bg-[#111d2d] ${inventionLayouts[index]}`}
             >
-              <Image
-                src={invention.image}
-                alt={invention.title}
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
-                sizes={
-                  invention.featured
-                    ? '(max-width: 1024px) 100vw, 58vw'
-                    : '(max-width: 1024px) 100vw, 45vw'
-                }
-              />
+              {invention.imageUrl ? (
+                <Image
+                  src={invention.imageUrl}
+                  alt={invention.title}
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                  sizes={
+                    isLead
+                      ? '(max-width: 1024px) 100vw, 58vw'
+                      : '(max-width: 1024px) 100vw, 45vw'
+                  }
+                />
+              ) : (
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_24%,rgba(88,167,255,.25),transparent_30%),linear-gradient(145deg,#14263b,#08111e)]" />
+              )}
               <div className="absolute inset-0 bg-linear-to-t from-[#020712] via-[#07101c]/20 to-transparent transition-opacity duration-500 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-linear-to-r from-[#020712]/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-[#07101c]/55 px-3 py-1.5 text-xs font-bold tabular-nums text-white backdrop-blur-md md:left-7 md:top-7">
-                / {invention.number}
+                / {String(index + 1).padStart(2, '0')}
               </span>
 
               <div className="absolute inset-x-0 bottom-0 z-10 p-6 md:p-8">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#71b4ff]">
-                  {invention.category}
+                  Featured invention
                 </p>
                 <div className="mt-3 flex items-end justify-between gap-5">
-                  <div className={invention.featured ? 'max-w-[590px]' : 'max-w-[520px]'}>
+                  <div className={isLead ? 'max-w-[590px]' : 'max-w-[520px]'}>
                     <h3
                       className={`font-bold leading-tight tracking-[-0.025em] ${
-                        invention.featured
+                        isLead
                           ? 'text-[30px] md:text-[42px]'
                           : 'text-[25px] md:text-[30px]'
                       }`}
                     >
                       {invention.title}
                     </h3>
-                    <p className="mt-3 max-w-[560px] text-sm leading-6 text-[#b5c0cd] transition-colors group-hover:text-[#d7dee7] md:text-[15px]">
+                    <p className="mt-3 max-w-[560px] line-clamp-2 text-sm leading-6 text-[#b5c0cd] transition-colors group-hover:text-[#d7dee7] md:text-[15px]">
                       {invention.description}
                     </p>
                   </div>
@@ -170,12 +145,13 @@ export function HomeInventionsShowcase() {
               </div>
 
               <Link
-                href="/cases"
+                href={`/products?invention=${encodeURIComponent(invention.id)}`}
                 aria-label={`View ${invention.title}`}
                 className="absolute inset-0 z-20 rounded-[20px] focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#58a7ff]"
               />
             </motion.article>
-          ))}
+            )
+          })}
         </motion.div>
       </div>
     </section>
