@@ -5,17 +5,19 @@ import { HomeHero } from '@/components/sections/HomeHero'
 import { ClientLogoMarquee } from '@/components/sections/ClientLogoMarquee'
 import { HomeInventionsShowcase } from '@/components/sections/HomeInventionsShowcase'
 import { HomeTestimonials } from '@/components/sections/HomeTestimonials'
+import { ServiceIcon } from '@/components/sections/ServiceIcon'
+import {
+  getAlternatingServiceSpans,
+  getMosaicDarkIndexes,
+} from '@/components/sections/serviceGridLayout'
 import type { Testimonial } from '@/lib/data/testimonials'
 import type { ClientLogo } from '@/lib/data/clients'
+import type { Service } from '@/lib/data/services'
 import {
   ArrowUpRight,
   BookOpen,
   Boxes,
-  CircuitBoard,
-  Code2,
-  Cpu,
   GraduationCap,
-  Palette,
 } from 'lucide-react'
 
 const whatWeDo = [
@@ -42,56 +44,12 @@ const whatWeDo = [
   },
 ]
 
-const services = [
-  {
-    number: '01',
-    title: 'PCB Design',
-    eyebrow: 'Hardware engineering',
-    description:
-      'Production-ready circuit boards shaped around performance, reliability, and manufacturability.',
-    tags: ['Schematic', 'Layout', 'DFM'],
-    icon: CircuitBoard,
-    accent: '#45c9e8',
-    span: 'lg:col-span-7',
-    theme: 'dark',
-  },
-  {
-    number: '02',
-    title: 'Firmware Development',
-    eyebrow: 'Embedded systems',
-    description:
-      'Responsive, maintainable firmware that connects hardware behavior with real product needs.',
-    tags: ['Embedded C', 'IoT', 'RTOS'],
-    icon: Cpu,
-    accent: '#ff9a43',
-    span: 'lg:col-span-5',
-    theme: 'light',
-  },
-  {
-    number: '03',
-    title: 'Web Development',
-    eyebrow: 'Digital products',
-    description:
-      'Fast, scalable interfaces and platforms designed to make complex workflows feel effortless.',
-    tags: ['Web Apps', 'APIs', 'Dashboards'],
-    icon: Code2,
-    accent: '#a984ff',
-    span: 'lg:col-span-5',
-    theme: 'light',
-  },
-  {
-    number: '04',
-    title: 'Prototyping & Testing',
-    eyebrow: 'Product validation',
-    description:
-      'Tangible prototypes and focused testing that expose risk early and accelerate confident decisions.',
-    tags: ['Rapid Build', 'Validation', 'Iteration'],
-    icon: Palette,
-    accent: '#52c9ee',
-    span: 'lg:col-span-7',
-    theme: 'dark',
-  },
-]
+function getHomeSpanClass(span: number) {
+  if (span === 12) return 'lg:col-span-12'
+  if (span === 7) return 'lg:col-span-7'
+  if (span === 4) return 'lg:col-span-4'
+  return 'lg:col-span-5'
+}
 
 function SectionIntro({
   eyebrow,
@@ -120,9 +78,13 @@ function SectionIntro({
 interface HomePageContentProps {
   testimonials: Testimonial[]
   clients: ClientLogo[]
+  services: Service[]
 }
 
-export function HomePageContent({ testimonials, clients }: HomePageContentProps) {
+export function HomePageContent({ testimonials, clients, services }: HomePageContentProps) {
+  const homeServiceSpans = getAlternatingServiceSpans(services.length)
+  const homeDarkCardIndexes = getMosaicDarkIndexes(homeServiceSpans)
+
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
       <HomeHero />
@@ -237,31 +199,26 @@ export function HomePageContent({ testimonials, clients }: HomePageContentProps)
         </div>
       </section>
 
+      {services.length > 0 && (
       <section className="px-5 py-20 md:py-[100px]">
         <SectionIntro eyebrow="What we build" title="Our Services">
           From the first circuit to the final interface, we build connected
           solutions that are ready for the real world.
         </SectionIntro>
         <div className="mx-auto mt-14 grid max-w-[1236px] gap-5 sm:grid-cols-2 lg:grid-cols-12">
-          {services.map(({
-            number,
-            title,
-            eyebrow,
-            description,
-            tags,
-            icon: Icon,
-            accent,
-            span,
-            theme,
-          }) => {
-            const isDark = theme === 'dark'
+          {services.map((service, index) => {
+            const { id, title, eyebrow, description, tags, icon, accent } = service
+            const number = String(index + 1).padStart(2, '0')
+            const isDark = homeDarkCardIndexes.has(index)
+            const span = getHomeSpanClass(homeServiceSpans[index])
+            const fillsTabletRow = services.length % 2 === 1 && index === services.length - 1
 
             return (
               <Link
-                key={title}
+                key={id}
                 href="/services#engineering-services"
                 aria-label={`Explore ${title}`}
-                className={`group relative flex min-h-[320px] overflow-hidden rounded-[20px] border p-7 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(22,34,54,0.16)] md:p-9 ${span} ${
+                className={`group relative flex min-h-[320px] overflow-hidden rounded-[20px] border p-7 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(22,34,54,0.16)] md:p-9 ${fillsTabletRow ? 'sm:col-span-2' : 'sm:col-span-1'} ${span} ${
                   isDark
                     ? 'border-[#263b54] bg-[#111d2d] text-white'
                     : 'border-[#c5d1db] bg-white text-[#111827]'
@@ -292,7 +249,7 @@ export function HomePageContent({ testimonials, clients }: HomePageContentProps)
                           color: accent,
                         }}
                       >
-                        <Icon aria-hidden="true" size={29} strokeWidth={1.8} />
+                        <ServiceIcon name={icon} aria-hidden="true" size={29} strokeWidth={1.8} />
                       </span>
                       <div>
                         <span
@@ -366,6 +323,7 @@ export function HomePageContent({ testimonials, clients }: HomePageContentProps)
           </Link>
         </div>
       </section>
+      )}
 
       <HomeInventionsShowcase />
 

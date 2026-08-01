@@ -3,21 +3,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
+import { ServiceIcon } from '@/components/sections/ServiceIcon'
 import {
-  AlarmClock,
+  getAlternatingServiceSpans,
+  getMosaicDarkIndexes,
+} from '@/components/sections/serviceGridLayout'
+import type { Service } from '@/lib/data/services'
+import {
   ArrowDownRight,
   ArrowUpRight,
   BookOpen,
   Boxes,
   Check,
   CircuitBoard,
-  Code2,
-  Cpu,
-  GraduationCap,
   Hammer,
   Lightbulb,
   Map,
-  Palette,
   PenTool,
   Rocket,
   ScanSearch,
@@ -62,21 +63,23 @@ const roadmapOrbitPositions = [
   'lg:left-0 lg:top-[38%]',
 ]
 
-const engineeringServices = [
-  { title: 'PCB Design', icon: CircuitBoard, color: '#45c9e8', copy: 'High-performance multilayer board design and layout for complex systems.' },
-  { title: 'Firmware Development', icon: Cpu, color: '#ff895d', copy: 'Reliable low-level code for sensors, controllers and embedded hardware.' },
-  { title: 'Edge AI Development', icon: Code2, color: '#a984ff', copy: 'Deploying intelligence to constrained devices and real-time edge systems.' },
-  { title: 'Prototyping & Testing', icon: Palette, color: '#4fc6f2', copy: 'Rapid iteration and rigorous functional validation for every build.' },
-  { title: 'CAD & 3D Printing', icon: Boxes, color: '#52cbb5', copy: 'Industrial CAD design with rapid and functional prototyping.' },
-  { title: 'Product Design', icon: GraduationCap, color: '#f0a66b', copy: 'Full-cycle industrial design and engineering from concept to product.' },
-  { title: 'System Integration', icon: BookOpen, color: '#a984ff', copy: 'Connecting electronics, software and mechanical systems into one solution.' },
-  { title: 'Instrumentation Design', icon: AlarmClock, color: '#67aaf9', copy: 'Custom laboratory and industrial tools engineered for reliable insights.' },
-]
-
 const roadmapPath = 'M 425 80 A 345 345 0 1 1 424.99 80 Z'
 
-export function ServicesPageContent() {
+function getServiceSpanClass(span: number) {
+  if (span === 12) return 'lg:col-span-12'
+  if (span === 7) return 'lg:col-span-7'
+  if (span === 5) return 'lg:col-span-5'
+  return 'lg:col-span-4'
+}
+
+interface ServicesPageContentProps {
+  services: Service[]
+}
+
+export function ServicesPageContent({ services }: ServicesPageContentProps) {
   const shouldReduceMotion = useReducedMotion()
+  const serviceGridSpans = getAlternatingServiceSpans(services.length)
+  const darkCardIndexes = getMosaicDarkIndexes(serviceGridSpans)
   const reveal = {
     hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 },
     visible: {
@@ -304,6 +307,7 @@ export function ServicesPageContent() {
         </div>
       </section>
 
+      {services.length > 0 && (
       <section id="engineering-services" className="scroll-mt-24 bg-[#dfe8ef] px-5 py-20 md:py-[108px]">
         <div className="mx-auto max-w-[1236px]">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -316,17 +320,20 @@ export function ServicesPageContent() {
           </motion.div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
-            {engineeringServices.map(({ title, icon: Icon, color, copy }, index) => {
-              const isFeatured = index < 2
-              const isDark = index === 0 || index === 3 || index === 7
+            {services.map(({ id, title, icon, accent: color, description: copy }, index) => {
+              const spanUnits = serviceGridSpans[index]
+              const span = getServiceSpanClass(spanUnits)
+              const isFeatured = spanUnits > 5
+              const isDark = darkCardIndexes.has(index)
+              const fillsTabletRow = services.length % 2 === 1 && index === services.length - 1
               return (
                 <motion.article
-                  key={title}
+                  key={id}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                   variants={reveal}
-                  className={`group relative overflow-hidden rounded-[20px] border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_65px_rgba(22,34,54,0.14)] md:p-7 ${isFeatured ? 'min-h-[290px] lg:col-span-6' : 'min-h-[260px] lg:col-span-4'} ${isDark ? 'border-[#263b54] bg-[#111d2d] text-white' : 'border-[#c5d3de] bg-white text-[#111827]'}`}
+                  className={`group relative overflow-hidden rounded-[20px] border p-6 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_65px_rgba(22,34,54,0.14)] md:p-7 ${fillsTabletRow ? 'sm:col-span-2' : 'sm:col-span-1'} ${span} ${isFeatured ? 'min-h-[290px]' : 'min-h-[260px]'} ${isDark ? 'border-[#263b54] bg-[#111d2d] text-white' : 'border-[#c5d3de] bg-white text-[#111827]'}`}
                 >
                   <div className="absolute -right-16 -top-20 size-56 rounded-full opacity-[0.14] blur-3xl transition-transform duration-700 group-hover:scale-125" style={{ backgroundColor: color }} />
                   <div
@@ -336,7 +343,7 @@ export function ServicesPageContent() {
                   <div className="relative z-10 flex h-full flex-col">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3.5">
-                        <span className="flex size-13 items-center justify-center rounded-[16px] border" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}18` }}><Icon aria-hidden="true" size={26} strokeWidth={1.8} /></span>
+                        <span className="flex size-13 items-center justify-center rounded-[16px] border" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}18` }}><ServiceIcon name={icon} aria-hidden="true" size={26} strokeWidth={1.8} /></span>
                         <div>
                           <p className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? 'text-[#91a1b5]' : 'text-[#708093]'}`}>Engineering service</p>
                           <p className="mt-1 text-xs font-bold tabular-nums" style={{ color }}>/ {String(index + 1).padStart(2, '0')}</p>
@@ -400,6 +407,7 @@ export function ServicesPageContent() {
           </motion.div>
         </div>
       </section>
+      )}
     </div>
   )
 }

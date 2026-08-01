@@ -3,6 +3,7 @@ import { generateMetadata } from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { ServicesPageContent } from '@/components/sections/ServicesPageContent'
 import { getNavbarData, getFooterData } from '@/lib/config/site'
+import { getAllServices } from '@/lib/data/services'
 
 export const metadata: Metadata = generateMetadata({
   title: 'Engineering Solutions',
@@ -18,14 +19,15 @@ export const metadata: Metadata = generateMetadata({
 })
 
 export default async function Services() {
-  const [navbar, footer] = await Promise.all([
+  const [navbar, footer, services] = await Promise.all([
     getNavbarData(),
     getFooterData(),
+    getAllServices(),
   ])
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
-      <ServicesPageContent />
+      <ServicesPageContent services={services} />
     </MainLayout>
   )
 }
