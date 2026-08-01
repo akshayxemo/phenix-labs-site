@@ -123,13 +123,13 @@ export function ContactForm({
 
   const labelClassName = isFooter
     ? 'mb-2 block text-sm font-semibold text-[#c8d2de]'
-    : 'mb-1 block text-sm font-medium text-gray-700'
+    : 'mb-2 block text-sm font-semibold text-[#334458]'
   const fieldClassName = isFooter
     ? 'w-full rounded-[14px] border border-white/[0.085] bg-[#081422]/80 px-4 py-3.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] outline-none transition placeholder:text-[#627388] hover:border-white/[0.15] focus:border-[#58a7ff]/70 focus:ring-4 focus:ring-[#0064d7]/10 disabled:cursor-not-allowed disabled:opacity-60'
-    : 'w-full rounded-lg border border-gray-300 px-4 py-2 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500'
+    : 'w-full rounded-[14px] border border-[#c9d5df] bg-[#f8fafc] px-4 py-3.5 text-[#162236] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] outline-none transition placeholder:text-[#8a98a7] hover:border-[#aebfcd] focus:border-[#4b9ce7] focus:bg-white focus:ring-4 focus:ring-[#0064d7]/8 disabled:cursor-not-allowed disabled:opacity-60'
   const errorClassName = isFooter
     ? 'mt-1.5 text-sm text-[#ff9d9d]'
-    : 'mt-1 text-sm text-red-500'
+    : 'mt-1.5 text-sm text-[#c53e4a]'
 
   return (
     <div className={className}>
@@ -169,7 +169,7 @@ export function ContactForm({
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={isFooter ? 'grid gap-5 sm:grid-cols-2' : 'space-y-4'}
+        className="grid gap-5 sm:grid-cols-2"
         noValidate
       >
         {/* Name Field */}
@@ -261,7 +261,7 @@ export function ContactForm({
         )}
 
         {/* Subject Field */}
-        <div className={isFooter ? 'sm:col-span-2' : undefined}>
+        <div className="sm:col-span-2">
           <label htmlFor={`${idPrefix}-subject`} className={labelClassName}>
             Subject <span className="text-red-500" aria-label="required">*</span>
           </label>
@@ -282,7 +282,7 @@ export function ContactForm({
         </div>
 
         {/* Message Field */}
-        <div className={isFooter ? 'sm:col-span-2' : undefined}>
+        <div className="sm:col-span-2">
           <label htmlFor={`${idPrefix}-message`} className={labelClassName}>
             Message <span className="text-red-500" aria-label="required">*</span>
           </label>
@@ -304,7 +304,7 @@ export function ContactForm({
 
         {/* Subscribe Checkbox (Optional) */}
         {showSubscribe && (
-          <div className={`flex items-center ${isFooter ? 'sm:col-span-2' : ''}`}>
+          <div className="flex items-center sm:col-span-2">
             <input
               id={`${idPrefix}-subscribe`}
               type="checkbox"
@@ -325,7 +325,7 @@ export function ContactForm({
           className={
             isFooter
               ? 'h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.24)] transition-all hover:-translate-y-0.5 hover:bg-[#1475e8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.32)] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2'
-              : 'w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50'
+              : 'h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.3)] disabled:cursor-not-allowed disabled:opacity-50 sm:col-span-2'
           }
           aria-busy={isSubmitting || formState.isSubmitting}
         >

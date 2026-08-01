@@ -354,17 +354,47 @@ export function ServicesPageContent() {
             })}
           </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-12 text-center text-white md:px-12 md:py-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={reveal} className="relative mt-16 overflow-hidden rounded-[20px] bg-[#0b1422] px-6 py-10 text-white md:px-12 md:py-14">
             <div aria-hidden="true" className="absolute inset-0 opacity-[0.22] [background-image:radial-gradient(rgba(113,180,255,.75)_1.2px,transparent_1.4px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,black_78%,transparent)]" />
             <div aria-hidden="true" className="absolute -left-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#0064d7]/22 blur-[80px]" />
             <div aria-hidden="true" className="absolute -right-24 top-1/2 size-72 -translate-y-1/2 rounded-full bg-[#a984ff]/15 blur-[80px]" />
-            <div className="relative z-10 mx-auto max-w-[720px]">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#58a7ff]">Let&apos;s build it together</p>
-              <h2 className="mt-4 text-[30px] font-bold leading-tight tracking-[-0.03em] md:text-[44px]">Have an idea or an engineering challenge?</h2>
-              <p className="mx-auto mt-4 max-w-[560px] text-[15px] leading-7 text-[#aeb9c7] md:text-[17px]">Tell us what you are trying to solve, and we will help identify the clearest path from concept to working system.</p>
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Link href="/contact" className="group inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#0055b8]">Discuss your project <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
-                <Link href="/contact" className="inline-flex h-13 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] px-7 font-semibold text-white transition-colors hover:border-[#58a7ff] hover:text-[#58a7ff]">Contact us</Link>
+            <div className="relative z-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#58a7ff]">Let&apos;s build it together</p>
+                <h2 className="mt-4 max-w-[650px] text-[30px] font-bold leading-tight tracking-[-0.03em] md:text-[44px]">Have an idea or an engineering challenge?</h2>
+                <p className="mt-4 max-w-[590px] text-[15px] leading-7 text-[#aeb9c7] md:text-[17px]">Tell us what you are trying to solve, and we will help identify the clearest path from concept to working system.</p>
+                <div className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+                  <Link href="/contact" className="group inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_34px_rgba(0,100,215,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#1475e8] hover:shadow-[0_18px_40px_rgba(0,100,215,0.32)]">Discuss your project <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+                  <Link href="#development-process" className="group inline-flex items-center gap-2 border-b border-[#62758b] pb-1.5 text-sm font-semibold text-[#b7c3d0] transition-colors hover:border-[#58a7ff] hover:text-[#67aeff]">
+                    Review our process
+                    <ArrowUpRight aria-hidden="true" size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[20px] border border-white/[0.1] bg-white/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm sm:p-6">
+                <div aria-hidden="true" className="absolute -right-16 -top-16 size-44 rounded-full bg-[#58a7ff]/12 blur-3xl" />
+                <div className="relative">
+                  <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#67aeff]">What happens next</p>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#66798e]">Simple &amp; focused</span>
+                  </div>
+                  <div className="mt-2">
+                    {[
+                      ['01', 'Share the challenge', 'Give us the useful context, constraints, and outcome.'],
+                      ['02', 'We assess the fit', 'Our team reviews the technical direction and scope.'],
+                      ['03', 'Receive a clear next step', 'We respond with the most practical way to move forward.'],
+                    ].map(([number, title, copy], index) => (
+                      <div key={number} className={`flex gap-4 py-4 ${index < 2 ? 'border-b border-white/[0.07]' : ''}`}>
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-[13px] border border-[#58a7ff]/20 bg-[#102943] text-xs font-bold text-[#67aeff]">{number}</span>
+                        <div>
+                          <h3 className="text-sm font-bold text-[#e1e8ef]">{title}</h3>
+                          <p className="mt-1 text-[13px] leading-5 text-[#8494a7]">{copy}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>

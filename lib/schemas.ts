@@ -18,6 +18,10 @@ export const NavbarDataSchema = z.object({
     href: z.string().url(),
   }),
   links: z.array(NavLinkSchema),
+  contactCta: z.object({
+    text: z.string(),
+    href: z.string(),
+  }).optional(),
   cta: z.object({
     text: z.string(),
     href: z.string().url(),

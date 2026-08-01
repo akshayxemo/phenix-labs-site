@@ -17,6 +17,10 @@ export interface NavbarData {
     imageSrc?: string
   }
   links: NavLink[]
+  contactCta?: {
+    text: string
+    href: string
+  }
   cta?: {
     text: string
     href: string

@@ -3,5 +3,13 @@
 import { ContactForm } from '@/components/forms/ContactForm'
 
 export function ContactFormClient() {
-  return <ContactForm showPhone showCompany showSubscribe submitButtonText="Send Message" />
+  return (
+    <ContactForm
+      idPrefix="project-enquiry"
+      showPhone
+      showCompany
+      showSubscribe={false}
+      submitButtonText="Send project enquiry"
+    />
+  )
 }

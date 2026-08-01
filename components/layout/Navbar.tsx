@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { ArrowUpRight, MessageCircle, Menu, X } from 'lucide-react'
 import {
   AnimatePresence,
   motion,
@@ -114,7 +114,7 @@ export function Navbar({ data }: NavbarProps) {
           </div>
 
           <div
-            className={`hidden items-center rounded-full border p-1 transition-all lg:flex ${
+            className={`absolute left-1/2 hidden -translate-x-1/2 items-center rounded-full border p-1 transition-all lg:flex ${
               shouldReduceMotion ? 'duration-0' : 'duration-300'
             } ${
               isScrolled
@@ -145,6 +145,27 @@ export function Navbar({ data }: NavbarProps) {
           </div>
 
           <div className="flex items-center gap-2">
+          {data.contactCta && (
+            <Link
+              href={data.contactCta.href}
+              aria-current={isLinkActive(data.contactCta.href) ? 'page' : undefined}
+              className={cn(
+                'group hidden h-11 items-center gap-2 rounded-full border px-5 text-sm font-semibold shadow-[0_8px_22px_rgba(22,34,54,0.06)] transition-all hover:-translate-y-0.5 lg:inline-flex',
+                isLinkActive(data.contactCta.href)
+                  ? 'border-[#0064d7]/35 bg-[#e7f2ff] text-[#0064d7]'
+                  : 'border-[#b8c8d5] bg-white/55 text-[#26374a] hover:border-[#0064d7]/45 hover:bg-white hover:text-[#0064d7]'
+              )}
+            >
+              {data.contactCta.text}
+              <MessageCircle
+                aria-hidden="true"
+                size={16}
+                strokeWidth={1.9}
+                className="text-[#278bc2] transition-transform group-hover:-rotate-6 group-hover:scale-105"
+              />
+            </Link>
+          )}
+
           {data.cta && (
             <Link
               href={data.cta.href}
@@ -206,11 +227,27 @@ export function Navbar({ data }: NavbarProps) {
                   </Link>
                 )
               })}
+              {data.contactCta && (
+                <Link
+                  href={data.contactCta.href}
+                  onClick={closeMenu}
+                  aria-current={isLinkActive(data.contactCta.href) ? 'page' : undefined}
+                  className={cn(
+                    'mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-[14px] border px-5 text-sm font-semibold transition-colors',
+                    isLinkActive(data.contactCta.href)
+                      ? 'border-[#acd0f1] bg-[#e8f2ff] text-[#0064d7]'
+                      : 'border-[#c7d4de] bg-[#f7fafc] text-[#26374a] hover:border-[#0064d7]/40 hover:text-[#0064d7]'
+                  )}
+                >
+                  {data.contactCta.text}
+                  <MessageCircle aria-hidden="true" size={16} strokeWidth={1.9} className="text-[#278bc2]" />
+                </Link>
+              )}
               {data.cta && (
                 <Link
                   href={data.cta.href}
                   onClick={closeMenu}
-                  className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-[#0064d7] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0055b8]"
+                  className="mt-1 inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-[#0064d7] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0055b8]"
                 >
                   {data.cta.text}
                   <ArrowUpRight aria-hidden="true" size={17} />
