@@ -3,7 +3,9 @@ import {
   isInventionSort,
 } from '@/lib/data/inventions'
 
+/** Cursor-paginated inventions endpoint consumed by the Products catalogue. */
 export async function GET(request: Request): Promise<Response> {
+  // Validate public query parameters before forwarding them to the CMS data layer.
   const params = new URL(request.url).searchParams
   const cursor = params.get('cursor') || undefined
   const search = params.get('search') || ''
@@ -22,6 +24,7 @@ export async function GET(request: Request): Promise<Response> {
 
     return Response.json(page, {
       headers: {
+        // CDN caching keeps pagination responsive while allowing recent CMS updates.
         'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
       },
     })

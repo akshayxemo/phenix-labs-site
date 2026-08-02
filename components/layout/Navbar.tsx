@@ -19,6 +19,7 @@ interface NavbarProps {
   data: NavbarData
 }
 
+/** Responsive global navigation with expanded-at-top and contracted-on-scroll states. */
 export function Navbar({ data }: NavbarProps) {
   const pathname = usePathname()
   const { scrollY } = useScroll()
@@ -28,6 +29,7 @@ export function Navbar({ data }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
+    // Separate enter/exit thresholds prevent flicker near the contraction boundary.
     setIsScrolled((current) => {
       if (latest > 34) return true
       if (latest < 12) return false
@@ -36,6 +38,7 @@ export function Navbar({ data }: NavbarProps) {
   })
 
   useEffect(() => {
+    // Restore scroll-derived state and support closing the mobile menu with Escape.
     const initialScrollFrame = window.requestAnimationFrame(() => {
       setIsScrolled(window.scrollY > 34)
     })

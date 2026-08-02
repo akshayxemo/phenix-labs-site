@@ -10,6 +10,7 @@ import { RecreateSingletonAction } from './sanity/actions/RecreateSingletonActio
 const singletonTypes = new Set(['aboutPage', 'contactSettings'])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
+/** Studio configuration, navigation structure, schemas, and singleton safeguards. */
 export default defineConfig({
   name: 'phenixLabs',
   title: 'Phenix Labs Admin Panel',
@@ -18,6 +19,7 @@ export default defineConfig({
   dataset,
   plugins: [
     structureTool({
+      // Pin singleton documents to canonical ids and list collection documents below them.
       structure: (structure) =>
         structure
           .list()
@@ -59,6 +61,7 @@ export default defineConfig({
   },
   document: {
     actions: (previousActions, context) => {
+      // Singletons cannot be duplicated or deleted through standard document actions.
       if (!singletonTypes.has(context.schemaType)) return previousActions
 
       const actions = previousActions.filter((action) =>
@@ -68,6 +71,7 @@ export default defineConfig({
       return [...actions, RecreateSingletonAction]
     },
     newDocumentOptions: (previousOptions) =>
+      // Hide singleton templates from the global "new document" menu.
       previousOptions.filter(
         (option) =>
           option.templateId !== 'aboutPage' &&

@@ -5,6 +5,7 @@ const aboutPageQuery = `*[
   _id == "aboutPage"
 ][0].markdown`
 
+/** Returns singleton About Markdown, or an empty string when unpublished/unavailable. */
 export async function getAboutMarkdown(): Promise<string> {
   try {
     const markdown = await sanityClient.fetch<string | null>(

@@ -2,6 +2,7 @@
 
 import { ContactForm } from '@/components/forms/ContactForm'
 
+/** Client boundary for the configurable project-enquiry form on the Contact page. */
 export function ContactFormClient() {
   return (
     <ContactForm

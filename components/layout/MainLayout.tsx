@@ -9,6 +9,7 @@ interface MainLayoutProps {
   footerData: FooterData
 }
 
+/** Shared public-page shell that guarantees one navbar and one modular footer. */
 export function MainLayout({
   children,
   navbarData,

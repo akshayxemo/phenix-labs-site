@@ -60,6 +60,7 @@ function toOption(name: IconName): IconOption {
   return { value: name, title: formatIconName(name) }
 }
 
+/** Searchable Studio input that previews and stores a valid Lucide icon name. */
 export function LucideIconInput(props: StringInputProps) {
   const { onChange, readOnly, validationError, value } = props
   const inputId = useId()

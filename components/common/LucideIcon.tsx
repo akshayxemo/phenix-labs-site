@@ -13,6 +13,7 @@ interface LucideIconProps extends LucideProps {
   name: string
 }
 
+/** Safely resolves a CMS-provided Lucide icon name with a predictable fallback. */
 export function LucideIcon({ name, ...props }: LucideIconProps) {
   const safeName: IconName = iconNameSet.has(name) ? (name as IconName) : 'link'
 

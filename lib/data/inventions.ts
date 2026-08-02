@@ -48,6 +48,7 @@ export interface InventionsPage {
   total: number
 }
 
+// Home uses the same project-date ordering as the Products catalogue.
 const featuredInventionsQuery = `*[
   _type == "inventions" &&
   coalesce(featureOnHome, false) == true &&
@@ -123,6 +124,7 @@ const sortConfiguration: Record<
 }
 
 function encodeCursor(invention: SanityInvention, sort: InventionSort) {
+  // Cursor payloads bind to their sort mode so they cannot be reused incorrectly.
   return Buffer.from(
     JSON.stringify({ sort, value: invention.sortValue, id: invention.id }),
   ).toString('base64url')
@@ -145,6 +147,7 @@ function decodeCursor(cursor: string, sort: InventionSort): CursorPayload {
 }
 
 function toPublicInvention(invention: SanityInvention): Invention {
+  // Preserve gallery-primary compatibility, then let the dedicated primary image win.
   const galleryImages = (invention.images || []).filter((image) => image.url)
   const primaryIndex = galleryImages.findIndex((image) => image.isPrimary)
   let orderedImages =
@@ -179,6 +182,7 @@ function toPublicInvention(invention: SanityInvention): Invention {
   }
 }
 
+/** Fetches one stable cursor page with optional text search and project-date sorting. */
 export async function getInventionsPage({
   cursor,
   search = '',
@@ -194,6 +198,7 @@ export async function getInventionsPage({
   const searchFilter = normalizedSearch
     ? ' && (title match $term || description match $term)'
     : ''
+  // Pair the sort value with `_id` for deterministic pagination when values match.
   const cursorFilter = cursorPayload
     ? ` && (
       ${sortConfig.value} ${sortConfig.comparison} $cursorValue ||
@@ -246,6 +251,7 @@ export async function getInventionsPage({
   }
 }
 
+/** Returns at most five Home-featured inventions, newest project date first. */
 export async function getFeaturedInventions(): Promise<Invention[]> {
   try {
     const inventions = await sanityClient.fetch<SanityInvention[]>(
@@ -261,6 +267,7 @@ export async function getFeaturedInventions(): Promise<Invention[]> {
   }
 }
 
+/** Resolves a deep-linked invention independently from the current catalogue page. */
 export async function getInventionById(id: string): Promise<Invention | null> {
   const normalizedId = id.trim().slice(0, 128)
   if (!normalizedId) return null
@@ -279,6 +286,7 @@ export async function getInventionById(id: string): Promise<Invention | null> {
   }
 }
 
+/** Runtime guard for public API sort parameters. */
 export function isInventionSort(value: string): value is InventionSort {
   return inventionSorts.includes(value as InventionSort)
 }

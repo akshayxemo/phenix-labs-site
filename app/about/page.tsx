@@ -4,6 +4,7 @@ import { MainLayout } from '@/components/layout/MainLayout'
 import { getNavbarData, getFooterData } from '@/lib/config/site'
 import { getAboutMarkdown } from '@/lib/data/about'
 
+/** Public About route. The page intentionally stays empty when no CMS Markdown is published. */
 export const metadata: Metadata = {
   title: 'About Phenix Labs',
   description:
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default async function About() {
+  // Load shared chrome and page content concurrently to avoid serial CMS requests.
   const [navbar, footer, markdown] = await Promise.all([
     getNavbarData(),
     getFooterData(),

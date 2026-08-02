@@ -9,6 +9,7 @@ interface FeaturesGridProps {
   columns?: 2 | 3 | 4
 }
 
+/** Generic feature-card grid retained for reusable informational sections. */
 export function FeaturesGrid({
   features,
   title,

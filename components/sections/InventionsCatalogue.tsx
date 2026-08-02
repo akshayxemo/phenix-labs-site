@@ -40,6 +40,7 @@ interface InventionsCatalogueProps {
   initialSelectedInvention: Invention | null
 }
 
+/** Sort choices supported by both the control and cursor API. */
 const sortOptions: Array<{
   value: InventionSort
   label: string
@@ -77,6 +78,7 @@ function formatInventionPeriod(invention: Invention) {
   return `Added ${formatFullDate(invention.createdAt)}`
 }
 
+/** Compact catalogue card with an image carousel independent from the detail dialog. */
 function InventionCard({
   invention,
   index,
@@ -93,6 +95,7 @@ function InventionCard({
   const activeImage = images[activeImageIndex]
 
   const showImage = (nextIndex: number) => {
+    // Wrap at both ends so card image navigation remains continuous.
     if (images.length < 2) return
     setImageDirection(nextIndex > activeImageIndex ? 1 : -1)
     setActiveImageIndex((nextIndex + images.length) % images.length)
@@ -217,6 +220,7 @@ function InventionCard({
   )
 }
 
+/** Full product-image workspace with thumbnails and desktop pointer magnification. */
 function InventionDetailGallery({ invention }: { invention: Invention }) {
   const shouldReduceMotion = useReducedMotion()
   const [activeImageIndex, setActiveImageIndex] = useState(0)
@@ -228,6 +232,7 @@ function InventionDetailGallery({ invention }: { invention: Invention }) {
   const activeImage = images[activeImageIndex]
 
   useEffect(() => {
+    // Keep the active thumbnail visible in galleries wider than their scroll rail.
     activeThumbnailRef.current?.scrollIntoView({
       behavior: shouldReduceMotion ? 'auto' : 'smooth',
       block: 'nearest',
@@ -256,6 +261,7 @@ function InventionDetailGallery({ invention }: { invention: Invention }) {
   }
 
   const beginZoom = () => {
+    // Touch devices keep the normal gallery; hover zoom is enabled only with a mouse/trackpad.
     if (window.matchMedia('(min-width: 1024px) and (hover: hover)').matches) {
       setIsZooming(true)
     }
@@ -263,6 +269,7 @@ function InventionDetailGallery({ invention }: { invention: Invention }) {
 
   return (
     <div className="flex h-[390px] flex-col overflow-hidden border-b border-[#c9d6df] bg-[#e8eff3] sm:h-[520px] lg:h-full lg:border-b-0 lg:border-r">
+      {/* Main image stage remains unobstructed by the thumbnail navigation. */}
       <div className="relative min-h-0 flex-1 overflow-hidden">
         <div
           aria-hidden="true"
@@ -320,6 +327,7 @@ function InventionDetailGallery({ invention }: { invention: Invention }) {
           Visual record
         </span>
 
+        {/* Navigator mirrors the focused portion of the magnified desktop image. */}
         {activeImage && isZooming && (
           <div className="pointer-events-none absolute right-6 top-6 z-30 hidden w-36 overflow-hidden rounded-[14px] border border-white/80 bg-[#f6f9fa]/92 p-2 shadow-[0_14px_38px_rgba(24,53,78,.18)] backdrop-blur-md lg:block xl:w-40">
             <div className="relative aspect-4/3 overflow-hidden rounded-[9px] bg-[#dfe8ed]">
@@ -358,6 +366,7 @@ function InventionDetailGallery({ invention }: { invention: Invention }) {
         )}
       </div>
 
+      {/* Separate scrollable thumbnail region for arbitrarily sized galleries. */}
       {images.length > 1 && (
         <div className="shrink-0 border-t border-[#c7d4dd] bg-[#f4f7f9] px-3 py-2.5 sm:px-4">
           <div className="mx-auto flex w-full max-w-[760px] min-w-0 items-center gap-2.5">
@@ -394,6 +403,7 @@ export function InventionsCatalogue({
   initialPage,
   initialSelectedInvention,
 }: InventionsCatalogueProps) {
+  // Search, sort, cursor, and dialog state are intentionally owned by the catalogue.
   const [inventions, setInventions] = useState(initialPage.items)
   const [nextCursor, setNextCursor] = useState(initialPage.nextCursor)
   const [total, setTotal] = useState(initialPage.total)
@@ -411,6 +421,7 @@ export function InventionsCatalogue({
     : -1
 
   useEffect(() => {
+    // Browser back/forward actions must reopen or close the deep-linked detail item.
     const handleHistoryNavigation = () => {
       const inventionId = new URL(window.location.href).searchParams.get(
         'invention',
@@ -438,6 +449,7 @@ export function InventionsCatalogue({
     search: string
     nextSort: InventionSort
   }) => {
+    // Centralized API URL creation keeps all collection refresh paths equivalent.
     const params = new URLSearchParams({ sort: nextSort })
     if (search) params.set('search', search)
     if (cursor) params.set('cursor', cursor)
@@ -448,6 +460,7 @@ export function InventionsCatalogue({
   }
 
   const refreshCollection = async (search: string, nextSort: InventionSort) => {
+    // Starting a new result set invalidates the currently selected catalogue context.
     setSelectedInvention(null)
     setIsRefreshing(true)
     setError('')
@@ -481,6 +494,7 @@ export function InventionsCatalogue({
   }
 
   const loadMore = async () => {
+    // Cursor pages append without discarding items already rendered.
     if (!nextCursor || isLoadingMore) return
 
     setIsLoadingMore(true)
@@ -507,6 +521,7 @@ export function InventionsCatalogue({
     if (nextIndex < 0 || nextIndex >= inventions.length) return
     const invention = inventions[nextIndex]
     setSelectedInvention(invention)
+    // Replace history while browsing inside the dialog to avoid one entry per item.
     window.history.replaceState(
       null,
       '',
@@ -516,6 +531,7 @@ export function InventionsCatalogue({
 
   const openInvention = (invention: Invention) => {
     setSelectedInvention(invention)
+    // Opening from the catalogue creates a shareable, back-button-aware deep link.
     window.history.pushState(
       null,
       '',
@@ -530,6 +546,7 @@ export function InventionsCatalogue({
 
   return (
     <div>
+      {/* Search and stable project-date sorting controls. */}
       <div className="rounded-[20px] border border-[#c7d4df] bg-white/80 p-3 shadow-[0_16px_50px_rgba(22,34,54,0.08)] backdrop-blur-md md:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <form onSubmit={handleSearch} className="relative flex min-w-0 flex-1">
@@ -621,6 +638,7 @@ export function InventionsCatalogue({
         </p>
       )}
 
+      {/* Responsive results, empty state, and retry behavior. */}
       {inventions.length > 0 ? (
         <div className={`mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 ${isRefreshing ? 'pointer-events-none opacity-45' : ''}`}>
           {inventions.map((invention, index) => (
@@ -675,6 +693,7 @@ export function InventionsCatalogue({
         </div>
       )}
 
+      {/* Deep-linkable bottom sheet on mobile and full workspace on desktop. */}
       <Dialog
         open={Boolean(selectedInvention)}
         onClose={closeInvention}

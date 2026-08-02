@@ -16,6 +16,7 @@ const clientsQuery = `*[
   "logoUrl": logo.asset->url
 }`
 
+/** Fetches active client logos in the editor-defined display order. */
 export async function getClients(): Promise<ClientLogo[]> {
   try {
     return await sanityClient.fetch<ClientLogo[]>(clientsQuery, {}, {

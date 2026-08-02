@@ -16,6 +16,7 @@ const singletonLabels: Record<string, string> = {
 }
 
 function getInitialContent(type: string): Record<string, unknown> {
+  // Singleton defaults make recovery possible after an editor deletes the document.
   if (type === 'aboutPage') {
     return { markdown: '' }
   }
@@ -36,6 +37,7 @@ function getInitialContent(type: string): Record<string, unknown> {
   }
 }
 
+/** Studio action that recreates supported singleton documents at their canonical ids. */
 export const RecreateSingletonAction: DocumentActionComponent = (props) => {
   const client = useClient({ apiVersion })
   const toast = useToast()

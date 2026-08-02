@@ -12,6 +12,7 @@ import { SocialBrandIcon } from '@/components/common/SocialBrandIcon'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
 import { ContactFormClient } from './contact-form'
 
+/** Contact route combining persisted contact settings with the enquiry form. */
 export const metadata: Metadata = {
   title: 'Contact Us - Phenix Labs',
   description: 'Discuss an engineering, research, product development, or education project with Phenix Labs.',
@@ -24,6 +25,7 @@ export default async function Contact() {
     getFooterData(),
   ])
   const contact = footer.contact
+  // Empty CMS channels are removed so the UI never renders dead contact actions.
   const directChannels = [
     {
       icon: Phone,

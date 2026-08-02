@@ -19,6 +19,7 @@ async function validateUniqueOrder(
   context: ValidationContext,
   field: 'serviceOrder' | 'homeOrder',
 ) {
+  // Order values must be unique within their target surface to keep CMS sorting stable.
   if (typeof value !== 'number') return true
 
   const documentId = context.document?._id
@@ -51,6 +52,7 @@ async function validateUniqueOrder(
   }
 }
 
+/** Shared service document used by both Home highlights and the full Services page. */
 export const serviceType = defineType({
   name: 'services',
   title: 'Services',

@@ -40,6 +40,7 @@ const buttonVariants = cva(
   },
 )
 
+/** Shared button primitive with semantic variants and optional slot composition. */
 function Button({
   className,
   variant = 'default',

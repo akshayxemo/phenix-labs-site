@@ -9,6 +9,7 @@ interface ServicesGridProps {
   columns?: 2 | 3 | 4
 }
 
+/** Generic responsive services grid for simpler page variants. */
 export function ServicesGrid({
   services,
   title,

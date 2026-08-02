@@ -14,6 +14,7 @@ interface OurServicesSectionProps {
   }>
 }
 
+/** Legacy compact service-list presentation retained for alternate page compositions. */
 export function OurServicesSection({ title, description, services }: OurServicesSectionProps) {
   const getIcon = (icon: string) => {
     const icons: Record<string, string> = {

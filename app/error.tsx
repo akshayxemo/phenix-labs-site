@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 
+/** App Router error boundary with retry and safe navigation actions. */
 interface ErrorProps {
   error: Error & { digest?: string }
   reset: () => void
@@ -10,6 +11,7 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
+    // Preserve the runtime error in browser diagnostics while showing a friendly UI.
     console.error('[Error]', error)
   }, [error])
 

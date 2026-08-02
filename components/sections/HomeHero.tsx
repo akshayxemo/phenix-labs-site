@@ -7,12 +7,14 @@ import { ArrowUpRight } from 'lucide-react'
 
 const capabilities = ['Research-led', 'Built end to end', 'Ready for the real world']
 
+/** Responsive Home hero with animated robotic-hand artwork and reduced-motion support. */
 export function HomeHero() {
   const shouldReduceMotion = useReducedMotion()
   const duration = shouldReduceMotion ? 0 : 0.75
 
   return (
     <section className="relative min-h-[720px] overflow-hidden bg-[#eaf0f4] px-5 pb-[190px] pt-[108px] md:min-h-[710px] md:pb-[180px] md:pt-[116px] xl:min-h-[680px] xl:pb-20">
+      {/* Background grid and central atmospheric glow. */}
       <div
         aria-hidden="true"
         className="absolute inset-0 opacity-[0.22] [background-image:linear-gradient(rgba(22,34,54,.11)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.11)_1px,transparent_1px)] [background-size:54px_54px] [mask-image:linear-gradient(to_bottom,black,transparent_86%)]"
@@ -21,6 +23,7 @@ export function HomeHero() {
         aria-hidden="true"
         className="absolute left-1/2 top-[45%] size-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#64c8ef]/16 blur-[90px] md:size-[720px]"
       />
+      {/* Wide-screen left hand. */}
       <motion.div
         aria-hidden="true"
         initial={shouldReduceMotion ? false : { opacity: 0, x: -24 }}
@@ -47,6 +50,7 @@ export function HomeHero() {
         />
       </motion.div>
 
+      {/* Wide-screen right hand. */}
       <motion.div
         aria-hidden="true"
         initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
@@ -73,6 +77,7 @@ export function HomeHero() {
         />
       </motion.div>
 
+      {/* Hero message, calls to action, and compact capability summary. */}
       <div className="relative z-10 mx-auto flex w-full max-w-[1100px] flex-col items-center text-center">
         <motion.p
           initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -147,6 +152,7 @@ export function HomeHero() {
         </motion.div>
       </div>
 
+      {/* Compact-screen artwork layer is kept below the interactive content. */}
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 z-[2] h-[205px] xl:hidden">
         <motion.div
           animate={shouldReduceMotion ? undefined : { y: [0, -5, 0] }}

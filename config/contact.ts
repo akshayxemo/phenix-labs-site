@@ -1,6 +1,7 @@
 import { SEO_CONFIG } from '@/config/seo'
 import type { ContactSettings } from '@/types'
 
+/** Safe fallback used when the Contact & Social singleton is missing or unavailable. */
 export const DEFAULT_CONTACT_SETTINGS: ContactSettings = {
   phone: '+91 89615 48205',
   phoneHref: 'tel:+918961548205',

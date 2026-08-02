@@ -13,6 +13,7 @@ interface WhatWeDoSectionProps {
   }>
 }
 
+/** Alternate What We Do presentation retained for modular landing-page composition. */
 export function WhatWeDoSection({ title, description, services }: WhatWeDoSectionProps) {
   const getIcon = (icon: string) => {
     const icons: Record<string, string> = {

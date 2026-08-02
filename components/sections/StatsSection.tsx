@@ -7,6 +7,7 @@ interface StatsSectionProps {
   title?: string
 }
 
+/** Reusable statistics section for page variants outside the custom Home counter row. */
 export function StatsSection({ stats, title }: StatsSectionProps) {
   return (
     <Section

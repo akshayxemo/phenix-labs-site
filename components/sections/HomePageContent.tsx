@@ -83,16 +83,19 @@ interface HomePageContentProps {
   inventions: Invention[]
 }
 
+/** Composes the Home page from server-fetched CMS collections and static section copy. */
 export function HomePageContent({ testimonials, clients, services, inventions }: HomePageContentProps) {
   const homeServiceSpans = getAlternatingServiceSpans(services.length)
   const homeDarkCardIndexes = getMosaicDarkIndexes(homeServiceSpans)
 
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#040404]">
+      {/* Landing message followed by the continuously scrolling client list. */}
       <HomeHero />
 
       <ClientLogoMarquee clients={clients} />
 
+      {/* Animated company statistics. */}
       <section className="relative z-10 px-4 pb-14 pt-8 md:px-6.75 md:pb-16 md:pt-11" aria-label="Company highlights">
         <div
           aria-hidden="true"
@@ -139,6 +142,7 @@ export function HomePageContent({ testimonials, clients, services, inventions }:
         </div>
       </section>
 
+      {/* Dark visual break for Research, Development, and Education. */}
       <section className="relative z-20 -mt-10 px-4 pb-4 pt-0 md:-mt-12 md:px-5.5">
         <div
           aria-hidden="true"
@@ -201,6 +205,7 @@ export function HomePageContent({ testimonials, clients, services, inventions }:
         </div>
       </section>
 
+      {/* Only CMS-selected Home services enter this alternating mosaic. */}
       {services.length > 0 && (
       <section className="px-5 py-20 md:py-[100px]">
         <SectionIntro eyebrow="What we build" title="Our Services">

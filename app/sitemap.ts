@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 
+/** Canonical public routes exposed to search engines. Admin and API routes are excluded. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://phenix-labs.com'
 

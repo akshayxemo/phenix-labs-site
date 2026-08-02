@@ -8,6 +8,7 @@ import { getClients } from '@/lib/data/clients'
 import { getHomeServices } from '@/lib/data/services'
 import { getFeaturedInventions } from '@/lib/data/inventions'
 
+/** Home route: composes independently cached CMS collections into one page model. */
 export const metadata: Metadata = generateMetadata({
   title: 'Premium Engineering Solutions',
   description: 'Join Phenix Labs, a cutting-edge creative company transforming dreams into reality. Experience technology-led innovation with 150+ designs, 50+ happy clients, and 12 years of excellence.',
@@ -24,6 +25,7 @@ export const metadata: Metadata = generateMetadata({
 })
 
 export default async function Home() {
+  // These collections do not depend on one another, so resolve them in parallel.
   const [navbar, footer, testimonials, clients, services, inventions] = await Promise.all([
     getNavbarData(),
     getFooterData(),

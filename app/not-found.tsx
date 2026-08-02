@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+/** Global fallback rendered when no application route matches the request. */
 export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen">

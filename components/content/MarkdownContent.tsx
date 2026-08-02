@@ -118,6 +118,7 @@ const components: Components = {
   },
 }
 
+/** Renders trusted CMS Markdown with responsive site typography and media overrides. */
 export function MarkdownContent({
   content,
   className = '',

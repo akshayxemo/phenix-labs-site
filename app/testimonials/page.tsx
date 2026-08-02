@@ -4,6 +4,7 @@ import { TestimonialsArchive } from '@/components/sections/TestimonialsArchive'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
 import { getTestimonialsPage } from '@/lib/data/testimonials'
 
+/** Testimonial archive route; unlike Home, this includes inactive testimonials. */
 export const metadata: Metadata = {
   title: 'Client Testimonials | Phenix Labs',
   description:
@@ -19,6 +20,7 @@ export default async function TestimonialsPage() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      {/* Archive hero. */}
       <section className="relative overflow-hidden bg-[#162236] px-5 py-20 text-white md:py-28">
         <div
           aria-hidden="true"
@@ -40,6 +42,7 @@ export default async function TestimonialsPage() {
         </div>
       </section>
 
+      {/* Incrementally loaded testimonial collection. */}
       <section className="bg-[#ecf1f5] px-5 py-16 md:py-24">
         <div className="mx-auto max-w-[1236px]">
           <TestimonialsArchive initialPage={initialPage} />

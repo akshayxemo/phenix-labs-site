@@ -1,6 +1,7 @@
 import { NextStudio } from 'next-sanity/studio'
 import config from '@/sanity.config'
 
+/** Embedded Sanity Studio route used by content editors at `/admin`. */
 export const dynamic = 'force-static'
 
 export { metadata, viewport } from 'next-sanity/studio'

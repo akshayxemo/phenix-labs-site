@@ -84,6 +84,7 @@ function toPublicTestimonial(testimonial: SanityTestimonial): Testimonial {
   }
 }
 
+/** Home carousel data: only testimonials marked active in Sanity. */
 export async function getHomeTestimonials(): Promise<Testimonial[]> {
   try {
     const testimonials = await sanityClient.fetch<SanityTestimonial[]>(
@@ -99,6 +100,7 @@ export async function getHomeTestimonials(): Promise<Testimonial[]> {
   }
 }
 
+/** Archive data: all testimonials, loaded in cursor pages regardless of active state. */
 export async function getTestimonialsPage(
   cursor?: string,
 ): Promise<TestimonialsPage> {

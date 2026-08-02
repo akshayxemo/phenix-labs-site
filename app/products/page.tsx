@@ -8,6 +8,7 @@ import {
   getInventionsPage,
 } from '@/lib/data/inventions'
 
+/** Products route with paginated catalogue data and deep-linked invention details. */
 export const metadata: Metadata = {
   title: 'Inventions & Products | Phenix Labs',
   description:
@@ -26,6 +27,7 @@ export default async function Products({
   searchParams: Promise<{ invention?: string | string[] }>
 }) {
   const resolvedSearchParams = await searchParams
+  // A deep link may arrive before its item appears in the first catalogue page.
   const requestedInventionId = Array.isArray(resolvedSearchParams.invention)
     ? resolvedSearchParams.invention[0]
     : resolvedSearchParams.invention
@@ -44,6 +46,7 @@ export default async function Products({
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
       <div className="overflow-hidden bg-[#eaf0f4] text-[#08111f]">
+        {/* Products hero and animated engineering orbit. */}
         <section className="relative overflow-hidden bg-[#081321] px-5 py-18 text-white md:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute -left-52 -top-56 size-[620px] rounded-full bg-[#0064d7]/25 blur-[130px]" />
           <div aria-hidden="true" className="absolute -bottom-56 right-[8%] size-[480px] rounded-full bg-[#46b6e4]/16 blur-[120px]" />
@@ -117,6 +120,7 @@ export default async function Products({
           </div>
         </section>
 
+        {/* Searchable, paginated invention collection. */}
         <section className="relative px-5 py-16 md:py-24">
           <div
             aria-hidden="true"

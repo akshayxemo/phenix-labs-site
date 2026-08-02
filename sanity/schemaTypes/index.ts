@@ -6,6 +6,7 @@ import { productsType } from './products'
 import { serviceType } from './services'
 import { testimonialType } from './testimonials'
 
+/** Complete Studio schema registry. Keep retained future-facing types listed here. */
 export const schemaTypes = [
   aboutPageType,
   contactSettingsType,

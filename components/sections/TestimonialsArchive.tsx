@@ -84,6 +84,7 @@ function TestimonialCard({
   )
 }
 
+/** Paginated archive; inactive testimonials remain visible here by design. */
 export function TestimonialsArchive({
   initialPage,
 }: TestimonialsArchiveProps) {
