@@ -45,10 +45,6 @@ export default async function Products({
     <MainLayout navbarData={navbar} footerData={footer}>
       <div className="overflow-hidden bg-[#eaf0f4] text-[#08111f]">
         <section className="relative overflow-hidden bg-[#081321] px-5 py-18 text-white md:py-24 lg:py-28">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(113,180,255,.35)_1px,transparent_1px),linear-gradient(90deg,rgba(113,180,255,.35)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_bottom,black,transparent_96%)]"
-          />
           <div aria-hidden="true" className="absolute -left-52 -top-56 size-[620px] rounded-full bg-[#0064d7]/25 blur-[130px]" />
           <div aria-hidden="true" className="absolute -bottom-56 right-[8%] size-[480px] rounded-full bg-[#46b6e4]/16 blur-[120px]" />
 
@@ -88,9 +84,18 @@ export default async function Products({
             </div>
 
             <div className="relative mx-auto hidden aspect-square w-full max-w-[500px] lg:block">
-              <div className="absolute inset-[8%] rounded-full border border-dashed border-[#65afff]/25" />
-              <div className="absolute inset-[22%] rounded-full border border-[#65afff]/18" />
-              <div className="absolute inset-[34%] rounded-full bg-[#0f2a45] shadow-[0_0_80px_rgba(55,160,255,0.22)]" />
+              <div className="product-orbit product-orbit-outer absolute inset-[8%] rounded-full border border-dashed border-[#65afff]/25">
+                <span className="absolute left-1/2 top-0 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#58a7ff] shadow-[0_0_16px_#58a7ff]" />
+                <span className="absolute left-[93.3%] top-3/4 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#58a7ff] shadow-[0_0_12px_#58a7ff]" />
+                <span className="absolute left-[6.7%] top-3/4 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#58a7ff] shadow-[0_0_12px_#58a7ff]" />
+              </div>
+              <div className="product-orbit product-orbit-middle absolute inset-[22%] rounded-full border border-[#65afff]/18">
+                <span className="absolute right-0 top-1/2 size-1.5 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#64d4ef] shadow-[0_0_14px_#64d4ef]" />
+                <span className="absolute left-0 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#64d4ef] shadow-[0_0_14px_#64d4ef]" />
+              </div>
+              <div className="product-orbit product-orbit-inner absolute inset-[34%] rounded-full bg-[#0f2a45] shadow-[0_0_80px_rgba(55,160,255,0.22)]">
+                <span className="absolute bottom-0 left-1/2 size-2 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#9aabff] shadow-[0_0_14px_#9aabff]" />
+              </div>
               <div className="absolute inset-[40%] flex items-center justify-center rounded-full border border-[#65afff]/35 bg-[#10243b] text-[#71b4ff] shadow-[inset_0_0_28px_rgba(88,167,255,0.12)]">
                 <CircuitBoard aria-hidden="true" className="size-12" strokeWidth={1.4} />
               </div>
@@ -108,10 +113,6 @@ export default async function Products({
                   <p className="mt-1.5 text-sm font-semibold text-white">{item.text}</p>
                 </div>
               ))}
-
-              <span className="absolute left-[12%] top-[22%] size-2 rounded-full bg-[#58a7ff] shadow-[0_0_16px_#58a7ff]" />
-              <span className="absolute bottom-[18%] left-[24%] size-1.5 rounded-full bg-[#64d4ef] shadow-[0_0_14px_#64d4ef]" />
-              <span className="absolute right-[13%] top-[52%] size-1.5 rounded-full bg-[#9aabff] shadow-[0_0_14px_#9aabff]" />
             </div>
           </div>
         </section>

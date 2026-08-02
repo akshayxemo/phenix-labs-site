@@ -57,10 +57,83 @@ export const inventionType = defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image',
+      title: 'Primary Product Image',
       type: 'image',
       options: { hotspot: true },
-      description: 'Main catalogue image. Use a clear, high-resolution landscape or portrait image.',
+      description:
+        'The main image shown first on product cards, the Home page, and the product detail gallery.',
+    }),
+    defineField({
+      name: 'images',
+      title: 'Additional Product Images',
+      type: 'array',
+      description:
+        'Optional gallery images visitors can browse after the primary product image.',
+      of: [
+        {
+          type: 'object',
+          name: 'inventionImage',
+          title: 'Additional Product Image',
+          fields: [
+            defineField({
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: { hotspot: true },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'altText',
+              title: 'Alternative Text',
+              type: 'string',
+              description:
+                'Briefly describe what is visible for screen readers. If empty, the invention title is used.',
+              validation: (rule) => rule.max(160),
+            }),
+          ],
+          preview: {
+            select: {
+              media: 'image',
+              altText: 'altText',
+            },
+            prepare({ media, altText }) {
+              return {
+                title: 'Additional image',
+                subtitle: altText || 'No alternative text',
+                media,
+              }
+            },
+          },
+        },
+      ],
+      options: { layout: 'grid' },
+    }),
+    defineField({
+      name: 'startDate',
+      title: 'Invention Start Date',
+      type: 'date',
+      description:
+        'Optional. When the invention or development work began. Newest/oldest sorting uses this date, then the completion date, then the document creation date when unavailable.',
+    }),
+    defineField({
+      name: 'endDate',
+      title: 'Invention End Date',
+      type: 'date',
+      description:
+        'Optional. When the invention was completed. Leave empty for ongoing work or when the completion date is unknown.',
+      validation: (rule) =>
+        rule.custom((endDate, context) => {
+          const startDate = context.document?.startDate
+          if (
+            !endDate ||
+            typeof startDate !== 'string' ||
+            endDate >= startDate
+          ) {
+            return true
+          }
+
+          return 'End date cannot be earlier than the start date.'
+        }),
     }),
     defineField({
       name: 'featureOnHome',
@@ -77,14 +150,22 @@ export const inventionType = defineType({
   ],
   orderings: [
     {
-      title: 'Newest first',
-      name: 'createdAtDesc',
-      by: [{ field: '_createdAt', direction: 'desc' }],
+      title: 'Newest invention date first',
+      name: 'startDateDesc',
+      by: [
+        { field: 'startDate', direction: 'desc' },
+        { field: 'endDate', direction: 'desc' },
+        { field: '_createdAt', direction: 'desc' },
+      ],
     },
     {
-      title: 'Oldest first',
-      name: 'createdAtAsc',
-      by: [{ field: '_createdAt', direction: 'asc' }],
+      title: 'Oldest invention date first',
+      name: 'startDateAsc',
+      by: [
+        { field: 'startDate', direction: 'asc' },
+        { field: 'endDate', direction: 'asc' },
+        { field: '_createdAt', direction: 'asc' },
+      ],
     },
     {
       title: 'Title A–Z',
@@ -97,13 +178,15 @@ export const inventionType = defineType({
       title: 'title',
       description: 'description',
       media: 'image',
+      additionalMedia: 'images.0.image',
       featureOnHome: 'featureOnHome',
+      startDate: 'startDate',
     },
-    prepare({ title, description, media, featureOnHome }) {
+    prepare({ title, description, media, additionalMedia, featureOnHome, startDate }) {
       return {
         title: title || 'Untitled invention',
-        subtitle: `${featureOnHome ? 'Featured on Home · ' : ''}${description || 'No description'}`,
-        media,
+        subtitle: `${featureOnHome ? 'Featured on Home · ' : ''}${startDate ? `${startDate} · ` : ''}${description || 'No description'}`,
+        media: media || additionalMedia,
       }
     },
   },

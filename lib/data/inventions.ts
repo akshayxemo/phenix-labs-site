@@ -15,11 +15,30 @@ export interface Invention {
   id: string
   title: string
   description: string
+  images: InventionImage[]
   imageUrl?: string
   createdAt: string
+  startDate?: string
+  endDate?: string
+  effectiveDate: string
 }
 
-interface SanityInvention extends Invention {
+export interface InventionImage {
+  url: string
+  alt: string
+  isPrimary: boolean
+}
+
+interface SanityInvention {
+  id: string
+  title: string
+  description: string
+  images?: InventionImage[]
+  primaryImageUrl?: string
+  createdAt: string
+  startDate?: string
+  endDate?: string
+  effectiveDate: string
   sortValue: string
 }
 
@@ -33,13 +52,21 @@ const featuredInventionsQuery = `*[
   _type == "inventions" &&
   coalesce(featureOnHome, false) == true &&
   defined(title)
-] | order(_createdAt desc, _id desc)[0...5] {
+] | order(coalesce(startDate, endDate, _createdAt) desc, _id desc)[0...5] {
   "id": _id,
   title,
   "description": coalesce(description, ""),
-  "imageUrl": image.asset->url,
+  "images": images[]{
+    "url": image.asset->url,
+    "alt": coalesce(altText, ""),
+    "isPrimary": coalesce(isPrimary, false)
+  },
+  "primaryImageUrl": image.asset->url,
   "createdAt": _createdAt,
-  "sortValue": _createdAt
+  startDate,
+  endDate,
+  "effectiveDate": coalesce(startDate, endDate, _createdAt),
+  "sortValue": coalesce(startDate, endDate, _createdAt)
 }`
 
 const inventionByIdQuery = `*[
@@ -50,9 +77,17 @@ const inventionByIdQuery = `*[
   "id": _id,
   title,
   "description": coalesce(description, ""),
-  "imageUrl": image.asset->url,
+  "images": images[]{
+    "url": image.asset->url,
+    "alt": coalesce(altText, ""),
+    "isPrimary": coalesce(isPrimary, false)
+  },
+  "primaryImageUrl": image.asset->url,
   "createdAt": _createdAt,
-  "sortValue": _createdAt
+  startDate,
+  endDate,
+  "effectiveDate": coalesce(startDate, endDate, _createdAt),
+  "sortValue": coalesce(startDate, endDate, _createdAt)
 }`
 
 interface CursorPayload {
@@ -66,13 +101,13 @@ const sortConfiguration: Record<
   { order: string; value: string; comparison: '>' | '<' }
 > = {
   latest: {
-    order: '_createdAt desc, _id desc',
-    value: '_createdAt',
+    order: 'coalesce(startDate, endDate, _createdAt) desc, _id desc',
+    value: 'coalesce(startDate, endDate, _createdAt)',
     comparison: '<',
   },
   oldest: {
-    order: '_createdAt asc, _id asc',
-    value: '_createdAt',
+    order: 'coalesce(startDate, endDate, _createdAt) asc, _id asc',
+    value: 'coalesce(startDate, endDate, _createdAt)',
     comparison: '>',
   },
   'title-asc': {
@@ -110,12 +145,37 @@ function decodeCursor(cursor: string, sort: InventionSort): CursorPayload {
 }
 
 function toPublicInvention(invention: SanityInvention): Invention {
+  const galleryImages = (invention.images || []).filter((image) => image.url)
+  const primaryIndex = galleryImages.findIndex((image) => image.isPrimary)
+  let orderedImages =
+    primaryIndex > 0
+      ? [
+          galleryImages[primaryIndex],
+          ...galleryImages.filter((_, index) => index !== primaryIndex),
+        ]
+      : galleryImages
+
+  if (invention.primaryImageUrl) {
+    orderedImages = [
+      {
+        url: invention.primaryImageUrl,
+        alt: '',
+        isPrimary: true,
+      },
+      ...orderedImages.filter((image) => image.url !== invention.primaryImageUrl),
+    ]
+  }
+
   return {
     id: invention.id,
     title: invention.title,
     description: invention.description,
-    imageUrl: invention.imageUrl,
+    images: orderedImages,
+    imageUrl: orderedImages[0]?.url,
     createdAt: invention.createdAt,
+    startDate: invention.startDate,
+    endDate: invention.endDate,
+    effectiveDate: invention.effectiveDate,
   }
 }
 
@@ -148,8 +208,16 @@ export async function getInventionsPage({
       "id": _id,
       title,
       "description": coalesce(description, ""),
-      "imageUrl": image.asset->url,
+      "images": images[]{
+        "url": image.asset->url,
+        "alt": coalesce(altText, ""),
+        "isPrimary": coalesce(isPrimary, false)
+      },
+      "primaryImageUrl": image.asset->url,
       "createdAt": _createdAt,
+      startDate,
+      endDate,
+      "effectiveDate": coalesce(startDate, endDate, _createdAt),
       "sortValue": ${sortConfig.value}
     },
     "total": count(*[${baseFilter}])

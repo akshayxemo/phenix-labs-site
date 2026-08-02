@@ -1,6 +1,12 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type MouseEvent as ReactMouseEvent,
+} from 'react'
 import Image from 'next/image'
 import {
   Dialog,
@@ -8,9 +14,10 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowDownAZ,
+  ArrowUpRight,
   ArrowUpAZ,
   CalendarDays,
   CalendarArrowDown,
@@ -18,7 +25,6 @@ import {
   ChevronLeft,
   ChevronRight,
   LoaderCircle,
-  PanelRightOpen,
   Search,
   Sparkles,
   X,
@@ -39,8 +45,8 @@ const sortOptions: Array<{
   label: string
   icon: typeof CalendarArrowDown
 }> = [
-  { value: 'latest', label: 'Newest first', icon: CalendarArrowDown },
-  { value: 'oldest', label: 'Oldest first', icon: CalendarArrowUp },
+  { value: 'latest', label: 'Newest invention date', icon: CalendarArrowDown },
+  { value: 'oldest', label: 'Oldest invention date', icon: CalendarArrowUp },
   { value: 'title-asc', label: 'Title A–Z', icon: ArrowDownAZ },
   { value: 'title-desc', label: 'Title Z–A', icon: ArrowUpAZ },
 ]
@@ -49,6 +55,7 @@ function formatCreatedAt(date: string) {
   return new Intl.DateTimeFormat('en', {
     month: 'short',
     year: 'numeric',
+    timeZone: 'UTC',
   }).format(new Date(date))
 }
 
@@ -57,7 +64,17 @@ function formatFullDate(date: string) {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   }).format(new Date(date))
+}
+
+function formatInventionPeriod(invention: Invention) {
+  if (invention.startDate && invention.endDate) {
+    return `${formatFullDate(invention.startDate)} – ${formatFullDate(invention.endDate)}`
+  }
+  if (invention.startDate) return `Started ${formatFullDate(invention.startDate)}`
+  if (invention.endDate) return `Completed ${formatFullDate(invention.endDate)}`
+  return `Added ${formatFullDate(invention.createdAt)}`
 }
 
 function InventionCard({
@@ -70,11 +87,19 @@ function InventionCard({
   onOpen: () => void
 }) {
   const shouldReduceMotion = useReducedMotion()
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [imageDirection, setImageDirection] = useState(1)
+  const images = invention.images
+  const activeImage = images[activeImageIndex]
+
+  const showImage = (nextIndex: number) => {
+    if (images.length < 2) return
+    setImageDirection(nextIndex > activeImageIndex ? 1 : -1)
+    setActiveImageIndex((nextIndex + images.length) % images.length)
+  }
 
   return (
-    <motion.button
-      type="button"
-      onClick={onOpen}
+    <motion.article
       initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
@@ -83,8 +108,7 @@ function InventionCard({
         delay: shouldReduceMotion ? 0 : (index % 9) * 0.035,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group overflow-hidden rounded-[20px] border border-[#c1ced8] bg-white text-left shadow-[0_12px_38px_rgba(22,34,54,0.07)] outline-none transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#82a9c8] hover:shadow-[0_22px_55px_rgba(22,34,54,0.13)] focus-visible:ring-2 focus-visible:ring-[#0c70df] focus-visible:ring-offset-4 focus-visible:ring-offset-[#eaf0f4]"
-      aria-label={`Open details for ${invention.title}`}
+      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] border border-[#c1ced8] bg-white text-left shadow-[0_12px_38px_rgba(22,34,54,0.07)] outline-none transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#82a9c8] hover:shadow-[0_22px_55px_rgba(22,34,54,0.13)] focus-visible:ring-2 focus-visible:ring-[#0c70df] focus-visible:ring-offset-4 focus-visible:ring-offset-[#eaf0f4]"
     >
       <div className="relative aspect-4/3 overflow-hidden border-b border-[#d0dae2] bg-[#e3ebf0]">
         <div
@@ -93,39 +117,276 @@ function InventionCard({
         />
         <div aria-hidden="true" className="absolute -right-16 -top-20 size-64 rounded-full bg-[#69b8ec]/16 blur-3xl" />
 
-        {invention.imageUrl ? (
-          <Image
-            src={invention.imageUrl}
-            alt={invention.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-          />
+        {activeImage ? (
+          <AnimatePresence initial={false} custom={imageDirection} mode="popLayout">
+            <motion.div
+              key={`${activeImage.url}-${activeImageIndex}`}
+              custom={imageDirection}
+              initial={shouldReduceMotion ? false : { opacity: 0, x: imageDirection * 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: imageDirection * -24 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={activeImage.url}
+                alt={activeImage.alt || invention.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+              />
+            </motion.div>
+          </AnimatePresence>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="size-28 rounded-full border border-dashed border-[#6e91ae] bg-white/25 shadow-[0_0_0_22px_rgba(255,255,255,0.12)]" />
           </div>
         )}
 
-        <div className="absolute right-4 top-4 flex size-10 items-center justify-center rounded-full border border-white/75 bg-white/80 text-[#203348] opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:opacity-100 group-hover:shadow-md">
-          <PanelRightOpen aria-hidden="true" size={18} />
+        <button
+          type="button"
+          onClick={onOpen}
+          className="absolute inset-0 z-10 cursor-pointer"
+          aria-label={`Open details for ${invention.title}`}
+        />
+
+        <div className="pointer-events-none absolute right-4 top-4 z-20 flex size-10 translate-y-1 items-center justify-center rounded-full border border-white/75 bg-white/85 text-[#0c70df] opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:shadow-md">
+          <ArrowUpRight aria-hidden="true" size={19} />
         </div>
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => showImage(activeImageIndex - 1)}
+              aria-label={`Show previous image of ${invention.title}`}
+              className="absolute left-3 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/75 bg-white/85 text-[#203348] shadow-sm backdrop-blur-md transition hover:bg-white sm:opacity-0 sm:group-hover:opacity-100"
+            >
+              <ChevronLeft aria-hidden="true" size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => showImage(activeImageIndex + 1)}
+              aria-label={`Show next image of ${invention.title}`}
+              className="absolute right-3 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/75 bg-white/85 text-[#203348] shadow-sm backdrop-blur-md transition hover:bg-white sm:opacity-0 sm:group-hover:opacity-100"
+            >
+              <ChevronRight aria-hidden="true" size={18} />
+            </button>
+            <div className="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/60 bg-[#07101c]/55 px-2.5 py-2 backdrop-blur-md">
+              {images.map((image, imageIndex) => (
+                <button
+                  key={`${image.url}-${imageIndex}`}
+                  type="button"
+                  onClick={() => showImage(imageIndex)}
+                  aria-label={`Show image ${imageIndex + 1} of ${invention.title}`}
+                  aria-current={imageIndex === activeImageIndex}
+                  className={`rounded-full transition-all ${
+                    imageIndex === activeImageIndex
+                      ? 'h-1.5 w-4 bg-white'
+                      : 'size-1.5 bg-white/50 hover:bg-white/80'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="p-5 md:p-6">
+      <button
+        type="button"
+        onClick={onOpen}
+        className="flex flex-1 cursor-pointer flex-col p-5 text-left md:p-6"
+        aria-label={`Open details for ${invention.title}`}
+      >
         <div className="flex items-center justify-between gap-4">
           <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#0c70df]">
             Invention {String(index + 1).padStart(2, '0')}
           </span>
           <span className="text-xs font-medium text-[#7a8997]">
-            {formatCreatedAt(invention.createdAt)}
+            {formatCreatedAt(invention.effectiveDate)}
           </span>
         </div>
         <h2 className="mt-3 line-clamp-2 text-[21px] font-bold leading-[1.18] tracking-[-0.025em] text-[#101b2d] md:text-[23px]">
           {invention.title}
         </h2>
+        <p className="mt-3 line-clamp-2 text-sm leading-6 text-[#667789] md:text-[15px]">
+          {invention.description || 'More information about this invention will be added soon.'}
+        </p>
+      </button>
+    </motion.article>
+  )
+}
+
+function InventionDetailGallery({ invention }: { invention: Invention }) {
+  const shouldReduceMotion = useReducedMotion()
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [imageDirection, setImageDirection] = useState(1)
+  const [isZooming, setIsZooming] = useState(false)
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 })
+  const activeThumbnailRef = useRef<HTMLButtonElement | null>(null)
+  const images = invention.images
+  const activeImage = images[activeImageIndex]
+
+  useEffect(() => {
+    activeThumbnailRef.current?.scrollIntoView({
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    })
+  }, [activeImageIndex, shouldReduceMotion])
+
+  const showImage = (nextIndex: number) => {
+    if (images.length < 2) return
+    setIsZooming(false)
+    setImageDirection(nextIndex > activeImageIndex ? 1 : -1)
+    setActiveImageIndex((nextIndex + images.length) % images.length)
+  }
+
+  const updateZoomPosition = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (!isZooming) return
+
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const rawX = ((event.clientX - bounds.left) / bounds.width) * 100
+    const rawY = ((event.clientY - bounds.top) / bounds.height) * 100
+
+    setZoomPosition({
+      x: Math.min(86, Math.max(14, rawX)),
+      y: Math.min(86, Math.max(14, rawY)),
+    })
+  }
+
+  const beginZoom = () => {
+    if (window.matchMedia('(min-width: 1024px) and (hover: hover)').matches) {
+      setIsZooming(true)
+    }
+  }
+
+  return (
+    <div className="flex h-[390px] flex-col overflow-hidden border-b border-[#c9d6df] bg-[#e8eff3] sm:h-[520px] lg:h-full lg:border-b-0 lg:border-r">
+      <div className="relative min-h-0 flex-1 overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,.98),transparent_38%),radial-gradient(circle_at_82%_88%,rgba(71,160,216,.16),transparent_42%),linear-gradient(145deg,#f2f6f8_0%,#e4edf2_52%,#dce8ee_100%)]"
+        />
+        <div aria-hidden="true" className="absolute left-1/2 top-1/2 h-[64%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/55 blur-3xl" />
+
+        {activeImage ? (
+          <AnimatePresence initial={false} custom={imageDirection} mode="popLayout">
+            <motion.div
+              key={`${activeImage.url}-${activeImageIndex}`}
+              custom={imageDirection}
+              initial={shouldReduceMotion ? false : { opacity: 0, x: imageDirection * 42 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: imageDirection * -42 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0 cursor-zoom-in"
+              onMouseEnter={beginZoom}
+              onMouseMove={updateZoomPosition}
+              onMouseLeave={() => setIsZooming(false)}
+            >
+              <div
+                className="absolute inset-0 transition-transform duration-200 ease-out"
+                style={{
+                  transform: isZooming ? 'scale(1.75)' : 'scale(1)',
+                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                  transitionDuration: shouldReduceMotion ? '0ms' : '200ms',
+                }}
+              >
+                <Image
+                  src={activeImage.url}
+                  alt={activeImage.alt || invention.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-contain p-5 sm:p-8 lg:p-12"
+                  priority
+                />
+              </div>
+              {isZooming && (
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute z-20 hidden aspect-square w-[28%] -translate-x-1/2 -translate-y-1/2 rounded-[14px] border border-[#0c70df]/75 bg-[#5da9ed]/10 shadow-[0_0_0_1px_rgba(255,255,255,.55),0_10px_35px_rgba(12,112,223,.13)] lg:block"
+                  style={{ left: `${zoomPosition.x}%`, top: `${zoomPosition.y}%` }}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Sparkles aria-hidden="true" size={54} className="text-[#6d91ad]" />
+          </div>
+        )}
+
+        <span className="absolute left-4 top-4 z-20 rounded-full border border-white/75 bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#40566b] shadow-sm backdrop-blur-md sm:left-5 sm:top-5">
+          Visual record
+        </span>
+
+        {activeImage && isZooming && (
+          <div className="pointer-events-none absolute right-6 top-6 z-30 hidden w-36 overflow-hidden rounded-[14px] border border-white/80 bg-[#f6f9fa]/92 p-2 shadow-[0_14px_38px_rgba(24,53,78,.18)] backdrop-blur-md lg:block xl:w-40">
+            <div className="relative aspect-4/3 overflow-hidden rounded-[9px] bg-[#dfe8ed]">
+              <Image src={activeImage.url} alt="" fill sizes="160px" className="object-contain p-1" />
+              <span
+                aria-hidden="true"
+                className="absolute aspect-square w-[28%] -translate-x-1/2 -translate-y-1/2 rounded-[4px] border-2 border-[#0c70df] bg-[#5da9ed]/15 shadow-[0_0_0_1px_rgba(255,255,255,.7)]"
+                style={{ left: `${zoomPosition.x}%`, top: `${zoomPosition.y}%` }}
+              />
+            </div>
+            <p className="mt-1.5 text-center text-[9px] font-bold uppercase tracking-[0.14em] text-[#53687a]">
+              Zoom navigator
+            </p>
+          </div>
+        )}
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => showImage(activeImageIndex - 1)}
+              aria-label={`Show previous image of ${invention.title}`}
+              className="absolute left-4 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/85 text-[#203348] shadow-md backdrop-blur-md transition hover:bg-white lg:left-6"
+            >
+              <ChevronLeft aria-hidden="true" size={21} />
+            </button>
+            <button
+              type="button"
+              onClick={() => showImage(activeImageIndex + 1)}
+              aria-label={`Show next image of ${invention.title}`}
+              className="absolute right-4 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white/85 text-[#203348] shadow-md backdrop-blur-md transition hover:bg-white lg:right-6"
+            >
+              <ChevronRight aria-hidden="true" size={21} />
+            </button>
+          </>
+        )}
       </div>
-    </motion.button>
+
+      {images.length > 1 && (
+        <div className="shrink-0 border-t border-[#c7d4dd] bg-[#f4f7f9] px-3 py-2.5 sm:px-4">
+          <div className="mx-auto flex w-full max-w-[760px] min-w-0 items-center gap-2.5">
+            <span className="flex h-11 min-w-11 shrink-0 items-center justify-center rounded-[10px] bg-[#16283a] px-2 text-[10px] font-bold tabular-nums text-white">
+              {activeImageIndex + 1}/{images.length}
+            </span>
+            <div className="invention-thumbnail-strip flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto pb-1">
+              {images.map((image, imageIndex) => (
+                <button
+                  key={`${image.url}-${imageIndex}`}
+                  ref={imageIndex === activeImageIndex ? activeThumbnailRef : null}
+                  type="button"
+                  onClick={() => showImage(imageIndex)}
+                  aria-label={`Show image ${imageIndex + 1} of ${invention.title}`}
+                  aria-current={imageIndex === activeImageIndex}
+                  className={`relative size-12 shrink-0 snap-center overflow-hidden rounded-[10px] border-2 transition sm:size-14 ${
+                    imageIndex === activeImageIndex
+                      ? 'border-[#0c70df] shadow-[0_0_0_2px_rgba(12,112,223,.12)]'
+                      : 'border-transparent opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <Image src={image.url} alt="" fill sizes="56px" className="object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -421,13 +682,13 @@ export function InventionsCatalogue({
       >
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-[linear-gradient(90deg,rgba(6,16,31,.18),rgba(6,16,31,.68))] backdrop-blur-[1px] transition duration-300 data-closed:opacity-0 sm:top-[82px]"
+          className="fixed inset-0 bg-[#06101f]/72 backdrop-blur-[3px] transition duration-300 data-closed:opacity-0 sm:top-[82px]"
         />
-        <div className="fixed inset-0 flex items-end justify-end overflow-hidden pt-10 sm:top-[82px] sm:items-stretch sm:p-4 sm:pl-[18vw]">
+        <div className="fixed inset-0 flex items-end overflow-hidden pt-10 sm:top-[82px] sm:items-stretch sm:p-4">
           {selectedInvention && (
             <DialogPanel
               transition
-              className="flex h-full w-full max-w-[760px] flex-col overflow-hidden rounded-t-[20px] border border-white/80 bg-[#f4f7f9] shadow-[-28px_18px_80px_rgba(3,10,20,0.28)] transition duration-300 ease-out data-closed:translate-y-full sm:rounded-[20px] sm:data-closed:translate-x-[105%] sm:data-closed:translate-y-0"
+              className="mx-auto flex h-full w-full flex-col overflow-hidden rounded-t-[20px] border border-white/80 bg-[#f4f7f9] shadow-[0_28px_90px_rgba(3,10,20,0.34)] transition duration-300 ease-out data-closed:translate-y-full sm:rounded-[20px] sm:data-closed:translate-y-4 sm:data-closed:scale-[0.985] sm:data-closed:opacity-0"
             >
               <header className="relative z-20 flex min-h-[72px] shrink-0 items-center justify-between gap-4 border-b border-[#d3dde5] bg-[#f8fafb] px-5 sm:px-7">
                 <span aria-hidden="true" className="absolute left-1/2 top-2 h-1 w-10 -translate-x-1/2 rounded-full bg-[#b7c4cf] sm:hidden" />
@@ -475,43 +736,23 @@ export function InventionsCatalogue({
                 </button>
               </header>
 
-              <div className="flex-1 overflow-y-auto overscroll-contain">
-                <div className="relative h-[280px] overflow-hidden border-b border-[#ccd8e1] bg-[#dfe8ee] sm:h-[380px]">
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 opacity-[0.35] [background-image:linear-gradient(rgba(67,104,136,.22)_1px,transparent_1px),linear-gradient(90deg,rgba(67,104,136,.22)_1px,transparent_1px)] [background-size:32px_32px]"
-                  />
-                  <div aria-hidden="true" className="absolute -right-24 -top-24 size-80 rounded-full bg-[#64b9ed]/18 blur-3xl" />
-                  {selectedInvention.imageUrl ? (
-                    <Image
-                      src={selectedInvention.imageUrl}
-                      alt={selectedInvention.title}
-                      fill
-                      sizes="(max-width: 760px) 100vw, 760px"
-                      className="object-contain p-5 sm:p-8"
-                      priority
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Sparkles aria-hidden="true" size={54} className="text-[#6d91ad]" />
-                    </div>
-                  )}
-                  <span className="absolute bottom-4 left-4 rounded-full border border-white/75 bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#40566b] shadow-sm backdrop-blur-md sm:bottom-5 sm:left-5">
-                    Visual record
-                  </span>
-                </div>
+              <div className="flex-1 overflow-y-auto overscroll-contain lg:grid lg:min-h-0 lg:grid-cols-[minmax(0,1.1fr)_minmax(400px,0.9fr)] lg:overflow-hidden">
+                <InventionDetailGallery
+                  key={selectedInvention.id}
+                  invention={selectedInvention}
+                />
 
-                <div className="p-6 sm:p-9 sm:pb-12">
+                <div className="p-6 sm:p-9 sm:pb-12 lg:overflow-y-auto lg:p-10 xl:p-14">
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0c70df]">
                       Invention details
                     </p>
                     <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#778696]">
                       <CalendarDays aria-hidden="true" size={15} />
-                      {formatFullDate(selectedInvention.createdAt)}
+                      {formatInventionPeriod(selectedInvention)}
                     </span>
                   </div>
-                  <DialogTitle className="mt-4 max-w-[650px] text-[32px] font-bold leading-[1.04] tracking-[-0.045em] text-[#101b2d] sm:text-[44px]">
+                  <DialogTitle className="mt-4 max-w-[650px] text-[32px] font-bold leading-[1.04] tracking-[-0.045em] text-[#101b2d] sm:text-[44px] xl:text-[52px]">
                     {selectedInvention.title}
                   </DialogTitle>
 

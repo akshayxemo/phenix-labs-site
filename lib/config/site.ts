@@ -26,7 +26,8 @@ export const navbarData: NavbarData = {
   },
   cta: {
     text: 'Education',
-    href: '/services#education',
+    href: 'https://learn.phenixlabs.in/',
+    openInNewTab: true,
   },
 }
 
