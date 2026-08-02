@@ -169,6 +169,8 @@ export function Navbar({ data }: NavbarProps) {
           {data.cta && (
             <Link
               href={data.cta.href}
+              target={data.cta.openInNewTab ? '_blank' : undefined}
+              rel={data.cta.openInNewTab ? 'noopener noreferrer' : undefined}
               className="group hidden h-11 items-center gap-2 rounded-full bg-[#0064d7] px-5 text-sm font-semibold text-white shadow-[0_9px_24px_rgba(0,100,215,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] lg:inline-flex"
             >
               {data.cta.text}
@@ -246,6 +248,8 @@ export function Navbar({ data }: NavbarProps) {
               {data.cta && (
                 <Link
                   href={data.cta.href}
+                  target={data.cta.openInNewTab ? '_blank' : undefined}
+                  rel={data.cta.openInNewTab ? 'noopener noreferrer' : undefined}
                   onClick={closeMenu}
                   className="mt-1 inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-[#0064d7] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0055b8]"
                 >

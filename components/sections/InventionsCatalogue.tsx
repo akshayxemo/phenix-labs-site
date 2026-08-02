@@ -11,6 +11,7 @@ import {
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowDownAZ,
+  ArrowUpRight,
   ArrowUpAZ,
   CalendarDays,
   CalendarArrowDown,
@@ -18,7 +19,6 @@ import {
   ChevronLeft,
   ChevronRight,
   LoaderCircle,
-  PanelRightOpen,
   Search,
   Sparkles,
   X,
@@ -83,7 +83,7 @@ function InventionCard({
         delay: shouldReduceMotion ? 0 : (index % 9) * 0.035,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group overflow-hidden rounded-[20px] border border-[#c1ced8] bg-white text-left shadow-[0_12px_38px_rgba(22,34,54,0.07)] outline-none transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#82a9c8] hover:shadow-[0_22px_55px_rgba(22,34,54,0.13)] focus-visible:ring-2 focus-visible:ring-[#0c70df] focus-visible:ring-offset-4 focus-visible:ring-offset-[#eaf0f4]"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] border border-[#c1ced8] bg-white text-left shadow-[0_12px_38px_rgba(22,34,54,0.07)] outline-none transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#82a9c8] hover:shadow-[0_22px_55px_rgba(22,34,54,0.13)] focus-visible:ring-2 focus-visible:ring-[#0c70df] focus-visible:ring-offset-4 focus-visible:ring-offset-[#eaf0f4]"
       aria-label={`Open details for ${invention.title}`}
     >
       <div className="relative aspect-4/3 overflow-hidden border-b border-[#d0dae2] bg-[#e3ebf0]">
@@ -107,12 +107,12 @@ function InventionCard({
           </div>
         )}
 
-        <div className="absolute right-4 top-4 flex size-10 items-center justify-center rounded-full border border-white/75 bg-white/80 text-[#203348] opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:opacity-100 group-hover:shadow-md">
-          <PanelRightOpen aria-hidden="true" size={18} />
+        <div className="absolute right-4 top-4 flex size-10 translate-y-1 items-center justify-center rounded-full border border-white/75 bg-white/85 text-[#0c70df] opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-hover:shadow-md">
+          <ArrowUpRight aria-hidden="true" size={19} />
         </div>
       </div>
 
-      <div className="p-5 md:p-6">
+      <div className="flex flex-1 flex-col p-5 md:p-6">
         <div className="flex items-center justify-between gap-4">
           <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#0c70df]">
             Invention {String(index + 1).padStart(2, '0')}
@@ -124,6 +124,9 @@ function InventionCard({
         <h2 className="mt-3 line-clamp-2 text-[21px] font-bold leading-[1.18] tracking-[-0.025em] text-[#101b2d] md:text-[23px]">
           {invention.title}
         </h2>
+        <p className="mt-3 line-clamp-2 text-sm leading-6 text-[#667789] md:text-[15px]">
+          {invention.description || 'More information about this invention will be added soon.'}
+        </p>
       </div>
     </motion.button>
   )

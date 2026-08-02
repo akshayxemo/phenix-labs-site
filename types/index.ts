@@ -24,6 +24,7 @@ export interface NavbarData {
   cta?: {
     text: string
     href: string
+    openInNewTab?: boolean
   }
 }
 

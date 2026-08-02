@@ -273,6 +273,40 @@
     animation-play-state: paused;
   }
 
+  .product-orbit {
+    will-change: transform;
+  }
+
+  .product-orbit-outer {
+    animation: productOrbitClockwise 30s linear infinite;
+  }
+
+  .product-orbit-middle {
+    animation: productOrbitCounterClockwise 23s linear infinite;
+  }
+
+  .product-orbit-inner {
+    animation: productOrbitClockwise 18s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-orbit {
+      animation: none;
+    }
+  }
+
+  @keyframes productOrbitClockwise {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes productOrbitCounterClockwise {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
   @keyframes fadeUp {
     from {
       opacity: 0;

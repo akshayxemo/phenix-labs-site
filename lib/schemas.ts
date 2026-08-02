@@ -25,6 +25,7 @@ export const NavbarDataSchema = z.object({
   cta: z.object({
     text: z.string(),
     href: z.string().url(),
+    openInNewTab: z.boolean().optional(),
   }).optional(),
 })
 
