@@ -100,7 +100,7 @@ export function HomeInventionsShowcase({ inventions }: { inventions: Invention[]
               {invention.imageUrl ? (
                 <Image
                   src={invention.imageUrl}
-                  alt={invention.title}
+                  alt={invention.images[0]?.alt || invention.title}
                   fill
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
                   sizes={

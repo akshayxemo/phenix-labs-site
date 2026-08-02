@@ -289,6 +289,25 @@
     animation: productOrbitClockwise 18s linear infinite;
   }
 
+  .invention-thumbnail-strip {
+    scrollbar-color: rgb(122 149 171 / 0.65) transparent;
+    scrollbar-width: thin;
+  }
+
+  .invention-thumbnail-strip::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  .invention-thumbnail-strip::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgb(122 149 171 / 0.65);
+  }
+
+  .invention-thumbnail-strip::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .product-orbit {
       animation: none;
