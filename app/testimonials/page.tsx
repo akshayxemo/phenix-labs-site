@@ -1,15 +1,23 @@
 import type { Metadata } from 'next'
+import { JsonLd } from '@/components/common/JsonLd'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { TestimonialsArchive } from '@/components/sections/TestimonialsArchive'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
 import { getTestimonialsPage } from '@/lib/data/testimonials'
+import {
+  generateMetadata,
+  getBreadcrumbSchema,
+  getWebPageSchema,
+} from '@/lib/seo'
 
 /** Testimonial archive route; unlike Home, this includes inactive testimonials. */
-export const metadata: Metadata = {
-  title: 'Client Testimonials | Phenix Labs',
+export const metadata: Metadata = generateMetadata({
+  title: 'Engineering Client Testimonials',
   description:
     'Read what clients say about collaborating with Phenix Labs on engineering, product development, and technology projects.',
-}
+  keywords: ['Phenix Labs reviews', 'engineering client testimonials', 'product development partner'],
+  path: '/testimonials',
+})
 
 export default async function TestimonialsPage() {
   const [navbar, footer, initialPage] = await Promise.all([
@@ -20,6 +28,21 @@ export default async function TestimonialsPage() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      <JsonLd
+        data={[
+          getWebPageSchema({
+            title: 'Client Testimonials',
+            description:
+              'Client experiences from engineering, product development, and technology collaborations.',
+            path: '/testimonials',
+            type: 'CollectionPage',
+          }),
+          getBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Testimonials', path: '/testimonials' },
+          ]),
+        ]}
+      />
       {/* Archive hero. */}
       <section className="relative overflow-hidden bg-[#162236] px-5 py-20 text-white md:py-28">
         <div

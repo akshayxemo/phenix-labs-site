@@ -1,12 +1,18 @@
 import type { Metadata } from 'next'
+import type { ContactSettings } from '@/types'
+import { DEFAULT_CONTACT_SETTINGS } from '@/config/contact'
 
+const configuredUrl = process.env.NEXT_PUBLIC_BASE_URL?.trim().replace(/\/$/, '')
+
+/** Shared public identity used by metadata, canonical URLs, and structured data. */
 const siteConfig = {
   name: 'Phenix Labs',
-  description: 'Premium engineering company delivering innovative technology solutions',
-  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://phenix-labs.com',
-  ogImage: 'https://phenix-labs.com/og-image.jpg',
+  description:
+    'Engineering and product development partner for PCB design, embedded systems, firmware, Edge AI, prototyping, and research-led innovation.',
+  url: configuredUrl || 'https://phenix-labs.com',
+  ogImage: '/opengraph-image',
   twitter: '@phenixlabs',
-  locale: 'en_US',
+  locale: 'en_IN',
 }
 
 export interface SEOMetadata {
@@ -18,69 +24,65 @@ export interface SEOMetadata {
   twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player'
   keywords?: string[]
   author?: string
+  path?: string
+  index?: boolean
 }
 
-export function generateMetadata(params: SEOMetadata & { path?: string }): Metadata {
+/** Resolve a route against the configured origin without producing duplicate slashes. */
+export function absoluteUrl(path = '/') {
+  return new URL(path, `${siteConfig.url}/`).toString()
+}
+
+/** Produces consistent metadata while allowing each route to own its canonical URL. */
+export function generateMetadata(params: SEOMetadata = {}): Metadata {
   const {
     title = siteConfig.name,
     description = siteConfig.description,
-    canonicalUrl = siteConfig.url,
+    canonicalUrl,
     ogImage = siteConfig.ogImage,
     ogType = 'website',
+    twitterCard = 'summary_large_image',
     keywords = [],
-    path = '',
+    path = '/',
+    index = true,
   } = params
 
   const fullTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`
-  const url = `${siteConfig.url}${path}`
+  const pageUrl = absoluteUrl(path)
+  const canonical = canonicalUrl || pageUrl
+  const socialImage = absoluteUrl(ogImage)
 
   return {
     title: fullTitle,
     description,
-    keywords: [...keywords, 'engineering', 'technology', 'innovation'],
+    keywords,
     authors: [{ name: siteConfig.name }],
     creator: siteConfig.name,
     publisher: siteConfig.name,
-    formatDetection: {
-      email: false,
-      telephone: false,
-      address: false,
-    },
-    metadataBase: new URL(siteConfig.url),
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates: { canonical },
+    formatDetection: { email: false, telephone: false, address: false },
     openGraph: {
       type: ogType,
       locale: siteConfig.locale,
-      url,
+      url: pageUrl,
       siteName: siteConfig.name,
       title: fullTitle,
       description,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: fullTitle,
-          type: 'image/jpeg',
-        },
-      ],
+      images: [{ url: socialImage, width: 1200, height: 630, alt: fullTitle }],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: twitterCard,
       site: siteConfig.twitter,
       creator: siteConfig.twitter,
       title: fullTitle,
       description,
-      images: [ogImage],
+      images: [socialImage],
     },
     robots: {
-      index: true,
+      index,
       follow: true,
-      nocache: false,
       googleBot: {
-        index: true,
+        index,
         follow: true,
         'max-image-preview': 'large',
         'max-snippet': -1,
@@ -90,67 +92,78 @@ export function generateMetadata(params: SEOMetadata & { path?: string }): Metad
   }
 }
 
-/**
- * JSON-LD Schema for Organization
- */
-export function getOrganizationSchema() {
+/** Organization entity shared by the website and page-level structured data. */
+export function getOrganizationSchema(
+  contact: ContactSettings = DEFAULT_CONTACT_SETTINGS,
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${siteConfig.url}/#organization`,
     name: siteConfig.name,
-    url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.png`,
+    url: absoluteUrl('/'),
+    logo: absoluteUrl('/images/logo.png'),
     description: siteConfig.description,
-    sameAs: [
-      'https://www.facebook.com/phenixlabs',
-      'https://www.twitter.com/phenixlabs',
-      'https://www.linkedin.com/company/phenixlabs',
-      'https://www.instagram.com/phenixlabs',
-    ],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'General Inquiry',
-      email: 'hello@phenix-labs.com',
-      telephone: '+1-234-567-890',
-      availableLanguage: 'en',
-    },
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '123 Tech Street',
-      addressLocality: 'San Francisco',
-      addressRegion: 'CA',
-      postalCode: '94105',
-      addressCountry: 'US',
-    },
+    ...(contact.socialLinks.length > 0 && {
+      sameAs: contact.socialLinks.map((link) => link.href),
+    }),
+    ...((contact.email || contact.phone) && {
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'sales and general enquiries',
+        ...(contact.email && { email: contact.email }),
+        ...(contact.phone && { telephone: contact.phone }),
+        availableLanguage: ['English'],
+      },
+    }),
+    ...(contact.address && {
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: contact.address,
+        addressCountry: 'IN',
+      },
+    }),
   }
 }
 
-/**
- * JSON-LD Schema for WebPage
- */
+/** Website entity connects every page back to one canonical site identity. */
+export function getWebsiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteConfig.url}/#website`,
+    url: absoluteUrl('/'),
+    name: siteConfig.name,
+    description: siteConfig.description,
+    publisher: { '@id': `${siteConfig.url}/#organization` },
+    inLanguage: 'en-IN',
+  }
+}
+
+/** Page entity for standard, About, Contact, and collection routes. */
 export function getWebPageSchema(params: {
   title: string
   description: string
   path: string
+  type?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage'
 }) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
+    '@type': params.type || 'WebPage',
+    '@id': `${absoluteUrl(params.path)}#webpage`,
     name: params.title,
     description: params.description,
-    url: `${siteConfig.url}${params.path}`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
+    url: absoluteUrl(params.path),
+    isPartOf: { '@id': `${siteConfig.url}/#website` },
+    about: { '@id': `${siteConfig.url}/#organization` },
+    inLanguage: 'en-IN',
   }
 }
 
-/**
- * JSON-LD Schema for BreadcrumbList
- */
-export function getBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: string }>) {
+/** Breadcrumb schema gives crawlers an explicit route hierarchy. */
+export function getBreadcrumbSchema(
+  breadcrumbs: Array<{ name: string; path: string }>,
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -158,30 +171,54 @@ export function getBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: stri
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: item.url,
+      item: absoluteUrl(item.path),
     })),
   }
 }
 
-/**
- * JSON-LD Schema for Service
- */
+/** Service entity mirrors only published CMS service content. */
 export function getServiceSchema(params: {
   name: string
   description: string
-  image?: string
+  path?: string
 }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: params.name,
     description: params.description,
-    provider: {
-      '@type': 'Organization',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    ...(params.image && { image: params.image }),
+    url: absoluteUrl(params.path || '/services'),
+    areaServed: { '@type': 'Country', name: 'India' },
+    provider: { '@id': `${siteConfig.url}/#organization` },
+  }
+}
+
+/** Catalogue schema describes inventions as creative engineering work, not retail offers. */
+export function getInventionCollectionSchema(
+  inventions: Array<{
+    id: string
+    title: string
+    description: string
+    imageUrl?: string
+  }>,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Phenix Labs inventions and products',
+    numberOfItems: inventions.length,
+    itemListElement: inventions.map((invention, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: invention.title,
+        description: invention.description,
+        url: `${absoluteUrl('/products')}?invention=${encodeURIComponent(invention.id)}`,
+        ...(invention.imageUrl && { image: invention.imageUrl }),
+        creator: { '@id': `${siteConfig.url}/#organization` },
+      },
+    })),
   }
 }
 

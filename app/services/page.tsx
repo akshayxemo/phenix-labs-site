@@ -1,5 +1,11 @@
 import type { Metadata } from 'next'
-import { generateMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/common/JsonLd'
+import {
+  generateMetadata,
+  getBreadcrumbSchema,
+  getServiceSchema,
+  getWebPageSchema,
+} from '@/lib/seo'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { ServicesPageContent } from '@/components/sections/ServicesPageContent'
 import { getNavbarData, getFooterData } from '@/lib/config/site'
@@ -7,8 +13,9 @@ import { getAllServices } from '@/lib/data/services'
 
 /** Services route populated from the shared Sanity service collection. */
 export const metadata: Metadata = generateMetadata({
-  title: 'Engineering Solutions',
-  description: 'Phenix Labs partners with industries, research organizations, and academic institutions to transform ideas into reliable engineering solutions.',
+  title: 'PCB, Firmware, Edge AI & Prototyping Services',
+  description:
+    'Explore Phenix Labs engineering services for PCB design, firmware, embedded systems, Edge AI, prototyping, testing, CAD, and product development.',
   keywords: [
     'engineering solutions',
     'custom electronics',
@@ -29,6 +36,27 @@ export default async function Services() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      <JsonLd
+        data={[
+          getWebPageSchema({
+            title: 'Engineering Services',
+            description:
+              'PCB, firmware, embedded systems, Edge AI, prototyping, testing, and product development services.',
+            path: '/services',
+            type: 'CollectionPage',
+          }),
+          getBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Services', path: '/services' },
+          ]),
+          ...services.map((service) =>
+            getServiceSchema({
+              name: service.title,
+              description: service.description,
+            }),
+          ),
+        ]}
+      />
       <ServicesPageContent services={services} />
     </MainLayout>
   )

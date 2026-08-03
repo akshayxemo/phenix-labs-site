@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a **Sanity-ready corporate website** built with Next.js 16, TypeScript, and Tailwind CSS. The architecture follows strict separation of concerns, enabling seamless migration from mock data to Sanity CMS without modifying UI components.
+This is a **Sanity-backed corporate website** built with Next.js 16, TypeScript, and Tailwind CSS. The architecture separates persisted content access from presentation components so CMS changes do not require UI rewrites.
 
 ## Core Principles
 
@@ -55,11 +55,7 @@ project-root/
 │   └── navigation/               # Navigation elements
 │
 ├── lib/                          # Utilities and helpers
-│   ├── data/                     # Data layer
-│   │   └── mock.ts               # Mock data functions
-│   ├── cms/                      # CMS integration
-│   │   ├── config.ts             # CMS configuration
-│   │   └── client.ts             # CMS client factory
+│   ├── data/                     # Typed Sanity data-access modules
 │   ├── schemas.ts                # Zod validation schemas
 │   ├── animations.ts             # Animation utilities
 │   ├── types.ts                  # Type definitions
@@ -77,50 +73,9 @@ project-root/
 
 ## Data Layer Architecture
 
-### Current: Mock Data
+### Current: Sanity Data
 
-The data layer currently uses mock functions that simulate async data fetching:
-
-```typescript
-// lib/data/mock.ts
-export async function getHomePage(): Promise<HomePage> {
-  // Simulates network delay
-  await delay()
-  
-  return {
-    title: '...',
-    hero: {...},
-    features: [...],
-    // ... data structure
-  }
-}
-```
-
-### Future: Sanity Integration
-
-Migration to Sanity requires minimal changes:
-
-1. Update `lib/cms/client.ts` to use Sanity client
-2. Create `lib/data/sanity.ts` with Sanity queries
-3. No UI component changes needed
-
-```typescript
-// Future: lib/data/sanity.ts
-import { sanityClient } from '@sanity/client'
-
-export async function getHomePage(): Promise<HomePage> {
-  const data = await sanityClient.fetch(`
-    *[_type == "homePage"][0] {
-      title,
-      hero,
-      features,
-      stats,
-      services,
-    }
-  `)
-  return data
-}
-```
+Persisted collections and singleton documents are queried through the typed modules in `lib/data/`. Pages resolve independent collections concurrently and pass normalized content to presentation components. Safe production fallbacks are limited to essential site settings such as contact information.
 
 ## Component Hierarchy
 
@@ -187,7 +142,7 @@ export const HomePageSchema = z.object({
 
 ```
 1. Page component calls getHomePage()
-2. Data provider (mock or Sanity) returns typed data
+2. Sanity data module returns normalized typed data
 3. Data passed as props to layout components
 4. Layout components compose UI without data logic
 5. Rendered HTML sent to client
@@ -267,10 +222,7 @@ export const metadata: Metadata = {
 ## Environment Variables
 
 ```env
-# CMS Configuration
-NEXT_PUBLIC_CMS_PROVIDER=mock  # 'mock' or 'sanity'
-
-# Sanity (when using Sanity)
+# Sanity
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 
@@ -301,27 +253,12 @@ pnpm build
 4. Image optimization via Next.js Image
 5. CSS-in-JS with Tailwind (no runtime overhead)
 
-### Environment-Based CMS
-
-Deploy to different environments with different CMS providers:
-
-```bash
-# Production with Sanity
-NEXT_PUBLIC_CMS_PROVIDER=sanity
-NEXT_PUBLIC_SANITY_PROJECT_ID=prod_id
-pnpm build
-
-# Staging with mock data
-NEXT_PUBLIC_CMS_PROVIDER=mock
-pnpm build
-```
-
 ## Extending the Architecture
 
 ### Adding a New Page
 
 1. Create page file: `app/new-page/page.tsx`
-2. Create mock data function: `lib/data/mock.ts`
+2. Create or reuse a typed Sanity data function in `lib/data/`
 3. Create types: Update `types/index.ts`
 4. Create validation schema: Update `lib/schemas.ts`
 5. Compose page using design system components
@@ -341,51 +278,6 @@ pnpm build
 2. Define request/response schemas with Zod
 3. Validate input with schemas
 4. Return typed Response
-
-## Migration to Sanity
-
-### Step 1: Install Sanity
-
-```bash
-npm install sanity @sanity/client @sanity/structure
-```
-
-### Step 2: Configure Client
-
-Update `lib/cms/config.ts`:
-
-```typescript
-export const cmsConfig = {
-  provider: 'sanity',
-  sanity: {
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  },
-}
-```
-
-### Step 3: Create Data Functions
-
-Create `lib/data/sanity.ts` with queries matching mock data shape
-
-### Step 4: Update Client Factory
-
-Update `lib/cms/client.ts` to import from Sanity:
-
-```typescript
-import { createSanityDataProvider } from './sanity'
-
-function createDataProvider(): IDataProvider {
-  if (isSanityEnabled()) {
-    return createSanityDataProvider()
-  }
-  return mockData
-}
-```
-
-### Step 5: Deploy
-
-No UI changes needed. Pages automatically use Sanity data.
 
 ## Testing Strategy
 
@@ -411,7 +303,7 @@ Test complete user journeys with Playwright
 ## Key Features Checklist
 
 - [x] Type-safe data structures
-- [x] Mock data layer
+- [x] Sanity data layer
 - [x] Reusable components
 - [x] SEO optimization
 - [x] API routes
@@ -420,7 +312,7 @@ Test complete user journeys with Playwright
 - [x] Dark mode support
 - [x] Responsive design
 - [x] Performance optimized
-- [ ] Sanity CMS integration (ready for implementation)
+- [x] Sanity CMS integration
 - [ ] Email service integration
 - [ ] Analytics setup
 

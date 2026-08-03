@@ -1,43 +1,36 @@
 import type { MetadataRoute } from 'next'
+import { absoluteUrl } from '@/lib/seo'
 
 /** Canonical public routes exposed to search engines. Admin and API routes are excluded. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://phenix-labs.com'
-
   return [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      url: absoluteUrl('/'),
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
+      url: absoluteUrl('/services'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      url: absoluteUrl('/about'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
+      url: absoluteUrl('/products'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/testimonials`,
-      lastModified: new Date(),
+      url: absoluteUrl('/testimonials'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      url: absoluteUrl('/contact'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },

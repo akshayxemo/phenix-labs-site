@@ -2,6 +2,9 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { AlertTriangle, House, RotateCcw } from 'lucide-react'
+import { StatusPage } from '@/components/feedback/StatusPage'
 
 /** App Router error boundary with retry and safe navigation actions. */
 interface ErrorProps {
@@ -16,32 +19,39 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-1 flex items-center justify-center">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md mx-auto text-center">
-            <h1 className="text-6xl font-bold text-destructive mb-4">Error</h1>
-            <h2 className="text-3xl font-bold leading-snug mb-4">Something went wrong</h2>
-            <p className="text-muted-foreground mb-8">
-              We encountered an unexpected error. Please try again or contact support if the problem persists.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <button
-                onClick={reset}
-                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-              >
-                Try Again
-              </button>
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center px-6 py-3 border border-border rounded-lg hover:border-primary transition-colors font-medium"
-              >
-                Go Home
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#eaf0f4]">
+      {/* A minimal brand header remains independent from the layout that may have failed. */}
+      <header className="flex h-[82px] items-center border-b border-[#cfdae3]/65 px-5 sm:px-7">
+        <Link href="/" aria-label="Phenix Labs home" className="inline-flex items-center transition-opacity hover:opacity-80">
+          <Image src="/images/logo.png" alt="Phenix Labs" width={64} height={60} className="h-[60px] w-[64px] object-contain" priority />
+        </Link>
+      </header>
+      <StatusPage
+        code="500"
+        eyebrow="System interruption"
+        title="Something interrupted the process."
+        description="The page could not finish loading. Retry the operation first; if the issue continues, return home and begin again from a stable route."
+        icon={<AlertTriangle aria-hidden="true" size={15} />}
+        actions={
+          <>
+            <button
+              type="button"
+              onClick={reset}
+              className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_34px_rgba(0,100,215,.23)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] sm:w-auto"
+            >
+              <RotateCcw aria-hidden="true" size={18} className="transition-transform group-hover:-rotate-45" />
+              Try again
+            </button>
+            <Link
+              href="/"
+              className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-[#9fb3c2] bg-white/55 px-7 font-semibold text-[#203348] backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[#0064d7]/55 hover:text-[#0064d7] sm:w-auto"
+            >
+              <House aria-hidden="true" size={18} />
+              Return home
+            </Link>
+          </>
+        }
+      />
     </div>
   )
 }

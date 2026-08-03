@@ -1,7 +1,14 @@
 import { Analytics } from '@vercel/analytics/next'
 import { DM_Sans } from 'next/font/google'
 import type { Metadata, Viewport } from 'next'
-import { generateMetadata, getOrganizationSchema, siteMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/common/JsonLd'
+import { getContactSettings } from '@/lib/data/contact'
+import {
+  generateMetadata,
+  getOrganizationSchema,
+  getWebsiteSchema,
+  siteMetadata,
+} from '@/lib/seo'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -11,6 +18,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteMetadata.url),
   ...generateMetadata({
     title: siteMetadata.name,
     description: siteMetadata.description,
@@ -29,21 +37,18 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Keep organization schema synchronized with the contact singleton in Sanity.
+  const contact = await getContactSettings()
+
   return (
     <html lang="en" className={dmSans.variable}>
       <head>
-        {/* JSON-LD Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(getOrganizationSchema()),
-          }}
-        />
+        <JsonLd data={[getOrganizationSchema(contact), getWebsiteSchema()]} />
       </head>
       <body className="bg-background font-sans text-foreground antialiased">
         {children}
