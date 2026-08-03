@@ -94,9 +94,9 @@ export function HomeHero() {
           transition={{ duration, delay: shouldReduceMotion ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 max-w-[900px] text-[46px] font-bold leading-[0.96] tracking-[-0.05em] text-[#08111f] sm:text-[58px] md:mt-7 md:text-[72px] lg:text-[80px] xl:max-w-[820px]"
         >
-          Join With Our Crazy{' '}
+          Research Driven Product{' '}
           <span className="bg-linear-to-r from-[#0064d7] to-[#39a8d2] bg-clip-text text-transparent">
-            Invensions.
+            Development.
           </span>
         </motion.h1>
 
