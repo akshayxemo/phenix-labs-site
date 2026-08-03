@@ -106,7 +106,7 @@ export function HomeHero() {
           transition={{ duration, delay: shouldReduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 max-w-[660px] text-[16px] leading-7 text-[#465566] md:mt-7 md:text-[19px] md:leading-8"
         >
-          Sometimes a technology is so awe-inspiring that the imagination runs away with it - often far, far away from reality.
+          "The best way to predict the future is to invent it."
         </motion.p>
 
         <motion.div
