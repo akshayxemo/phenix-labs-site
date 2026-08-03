@@ -9,7 +9,9 @@ import {
 import { SocialBrandIcon } from '@/components/common/SocialBrandIcon'
 import type { ContactSettings } from '@/types'
 
+/** Footer contact summary populated by the singleton Contact & Social document. */
 export function ContactFooterSection({ contact }: { contact: ContactSettings }) {
+  // Omit unset CMS values so the footer never renders empty contact rows.
   const contactDetails = [
     { icon: Phone, label: 'Call us', value: contact.phone, href: contact.phoneHref },
     { icon: Mail, label: 'Email us', value: contact.email, href: contact.emailHref },

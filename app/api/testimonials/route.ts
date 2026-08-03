@@ -1,5 +1,6 @@
 import { getTestimonialsPage } from '@/lib/data/testimonials'
 
+/** Cursor-paginated testimonial endpoint used by the public archive. */
 export async function GET(request: Request): Promise<Response> {
   const cursor = new URL(request.url).searchParams.get('cursor') || undefined
 
@@ -8,6 +9,7 @@ export async function GET(request: Request): Promise<Response> {
 
     return Response.json(page, {
       headers: {
+        // Cache at the edge briefly; stale content may be served during revalidation.
         'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
       },
     })

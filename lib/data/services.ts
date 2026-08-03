@@ -42,6 +42,7 @@ const homeServicesQuery = `*[
   defined(description)
 ] | order(coalesce(homeOrder, 9999) asc, coalesce(serviceOrder, 9999) asc)[0...4] ${serviceProjection}`
 
+/** Returns every published service for the Services page. */
 export async function getAllServices(): Promise<Service[]> {
   try {
     const services = await sanityClient.fetch<Service[]>(allServicesQuery, {}, {
@@ -55,6 +56,7 @@ export async function getAllServices(): Promise<Service[]> {
   }
 }
 
+/** Returns only editor-selected Home services, constrained to four positions. */
 export async function getHomeServices(): Promise<Service[]> {
   try {
     return await sanityClient.fetch<Service[]>(

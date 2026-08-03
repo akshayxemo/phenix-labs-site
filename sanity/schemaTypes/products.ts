@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 
+/** Retained product schema reserved for future non-invention catalogue content. */
 export const productsType = defineType({
   name: 'products',
   title: 'Products',

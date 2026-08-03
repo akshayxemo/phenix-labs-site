@@ -1,25 +1,43 @@
 import Link from 'next/link'
+import { ArrowUpRight, House, RouteOff } from 'lucide-react'
+import { MainLayout } from '@/components/layout/MainLayout'
+import { StatusPage } from '@/components/feedback/StatusPage'
+import { getFooterData, getNavbarData } from '@/lib/config/site'
 
-export default function NotFound() {
+/** Global fallback rendered when no application route matches the request. */
+export default async function NotFound() {
+  const [navbar, footer] = await Promise.all([
+    getNavbarData(),
+    getFooterData(),
+  ])
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-1 flex items-center justify-center">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md mx-auto text-center">
-            <h1 className="text-6xl font-bold text-primary mb-4">404</h1>
-            <h2 className="text-3xl font-bold leading-snug mb-4">Page Not Found</h2>
-            <p className="text-muted-foreground mb-8">
-              Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved or deleted.
-            </p>
+    <MainLayout navbarData={navbar} footerData={footer}>
+      <StatusPage
+        code="404"
+        eyebrow="Route not found"
+        title="This path leads beyond the map."
+        description="The page may have moved, the address may be incomplete, or the content may no longer be available. Continue from a known part of Phenix Labs."
+        icon={<RouteOff aria-hidden="true" size={15} />}
+        actions={
+          <>
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0064d7] px-7 font-semibold text-white shadow-[0_14px_34px_rgba(0,100,215,.23)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] sm:w-auto"
             >
-              Go Home
+              <House aria-hidden="true" size={18} />
+              Return home
             </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+            <Link
+              href="/products"
+              className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-[#9fb3c2] bg-white/55 px-7 font-semibold text-[#203348] backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[#0064d7]/55 hover:text-[#0064d7] sm:w-auto"
+            >
+              Explore products
+              <ArrowUpRight aria-hidden="true" size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </>
+        }
+      />
+    </MainLayout>
   )
 }

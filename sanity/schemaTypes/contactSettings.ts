@@ -13,6 +13,7 @@ const socialPlatforms = [
   { title: 'Custom platform', value: 'custom' },
 ] as const
 
+/** Singleton contact, availability, and extensible social-link settings. */
 export const contactSettingsType = defineType({
   name: 'contactSettings',
   title: 'Contact & Social Settings',

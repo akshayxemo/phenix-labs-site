@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 
+/** Testimonial document; `isActive` controls Home only, never the archive. */
 export const testimonialType = defineType({
   name: 'testimonials',
   title: 'Testimonials',

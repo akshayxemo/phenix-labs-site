@@ -5,6 +5,7 @@ async function validateFeaturedLimit(
   value: boolean | undefined,
   context: ValidationContext,
 ) {
+  // Draft and published ids represent one logical invention and must count once.
   if (value !== true) return true
 
   const documentId = context.document?._id
@@ -37,6 +38,7 @@ async function validateFeaturedLimit(
   }
 }
 
+/** Invention document with primary image, gallery, project dates, and Home feature flag. */
 export const inventionType = defineType({
   name: 'inventions',
   title: 'Inventions',

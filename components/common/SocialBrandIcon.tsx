@@ -6,6 +6,7 @@ interface SocialBrandIconProps {
   className?: string
 }
 
+/** Maps persisted social-network identifiers to lightweight inline brand marks. */
 export function SocialBrandIcon({
   platform,
   customIcon,

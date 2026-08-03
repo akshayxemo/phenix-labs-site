@@ -49,6 +49,7 @@ function getTestimonialPreview(quote: string) {
   }
 }
 
+/** Auto-advancing Home testimonial carousel with explicit pause and full-quote dialog. */
 export function HomeTestimonials({ testimonials }: HomeTestimonialsProps) {
   const shouldReduceMotion = useReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
@@ -82,6 +83,7 @@ export function HomeTestimonials({ testimonials }: HomeTestimonialsProps) {
   )
 
   useEffect(() => {
+    // Schedule one advance at a time so interactions restart a predictable interval.
     if (!canNavigate || isPaused) {
       return
     }
@@ -99,6 +101,7 @@ export function HomeTestimonials({ testimonials }: HomeTestimonialsProps) {
   }
 
   const handleWheel = (event: React.WheelEvent) => {
+    // Throttle trackpad input so one gesture cannot skip several testimonials.
     if (Math.abs(event.deltaY) < 12) {
       return
     }
@@ -351,6 +354,7 @@ export function HomeTestimonials({ testimonials }: HomeTestimonialsProps) {
         </div>
       </div>
 
+      {/* Opening the full quote pauses automation without changing the active item. */}
       <Dialog
         open={isFullTestimonialOpen}
         onClose={closeFullTestimonial}

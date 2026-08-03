@@ -10,6 +10,7 @@ interface CountUpProps {
   delay?: number
 }
 
+/** Animates a numeric statistic once it enters the viewport; respects reduced motion. */
 export function CountUp({
   value,
   suffix = '',

@@ -1,6 +1,7 @@
 import { defineField, defineType } from 'sanity'
 import { MarkdownEditorInput } from '@/sanity/components/MarkdownEditorInput'
 
+/** Singleton Markdown source for the public About page. */
 export const aboutPageType = defineType({
   name: 'aboutPage',
   title: 'About Page',

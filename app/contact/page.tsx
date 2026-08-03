@@ -7,16 +7,25 @@ import {
   MapPin,
   Phone,
 } from 'lucide-react'
+import { JsonLd } from '@/components/common/JsonLd'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { SocialBrandIcon } from '@/components/common/SocialBrandIcon'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
 import { ContactFormClient } from './contact-form'
+import {
+  generateMetadata,
+  getBreadcrumbSchema,
+  getWebPageSchema,
+} from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Contact Us - Phenix Labs',
-  description: 'Discuss an engineering, research, product development, or education project with Phenix Labs.',
+/** Contact route combining persisted contact settings with the enquiry form. */
+export const metadata: Metadata = generateMetadata({
+  title: 'Contact Phenix Labs for an Engineering Project',
+  description:
+    'Contact Phenix Labs in Thiruvananthapuram to discuss an engineering, PCB, firmware, embedded system, research, prototyping, or product development project.',
   keywords: ['contact Phenix Labs', 'engineering enquiry', 'project discussion'],
-}
+  path: '/contact',
+})
 
 export default async function Contact() {
   const [navbar, footer] = await Promise.all([
@@ -24,6 +33,7 @@ export default async function Contact() {
     getFooterData(),
   ])
   const contact = footer.contact
+  // Empty CMS channels are removed so the UI never renders dead contact actions.
   const directChannels = [
     {
       icon: Phone,
@@ -43,6 +53,21 @@ export default async function Contact() {
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      <JsonLd
+        data={[
+          getWebPageSchema({
+            title: 'Contact Phenix Labs',
+            description:
+              'Contact details and enquiry form for engineering, research, and product development projects.',
+            path: '/contact',
+            type: 'ContactPage',
+          }),
+          getBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Contact', path: '/contact' },
+          ]),
+        ]}
+      />
       <div className="overflow-hidden bg-[#ecf1f5] text-[#08111f]">
         <section className="relative px-5 pb-20 pt-20 md:pb-24 md:pt-24">
           <div

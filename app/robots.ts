@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next'
+import { siteMetadata } from '@/lib/seo'
 
+/** Search crawler policy: index public pages while excluding APIs and the CMS. */
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://phenix-labs.com'
-
   return {
     rules: [
       {
@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/admin/'],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${siteMetadata.url}/sitemap.xml`,
+    host: siteMetadata.url,
   }
 }

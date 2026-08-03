@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+/** Shared server/client validation contract for project enquiries. */
 export const contactFormSchema = z.object({
   name: z
     .string()

@@ -14,6 +14,7 @@ const inventionLayouts = [
   'lg:col-span-6 lg:min-h-[340px]',
 ]
 
+/** Featured invention mosaic whose cards deep-link into the Products detail workspace. */
 export function HomeInventionsShowcase({ inventions }: { inventions: Invention[] }) {
   const shouldReduceMotion = useReducedMotion()
 

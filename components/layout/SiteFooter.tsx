@@ -9,7 +9,9 @@ interface SiteFooterProps {
   logo: NavbarData['logo']
 }
 
+/** Global footer using the same persisted navigation visibility data as the navbar. */
 export function SiteFooter({ data, links, logo }: SiteFooterProps) {
+  // Navigation owns footer visibility so editors configure each destination once.
   const footerLinks = links.filter((link) => link.showInFooter !== false)
 
   return (

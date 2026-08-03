@@ -9,20 +9,15 @@ import { submitContactForm } from '@/app/actions/contact'
 import { Button } from '@/components/ui/button'
 
 export interface ContactFormProps {
-  initialEmail?: string
-  initialName?: string
-  onSuccess?: () => void
   submitButtonText?: string
   className?: string
   showPhone?: boolean
   showCompany?: boolean
   showSubscribe?: boolean
   idPrefix?: string
-  variant?: 'default' | 'footer'
 }
 
 interface FormState {
-  isSubmitting: boolean
   isSuccess: boolean
   isError: boolean
   errorMessage: string
@@ -33,20 +28,14 @@ interface FormState {
  * Handles client-side validation, submission, and server-side processing
  */
 export function ContactForm({
-  initialEmail = '',
-  initialName = '',
-  onSuccess,
   submitButtonText = 'Send Message',
   className = '',
   showPhone = false,
   showCompany = false,
   showSubscribe = true,
   idPrefix = 'contact',
-  variant = 'default',
 }: ContactFormProps) {
-  const isFooter = variant === 'footer'
   const [formState, setFormState] = useState<FormState>({
-    isSubmitting: false,
     isSuccess: false,
     isError: false,
     errorMessage: '',
@@ -60,8 +49,8 @@ export function ContactForm({
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      name: initialName,
-      email: initialEmail,
+      name: '',
+      email: '',
       subject: '',
       message: '',
       phone: '',
@@ -74,7 +63,6 @@ export function ContactForm({
   const onSubmit = useCallback(
     async (data: ContactFormData) => {
       setFormState({
-        isSubmitting: true,
         isSuccess: false,
         isError: false,
         errorMessage: '',
@@ -85,13 +73,11 @@ export function ContactForm({
 
         if (response.success) {
           setFormState({
-            isSubmitting: false,
             isSuccess: true,
             isError: false,
             errorMessage: '',
           })
           reset()
-          onSuccess?.()
 
           // Auto-hide success message after 5 seconds
           setTimeout(() => {
@@ -102,7 +88,6 @@ export function ContactForm({
           }, 5000)
         } else {
           setFormState({
-            isSubmitting: false,
             isSuccess: false,
             isError: true,
             errorMessage: response.message,
@@ -111,41 +96,30 @@ export function ContactForm({
       } catch (error) {
         console.error('[ContactForm] Submission error:', error)
         setFormState({
-          isSubmitting: false,
           isSuccess: false,
           isError: true,
           errorMessage: 'An unexpected error occurred. Please try again.',
         })
       }
     },
-    [reset, onSuccess]
+    [reset]
   )
 
-  const labelClassName = isFooter
-    ? 'mb-2 block text-sm font-semibold text-[#c8d2de]'
-    : 'mb-2 block text-sm font-semibold text-[#334458]'
-  const fieldClassName = isFooter
-    ? 'w-full rounded-[14px] border border-white/[0.085] bg-[#081422]/80 px-4 py-3.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] outline-none transition placeholder:text-[#627388] hover:border-white/[0.15] focus:border-[#58a7ff]/70 focus:ring-4 focus:ring-[#0064d7]/10 disabled:cursor-not-allowed disabled:opacity-60'
-    : 'w-full rounded-[14px] border border-[#c9d5df] bg-[#f8fafc] px-4 py-3.5 text-[#162236] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] outline-none transition placeholder:text-[#8a98a7] hover:border-[#aebfcd] focus:border-[#4b9ce7] focus:bg-white focus:ring-4 focus:ring-[#0064d7]/8 disabled:cursor-not-allowed disabled:opacity-60'
-  const errorClassName = isFooter
-    ? 'mt-1.5 text-sm text-[#ff9d9d]'
-    : 'mt-1.5 text-sm text-[#c53e4a]'
+  const labelClassName = 'mb-2 block text-sm font-semibold text-[#334458]'
+  const fieldClassName = 'w-full rounded-[14px] border border-[#c9d5df] bg-[#f8fafc] px-4 py-3.5 text-[#162236] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] outline-none transition placeholder:text-[#8a98a7] hover:border-[#aebfcd] focus:border-[#4b9ce7] focus:bg-white focus:ring-4 focus:ring-[#0064d7]/8 disabled:cursor-not-allowed disabled:opacity-60'
+  const errorClassName = 'mt-1.5 text-sm text-[#c53e4a]'
 
   return (
     <div className={className}>
       {/* Success Message */}
       {formState.isSuccess && (
         <div
-          className={
-            isFooter
-              ? 'mb-6 rounded-[14px] border border-[#2c765c] bg-[#123b30] p-4'
-              : 'mb-6 rounded-lg border border-green-200 bg-green-50 p-4'
-          }
+          className="mb-6 rounded-[14px] border border-green-200 bg-green-50 p-4"
           role="alert"
           aria-live="polite"
         >
-          <p className={isFooter ? 'font-medium text-[#8de3be]' : 'font-medium text-green-800'}>Thank you!</p>
-          <p className={isFooter ? 'text-sm text-[#b8d9cc]' : 'text-sm text-green-700'}>
+          <p className="font-medium text-green-800">Thank you!</p>
+          <p className="text-sm text-green-700">
             We have received your message and will get back to you as soon as possible.
           </p>
         </div>
@@ -154,16 +128,12 @@ export function ContactForm({
       {/* Error Message */}
       {formState.isError && (
         <div
-          className={
-            isFooter
-              ? 'mb-6 rounded-[14px] border border-[#7d4148] bg-[#3b2028] p-4'
-              : 'mb-6 rounded-lg border border-red-200 bg-red-50 p-4'
-          }
+          className="mb-6 rounded-[14px] border border-red-200 bg-red-50 p-4"
           role="alert"
           aria-live="polite"
         >
-          <p className={isFooter ? 'font-medium text-[#ffaaaa]' : 'font-medium text-red-800'}>Error</p>
-          <p className={isFooter ? 'text-sm text-[#e3b9bd]' : 'text-sm text-red-700'}>{formState.errorMessage}</p>
+          <p className="font-medium text-red-800">Error</p>
+          <p className="text-sm text-red-700">{formState.errorMessage}</p>
         </div>
       )}
 
@@ -184,7 +154,7 @@ export function ContactForm({
             {...register('name')}
             className={fieldClassName}
             aria-describedby={errors.name ? `${idPrefix}-name-error` : undefined}
-            disabled={isSubmitting || formState.isSubmitting}
+            disabled={isSubmitting}
           />
           {errors.name && (
             <p id={`${idPrefix}-name-error`} className={errorClassName} role="alert">
@@ -205,7 +175,7 @@ export function ContactForm({
             {...register('email')}
             className={fieldClassName}
             aria-describedby={errors.email ? `${idPrefix}-email-error` : undefined}
-            disabled={isSubmitting || formState.isSubmitting}
+            disabled={isSubmitting}
           />
           {errors.email && (
             <p id={`${idPrefix}-email-error`} className={errorClassName} role="alert">
@@ -227,7 +197,7 @@ export function ContactForm({
               {...register('phone')}
               className={fieldClassName}
               aria-describedby={errors.phone ? `${idPrefix}-phone-error` : undefined}
-              disabled={isSubmitting || formState.isSubmitting}
+              disabled={isSubmitting}
             />
             {errors.phone && (
               <p id={`${idPrefix}-phone-error`} className={errorClassName} role="alert">
@@ -250,7 +220,7 @@ export function ContactForm({
               {...register('company')}
               className={fieldClassName}
               aria-describedby={errors.company ? `${idPrefix}-company-error` : undefined}
-              disabled={isSubmitting || formState.isSubmitting}
+              disabled={isSubmitting}
             />
             {errors.company && (
               <p id={`${idPrefix}-company-error`} className={errorClassName} role="alert">
@@ -272,7 +242,7 @@ export function ContactForm({
             {...register('subject')}
             className={fieldClassName}
             aria-describedby={errors.subject ? `${idPrefix}-subject-error` : undefined}
-            disabled={isSubmitting || formState.isSubmitting}
+            disabled={isSubmitting}
           />
           {errors.subject && (
             <p id={`${idPrefix}-subject-error`} className={errorClassName} role="alert">
@@ -293,7 +263,7 @@ export function ContactForm({
             {...register('message')}
             className={`${fieldClassName} resize-none`}
             aria-describedby={errors.message ? `${idPrefix}-message-error` : undefined}
-            disabled={isSubmitting || formState.isSubmitting}
+            disabled={isSubmitting}
           />
           {errors.message && (
             <p id={`${idPrefix}-message-error`} className={errorClassName} role="alert">
@@ -310,9 +280,9 @@ export function ContactForm({
               type="checkbox"
               {...register('subscribe')}
               className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-              disabled={isSubmitting || formState.isSubmitting}
+              disabled={isSubmitting}
             />
-            <label htmlFor={`${idPrefix}-subscribe`} className={`ml-2 text-sm ${isFooter ? 'text-[#a8b5c4]' : 'text-gray-700'}`}>
+            <label htmlFor={`${idPrefix}-subscribe`} className="ml-2 text-sm text-gray-700">
               Subscribe to our newsletter
             </label>
           </div>
@@ -321,15 +291,11 @@ export function ContactForm({
         {/* Submit Button */}
         <Button
           type="submit"
-          disabled={isSubmitting || formState.isSubmitting}
-          className={
-            isFooter
-              ? 'h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.24)] transition-all hover:-translate-y-0.5 hover:bg-[#1475e8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.32)] disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2'
-              : 'h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.3)] disabled:cursor-not-allowed disabled:opacity-50 sm:col-span-2'
-          }
-          aria-busy={isSubmitting || formState.isSubmitting}
+          disabled={isSubmitting}
+          className="h-14 w-full gap-2 rounded-[14px] bg-[#0064d7] px-6 text-[15px] font-bold text-white shadow-[0_14px_35px_rgba(0,100,215,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#0055b8] hover:shadow-[0_18px_42px_rgba(0,100,215,0.3)] disabled:cursor-not-allowed disabled:opacity-50 sm:col-span-2"
+          aria-busy={isSubmitting}
         >
-          {isSubmitting || formState.isSubmitting ? (
+          {isSubmitting ? (
             <>
               <LoaderCircle aria-hidden="true" className="animate-spin" size={18} />
               Sending message
@@ -345,5 +311,3 @@ export function ContactForm({
     </div>
   )
 }
-
-export default ContactForm

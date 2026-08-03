@@ -49,10 +49,12 @@ const platformLabels: Record<string, string> = {
 }
 
 function phoneHref(phone: string) {
+  // Strip formatting while retaining a leading plus for a valid `tel:` target.
   const normalized = phone.replace(/[^\d+]/g, '')
   return normalized ? `tel:${normalized}` : ''
 }
 
+/** Resolves the Contact singleton into UI-ready links with safe defaults. */
 export async function getContactSettings(): Promise<ContactSettings> {
   try {
     const settings = await sanityClient.fetch<SanityContactSettings | null>(

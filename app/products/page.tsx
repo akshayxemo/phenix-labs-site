@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Atom, Boxes, CircuitBoard, Sparkles } from 'lucide-react'
+import { JsonLd } from '@/components/common/JsonLd'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { InventionsCatalogue } from '@/components/sections/InventionsCatalogue'
 import { getFooterData, getNavbarData } from '@/lib/config/site'
@@ -7,18 +8,26 @@ import {
   getInventionById,
   getInventionsPage,
 } from '@/lib/data/inventions'
+import {
+  generateMetadata,
+  getBreadcrumbSchema,
+  getInventionCollectionSchema,
+  getWebPageSchema,
+} from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Inventions & Products | Phenix Labs',
+/** Products route with paginated catalogue data and deep-linked invention details. */
+export const metadata: Metadata = generateMetadata({
+  title: 'Inventions, Prototypes & Engineered Products',
   description:
-    'Explore inventions, prototypes, experiments, and engineered products developed by Phenix Labs.',
+    'Explore inventions, research experiments, prototypes, and engineered products developed by Phenix Labs, ordered by their project dates.',
   keywords: [
     'Phenix Labs inventions',
     'engineering prototypes',
     'product development',
     'technology experiments',
   ],
-}
+  path: '/products',
+})
 
 export default async function Products({
   searchParams,
@@ -26,6 +35,7 @@ export default async function Products({
   searchParams: Promise<{ invention?: string | string[] }>
 }) {
   const resolvedSearchParams = await searchParams
+  // A deep link may arrive before its item appears in the first catalogue page.
   const requestedInventionId = Array.isArray(resolvedSearchParams.invention)
     ? resolvedSearchParams.invention[0]
     : resolvedSearchParams.invention
@@ -43,7 +53,24 @@ export default async function Products({
 
   return (
     <MainLayout navbarData={navbar} footerData={footer}>
+      <JsonLd
+        data={[
+          getWebPageSchema({
+            title: 'Inventions and Products',
+            description:
+              'A growing catalogue of inventions, prototypes, experiments, and engineered products.',
+            path: '/products',
+            type: 'CollectionPage',
+          }),
+          getBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Products', path: '/products' },
+          ]),
+          getInventionCollectionSchema(initialPage.items),
+        ]}
+      />
       <div className="overflow-hidden bg-[#eaf0f4] text-[#08111f]">
+        {/* Products hero and animated engineering orbit. */}
         <section className="relative overflow-hidden bg-[#081321] px-5 py-18 text-white md:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute -left-52 -top-56 size-[620px] rounded-full bg-[#0064d7]/25 blur-[130px]" />
           <div aria-hidden="true" className="absolute -bottom-56 right-[8%] size-[480px] rounded-full bg-[#46b6e4]/16 blur-[120px]" />
@@ -117,6 +144,7 @@ export default async function Products({
           </div>
         </section>
 
+        {/* Searchable, paginated invention collection. */}
         <section className="relative px-5 py-16 md:py-24">
           <div
             aria-hidden="true"

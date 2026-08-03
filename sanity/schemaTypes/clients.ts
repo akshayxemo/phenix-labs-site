@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 
+/** Client-logo document rendered by the Home marquee. */
 export const clientType = defineType({
   name: 'clients',
   title: 'Clients',
