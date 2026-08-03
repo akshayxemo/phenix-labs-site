@@ -39,7 +39,7 @@ export function ClientLogoMarquee({ clients }: ClientLogoMarqueeProps) {
   )
 
   return (
-    <section className="relative overflow-hidden py-7 md:py-9" aria-labelledby="client-logo-title">
+    <section data-section-label="Clients" className="relative overflow-hidden py-7 md:py-9" aria-labelledby="client-logo-title">
       <div aria-hidden="true" className="absolute inset-0 opacity-[0.08] [background-image:radial-gradient(rgba(0,100,215,.65)_1px,transparent_1.2px)] [background-size:24px_24px]" />
       <div className="relative z-10 mb-7 px-4 md:mb-8 md:px-6.75">
         <div className="mx-auto flex max-w-[1396px] flex-col gap-2 px-6 md:flex-row md:items-end md:justify-center md:px-10">

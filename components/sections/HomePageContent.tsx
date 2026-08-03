@@ -143,7 +143,7 @@ export function HomePageContent({ testimonials, clients, services, inventions }:
       </section>
 
       {/* Dark visual break for Research, Development, and Education. */}
-      <section className="relative z-20 -mt-10 px-4 pb-4 pt-0 md:-mt-12 md:px-5.5">
+      <section data-section-label="What we do" className="relative z-20 -mt-10 px-4 pb-4 pt-0 md:-mt-12 md:px-5.5">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-28 w-3/5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2187e8]/16 blur-3xl"
@@ -207,7 +207,7 @@ export function HomePageContent({ testimonials, clients, services, inventions }:
 
       {/* Only CMS-selected Home services enter this alternating mosaic. */}
       {services.length > 0 && (
-      <section className="px-5 py-20 md:py-[100px]">
+      <section data-section-label="Services" className="px-5 py-20 md:py-[100px]">
         <SectionIntro eyebrow="What we build" title="Our Services">
           From the first circuit to the final interface, we build connected
           solutions that are ready for the real world.

@@ -1,258 +1,168 @@
-# Phenix Labs
+# Phenix Labs Website
 
-Premium, production-ready design system and component library for corporate websites.
+The public website and content-management studio for Phenix Labs. It presents engineering services, inventions, client logos, testimonials, company information, and contact details from a shared Sanity dataset.
 
-## 🚀 Quick Start
+## Stack
 
-### Development
-```bash
-pnpm dev
-```
-
-### Production Build
-```bash
-pnpm build
-pnpm start
-```
-
-## 📚 Documentation
-
-- **[DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)** - Comprehensive design system documentation
-- **[COMPONENT_REFERENCE.md](./COMPONENT_REFERENCE.md)** - Quick component lookup
-- **[SETUP_COMPLETE.md](./SETUP_COMPLETE.md)** - Setup details and next steps
-
-## 🎨 What's Included
-
-### 45+ Production-Ready Components
-- Layout (Container, Section, Stack, Grid, SectionHeader)
-- Cards (Card, FeatureCard, StatCard)
-- Forms (Input, Textarea, Checkbox)
-- Navigation (NavigationLink, Footer)
-- Common (Badge, Divider, Spacer, Logo, ImageWrapper)
-- Animations (FadeUp, ScaleIn)
-- Feedback (LoadingSkeleton, EmptyState)
-- Sections (HeroSection)
-
-### Comprehensive Design System
-- Semantic color tokens with dark mode
-- Typography scale (Display XL → Caption)
-- Spacing system
-- Shadow system
-- Border radius tokens
-- Animation utilities
-- Responsive breakpoints
-
-### Modern Tech Stack
-- Next.js 16 with React 19
-- TypeScript (Strict)
-- Tailwind CSS v4
+- Next.js 16 App Router and React 19
+- TypeScript with strict checking
+- Tailwind CSS 4
+- Sanity Studio and `next-sanity`
 - Framer Motion
-- Lucide React icons
-- DM Sans font (from next/font/google)
+- React Hook Form and Zod
+- Netlify Forms with an edge validation and rate-limit layer
+- Lucide icons and `libphonenumber-js`
 
-## 📖 Basic Usage
+## Requirements
 
-```tsx
-import {
-  HeroSection,
-  Container,
-  Section,
-  SectionHeader,
-  Grid,
-  FeatureCard,
-  Footer,
-} from '@/components'
+- Node.js 20.9 or newer
+- pnpm
+- A Sanity project and dataset
+- A Netlify site if the production contact form will use Netlify Forms
 
-export default function HomePage() {
-  return (
-    <>
-      <HeroSection
-        title="Welcome to Phenix Labs"
-        description="Engineering excellence"
-      >
-        <Button>Get Started</Button>
-      </HeroSection>
+## Local setup
 
-      <Section>
-        <Container>
-          <SectionHeader title="Our Features" />
-          <Grid cols={3}>
-            <FeatureCard
-              title="Fast"
-              description="Lightning quick"
-            />
-            <FeatureCard
-              title="Secure"
-              description="Enterprise grade"
-            />
-            <FeatureCard
-              title="Scalable"
-              description="Grows with you"
-            />
-          </Grid>
-        </Container>
-      </Section>
+1. Install dependencies:
 
-      <Footer columns={[...]} />
-    </>
-  )
-}
-```
+   ```bash
+   pnpm install
+   ```
 
-## 🎯 Key Features
+2. Copy `.env.example` to `.env.local` and supply the public configuration for the target environment:
 
-✅ **Server Components First** - Minimal client JavaScript  
-✅ **Type Safe** - Strict TypeScript throughout  
-✅ **Dark Mode** - Full light/dark theme support  
-✅ **Accessible** - ARIA labels, semantic HTML  
-✅ **Responsive** - Mobile-first design  
-✅ **Optimized** - Next.js Image, code splitting  
-✅ **Composable** - Build with reusable components  
-✅ **Semantic Tokens** - Easy customization  
+   ```env
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+   NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=
+   NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+   NEXT_PUBLIC_SANITY_DATASET=production
+   NEXT_PUBLIC_SANITY_API_VERSION=2026-02-01
+   ```
 
-## 🛠️ Customization
+3. Start the development server:
 
-### Change Brand Color
-Edit `app/globals.css`:
-```css
-:root {
-  --primary: rgb(YOUR_BRAND_COLOR);
-}
-```
+   ```bash
+   pnpm dev
+   ```
 
-### Add New Components
-1. Create component in appropriate folder
-2. Export from `components/index.ts`
-3. Update documentation
+4. Open the website at `http://localhost:3000` and the embedded Sanity Studio at `http://localhost:3000/admin`.
 
-### Modify Typography
-Edit typography classes in `app/globals.css`
+The Sanity values use `NEXT_PUBLIC_` because the Studio and public read client need them in the browser. A project ID, dataset name, and API version identify public content; they are not credentials. Never add a Sanity write token or other secret to a `NEXT_PUBLIC_` variable.
 
-## 📁 Project Structure
+## Commands
 
-```
-components/
-├── layout/       # Layout structure
-├── cards/        # Card variants
-├── forms/        # Form inputs
-├── navigation/   # Navigation
-├── common/       # Common utilities
-├── animations/   # Motion
-├── feedback/     # Feedback UI
-├── sections/     # Page sections
-└── index.ts      # Exports
-
-lib/
-├── utils.ts      # Utilities
-├── animations.ts # Animation variants
-└── types.ts      # TypeScript types
-
-app/
-├── layout.tsx    # Root layout
-├── globals.css   # Design tokens
-└── page.tsx      # Home page
-```
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-1. Push to GitHub
-2. Connect to Vercel
-3. Deploy automatically
-
-### Self-Hosted
 ```bash
-pnpm build
-pnpm start
+pnpm dev            # Run the local development server
+pnpm lint           # Run ESLint and Next.js checks
+pnpm exec tsc --noEmit  # Run strict TypeScript checking
+pnpm build          # Create a production build
+pnpm start          # Serve the production build
 ```
 
-## 📝 Development Guidelines
+## Public routes
 
-### Always Use Server Components
-```tsx
-// ✅ Good
-export default function Page() {
-  const data = await fetch(...)
-  return <Component data={data} />
-}
+| Route | Purpose |
+| --- | --- |
+| `/` | Home page with featured services, inventions, clients, counts, and testimonials |
+| `/about` | Markdown-driven About page |
+| `/services` | Full Sanity-backed service catalogue and development process |
+| `/products` | Searchable and sortable invention catalogue with gallery details |
+| `/testimonials` | Paginated archive of every published testimonial |
+| `/contact` | Contact details, social links, and project-enquiry form |
+| `/admin` | Embedded Sanity Studio |
+| `/api/inventions` | Cursor-paginated invention collection used by the Products UI |
+| `/api/testimonials` | Cursor-paginated testimonial collection |
+| `/api/health` | Lightweight health endpoint |
 
-// ❌ Avoid
-'use client'
-export default function Page() {
-  const [data, setData] = useState(...)
-}
+Custom `not-found` and error screens follow the same visual system as the public pages.
+
+## Content management
+
+The Studio exposes these document types:
+
+- **About Page** — one protected singleton containing the complete Markdown body. An empty document renders no About content.
+- **Contact & Social Settings** — one protected singleton for phone, email, address, hours, response expectation, and ordered social links.
+- **Services** — shared by Home and Services. Every valid service appears on `/services`; `showOnHome` plus a unique position from 1–4 controls Home placement.
+- **Inventions** — drives `/products`. A dedicated primary image appears first, additional images form the gallery, and optional project dates control date sorting. Up to five entries may be featured on Home.
+- **Testimonials** — every published item appears in the archive. `isActive` only controls the Home carousel, which displays at most eight.
+- **Clients** — client names and logos shown in the Home marquee.
+- **Products** — retained for future non-invention catalogue content and not currently rendered.
+
+CMS reads are normalized in `lib/data/` before reaching presentation components. Published changes are cached for up to 60 seconds, so an edit may not appear immediately after publishing.
+
+### Studio deployment setup
+
+For `/admin` to reach the login/editor screen in a deployed environment, register the deployed Studio URL with the Sanity project and add the site origin to Sanity CORS. The Studio may show “Connect this Studio to your project” until that URL has been registered. Repeat the CORS step for local development and any preview origin that editors are expected to use.
+
+## Navigation and footer
+
+`lib/config/site.ts` is the persistent source for public navigation and site-wide CTA configuration; it is not sample data. Add, remove, or activate navigation there. Each navigation link has a `showInFooter` flag, so the footer can only show routes that also exist in the navbar.
+
+The Education CTA opens its configured external URL in a new tab. Contact-oriented CTAs should point to `/contact`.
+
+All public pages use `MainLayout`, which supplies the navbar, modular footer, and floating section navigator. Sections opt into readable navigator labels with `data-section-label`. The navigator tracks the current section while open, supports smooth jumps, and provides a back-to-top action.
+
+## Contact form
+
+The visible form is implemented in `components/forms/ContactForm.tsx`. `public/__forms.html` is a hidden deployment blueprint that allows Netlify to discover the same form name and fields during its build scan; it is not a public form page.
+
+The submission flow includes:
+
+- Zod client validation and field length counters
+- country calling-code selection with India (`+91`) as the default
+- numeric-only national phone input and international validation
+- a honeypot field
+- same-origin, content-type, body-size, and field validation at Netlify Edge
+- a limit of five submissions per minute per IP and domain
+- dismissible, non-native success and error notifications
+
+Keep the form name and field names synchronized across:
+
+- `components/forms/ContactForm.tsx`
+- `public/__forms.html`
+- `netlify/edge-functions/protect-contact-form.ts`
+
+Netlify Forms and the edge protection only run when this application is deployed through Netlify. Local development can exercise validation and UI behavior, but it does not store a real Netlify submission.
+
+## SEO
+
+SEO is centralized in `lib/seo.ts` and includes route metadata, canonical URLs, Open Graph/Twitter data, JSON-LD, a generated Open Graph image, icons, `robots.txt`, and `sitemap.xml`. Set `NEXT_PUBLIC_BASE_URL` to the canonical production origin. `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` is optional and should contain only the verification token issued by Google Search Console.
+
+## Deployment
+
+### Netlify
+
+Use Netlify for the production site when the contact form must be stored in Netlify Forms. Configure the environment variables from `.env.example`, deploy the repository, then confirm that `project-enquiry` appears under Forms and that the edge function protects `POST /__forms.html`.
+
+### Vercel
+
+The Next.js application and Sanity Studio can run on Vercel, and production builds include Vercel Analytics. Netlify Forms and the Netlify edge guard do not run on a Vercel-only deployment; use a Netlify deployment or replace the contact submission backend in that case.
+
+## Project map
+
+```text
+app/                 Routes, metadata, APIs, error pages, and Studio mount
+components/          Layout, sections, forms, feedback, navigation, and animation
+config/              Safe application defaults
+lib/config/          Persistent site navigation and footer configuration
+lib/data/            Typed Sanity queries and normalization
+lib/schemas/         Runtime form validation
+netlify/              Edge validation and rate-limit function
+public/               Images, icons, and Netlify's hidden form blueprint
+sanity/               Studio config, schemas, custom inputs, and client
+types/                Shared application types
 ```
 
-### Compose Components
-```tsx
-// ✅ Good - Reusable pieces
-<HeroSection />
-<Section><Container><Grid /></Container></Section>
-<Footer />
+For detailed boundaries and data flows, see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-// ❌ Avoid - One big component
-<div className="...">Everything</div>
-```
+## Development conventions
 
-### Use Semantic Colors
-```tsx
-// ✅ Good
-<button className="bg-primary text-primary-foreground" />
+- Prefer Server Components; use client components only for state, browser APIs, or animation.
+- Fetch CMS content in `lib/data/`, normalize it there, and pass plain typed props into the UI.
+- Keep shared chrome inside `MainLayout` so every public route receives one navbar and one footer.
+- Preserve empty-state behavior: unavailable collections render no fabricated records.
+- Add meaningful comments around non-obvious behavior, not line-by-line narration.
+- Run lint and TypeScript checks before committing; run a production build when validating build or deployment changes.
 
-// ❌ Avoid
-<button className="bg-blue-600 text-white" />
-```
+## License
 
-## 🎓 Learning Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [Framer Motion](https://www.framer.com/motion/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-
-## 🤝 Component Development
-
-When creating new components:
-
-1. **Use TypeScript** - Full type safety
-2. **Add Props Interface** - Document parameters
-3. **Include JSDoc** - Add comments
-4. **Server Component Default** - Only use 'use client' when needed
-5. **Follow Naming** - Semantic component names
-6. **Export from index.ts** - For easy imports
-7. **Update Documentation** - Add to guides
-
-Example:
-```tsx
-/**
- * MyComponent - Does something
- * @param title - Component title
- * @param variant - Style variant
- */
-interface MyComponentProps {
-  title: string
-  variant?: 'default' | 'primary'
-}
-
-export function MyComponent({
-  title,
-  variant = 'default',
-}: MyComponentProps) {
-  return <div>{title}</div>
-}
-```
-
-## 📞 Support
-
-For detailed documentation:
-- See `DESIGN_SYSTEM.md` for comprehensive guide
-- See `COMPONENT_REFERENCE.md` for quick lookup
-- Check `SETUP_COMPLETE.md` for setup details
-
-## 📜 License
-
-This design system is built for Phenix Labs.
-
----
-
-Built with ❤️ using Next.js, React, TypeScript, and Tailwind CSS.
+Private project for Phenix Labs.

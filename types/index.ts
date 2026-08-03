@@ -230,15 +230,3 @@ export interface CasesPage extends PageContent {
   hero: HeroContent
   cases: ProjectCase[]
 }
-
-export interface ContactData {
-  name: string
-  email: string
-  subject: string
-  message: string
-}
-
-export interface ContactResponse {
-  success: boolean
-  message: string
-}

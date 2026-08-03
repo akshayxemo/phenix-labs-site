@@ -71,7 +71,7 @@ export default async function Products({
       />
       <div className="overflow-hidden bg-[#eaf0f4] text-[#08111f]">
         {/* Products hero and animated engineering orbit. */}
-        <section className="relative overflow-hidden bg-[#081321] px-5 py-18 text-white md:py-24 lg:py-28">
+        <section data-section-label="Products overview" className="relative overflow-hidden bg-[#081321] px-5 py-18 text-white md:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute -left-52 -top-56 size-[620px] rounded-full bg-[#0064d7]/25 blur-[130px]" />
           <div aria-hidden="true" className="absolute -bottom-56 right-[8%] size-[480px] rounded-full bg-[#46b6e4]/16 blur-[120px]" />
 
@@ -145,7 +145,7 @@ export default async function Products({
         </section>
 
         {/* Searchable, paginated invention collection. */}
-        <section className="relative px-5 py-16 md:py-24">
+        <section data-section-label="Invention catalogue" className="relative px-5 py-16 md:py-24">
           <div
             aria-hidden="true"
             className="absolute inset-0 opacity-[0.2] [background-image:radial-gradient(rgba(56,91,123,.42)_1px,transparent_1.2px)] [background-size:26px_26px] [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_84%,transparent)]"

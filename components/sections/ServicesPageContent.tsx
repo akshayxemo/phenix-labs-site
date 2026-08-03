@@ -93,7 +93,7 @@ export function ServicesPageContent({ services }: ServicesPageContentProps) {
   return (
     <div className="overflow-hidden bg-[#ecf1f5] text-[#08111f]">
       {/* Page hero keeps copy readable while artwork decorates large viewports. */}
-      <section className="relative min-h-[620px] overflow-hidden bg-[#eaf0f4] px-5">
+      <section data-section-label="Services overview" className="relative min-h-[620px] overflow-hidden bg-[#eaf0f4] px-5">
         <div
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.2] [background-image:linear-gradient(rgba(22,34,54,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.1)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_90%)]"
@@ -140,7 +140,7 @@ export function ServicesPageContent({ services }: ServicesPageContentProps) {
       </section>
 
       {/* Capability categories use a dark visual break from surrounding sections. */}
-      <section className="relative bg-[#0a101d] px-5 py-20 text-white md:py-[108px]">
+      <section data-section-label="Who we serve" className="relative bg-[#0a101d] px-5 py-20 text-white md:py-[108px]">
         <div aria-hidden="true" className="absolute left-[-180px] top-16 size-[420px] rounded-full bg-[#0064d7]/12 blur-[110px]" />
         <div
           aria-hidden="true"
@@ -193,7 +193,7 @@ export function ServicesPageContent({ services }: ServicesPageContentProps) {
       </section>
 
       {/* Animated circular roadmap; reduced-motion visitors receive its static state. */}
-      <section id="development-process" className="relative scroll-mt-24 overflow-hidden bg-[#fdfdfd] px-5 py-20 md:py-[108px]">
+      <section id="development-process" data-section-label="Development process" className="relative scroll-mt-24 overflow-hidden bg-[#fdfdfd] px-5 py-20 md:py-[108px]">
         <div aria-hidden="true" className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(22,34,54,.55)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.55)_1px,transparent_1px)] [background-size:38px_38px] [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)]" />
         <div aria-hidden="true" className="absolute -left-40 top-1/3 size-[440px] rounded-full bg-[#0064d7]/8 blur-[120px]" />
         <div aria-hidden="true" className="absolute -right-44 bottom-20 size-[420px] rounded-full bg-[#a984ff]/7 blur-[120px]" />
@@ -313,7 +313,7 @@ export function ServicesPageContent({ services }: ServicesPageContentProps) {
 
       {/* All published services enter the shared alternating mosaic layout. */}
       {services.length > 0 && (
-      <section id="engineering-services" className="scroll-mt-24 bg-[#dfe8ef] px-5 py-20 md:py-[108px]">
+      <section id="engineering-services" data-section-label="Engineering services" className="scroll-mt-24 bg-[#dfe8ef] px-5 py-20 md:py-[108px]">
         <div className="mx-auto max-w-[1236px]">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal} className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-[720px]">
