@@ -24,11 +24,11 @@ export const navbarData: NavbarData = {
     text: 'Contact Us',
     href: '/contact',
   },
-  cta: {
-    text: 'Education',
-    href: 'https://learn.phenixlabs.in/',
-    openInNewTab: true,
-  },
+  // cta: {
+  //   text: 'Education',
+  //   href: 'https://learn.phenixlabs.in/',
+  //   openInNewTab: true,
+  // },
 }
 
 /**
