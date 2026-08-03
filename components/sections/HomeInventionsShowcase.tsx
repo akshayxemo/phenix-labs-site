@@ -21,7 +21,7 @@ export function HomeInventionsShowcase({ inventions }: { inventions: Invention[]
   if (inventions.length === 0) return null
 
   return (
-    <section className="px-4 pb-24 md:px-5.5 md:pb-[110px]">
+    <section data-section-label="Inventions" className="px-4 pb-24 md:px-5.5 md:pb-[110px]">
       <div className="relative mx-auto max-w-[1396px] overflow-hidden rounded-[20px] bg-[#07101c] px-5 py-14 text-white md:px-12 md:py-18 lg:px-[72px]">
         <div
           aria-hidden="true"

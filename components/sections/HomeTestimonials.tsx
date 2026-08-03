@@ -146,7 +146,7 @@ export function HomeTestimonials({ testimonials }: HomeTestimonialsProps) {
   const preview = getTestimonialPreview(testimonial.quote)
 
   return (
-    <section className="bg-[#e0e8ef] px-5 py-20 md:py-[96px]">
+    <section data-section-label="Testimonials" className="bg-[#e0e8ef] px-5 py-20 md:py-[96px]">
       <div className="mx-auto grid max-w-[1236px] items-center gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#0064d7]">

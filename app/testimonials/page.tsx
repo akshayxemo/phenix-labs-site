@@ -44,7 +44,7 @@ export default async function TestimonialsPage() {
         ]}
       />
       {/* Archive hero. */}
-      <section className="relative overflow-hidden bg-[#162236] px-5 py-20 text-white md:py-28">
+      <section data-section-label="Testimonials overview" className="relative overflow-hidden bg-[#162236] px-5 py-20 text-white md:py-28">
         <div
           aria-hidden="true"
           className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(158,193,222,.42)_1px,transparent_1px),linear-gradient(90deg,rgba(158,193,222,.42)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_96%)]"
@@ -66,7 +66,7 @@ export default async function TestimonialsPage() {
       </section>
 
       {/* Incrementally loaded testimonial collection. */}
-      <section className="bg-[#ecf1f5] px-5 py-16 md:py-24">
+      <section data-section-label="Client stories" className="bg-[#ecf1f5] px-5 py-16 md:py-24">
         <div className="mx-auto max-w-[1236px]">
           <TestimonialsArchive initialPage={initialPage} />
         </div>

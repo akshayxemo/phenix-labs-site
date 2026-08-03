@@ -13,7 +13,7 @@ export function HomeHero() {
   const duration = shouldReduceMotion ? 0 : 0.75
 
   return (
-    <section className="relative min-h-[720px] overflow-hidden bg-[#eaf0f4] px-5 pb-[190px] pt-[108px] md:min-h-[710px] md:pb-[180px] md:pt-[116px] xl:min-h-[680px] xl:pb-20">
+    <section data-section-label="Introduction" className="relative min-h-[720px] overflow-hidden bg-[#eaf0f4] px-5 pb-[190px] pt-[108px] md:min-h-[710px] md:pb-[180px] md:pt-[116px] xl:min-h-[680px] xl:pb-20">
       {/* Background grid and central atmospheric glow. */}
       <div
         aria-hidden="true"

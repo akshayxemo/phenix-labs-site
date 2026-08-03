@@ -45,7 +45,7 @@ export default async function About() {
         ]}
       />
       {markdown ? (
-        <section className="bg-[#ecf1f5] px-5 py-16 md:px-8 md:py-24">
+        <section data-section-label="About Phenix Labs" className="bg-[#ecf1f5] px-5 py-16 md:px-8 md:py-24">
           <MarkdownContent content={markdown} />
         </section>
       ) : null}

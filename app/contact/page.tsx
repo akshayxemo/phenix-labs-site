@@ -69,7 +69,7 @@ export default async function Contact() {
         ]}
       />
       <div className="overflow-hidden bg-[#ecf1f5] text-[#08111f]">
-        <section className="relative px-5 pb-20 pt-20 md:pb-24 md:pt-24">
+        <section data-section-label="Contact overview" className="relative px-5 pb-20 pt-20 md:pb-24 md:pt-24">
           <div
             aria-hidden="true"
             className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(22,34,54,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(22,34,54,.12)_1px,transparent_1px)] [background-size:54px_54px] [mask-image:linear-gradient(to_bottom,black,transparent_92%)]"
@@ -134,7 +134,7 @@ export default async function Contact() {
           </div>
         </section>
 
-        <section id="contact-form" className="scroll-mt-24 px-5 pb-24 md:pb-30">
+        <section id="contact-form" data-section-label="Project enquiry" className="scroll-mt-24 px-5 pb-24 md:pb-30">
           <div className="mx-auto grid max-w-[1236px] gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
             <div className="relative overflow-hidden rounded-[20px] bg-[#0b1523] p-7 text-white shadow-[0_24px_65px_rgba(22,34,54,0.14)] sm:p-9 lg:sticky lg:top-24">
               <div aria-hidden="true" className="absolute inset-0 opacity-[0.16] [background-image:radial-gradient(rgba(88,167,255,.85)_1px,transparent_1.2px)] [background-size:25px_25px]" />

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { NavbarData, FooterData } from '@/types'
 import { Navbar } from './Navbar'
 import { SiteFooter } from './SiteFooter'
+import { ScrollNavigator } from '@/components/navigation/ScrollNavigator'
 
 interface MainLayoutProps {
   children: ReactNode
@@ -26,6 +27,7 @@ export function MainLayout({
         links={navbarData.links}
         logo={navbarData.logo}
       />
+      <ScrollNavigator />
     </div>
   )
 }
