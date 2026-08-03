@@ -29,7 +29,7 @@ export function ClientLogoMarquee({ clients }: ClientLogoMarqueeProps) {
               src={client.logoUrl}
               alt={duplicate ? '' : `${client.name} logo`}
               fill
-              className="object-contain grayscale opacity-65 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+              className="object-contain opacity-65 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
               sizes="194px"
             />
           </div>
